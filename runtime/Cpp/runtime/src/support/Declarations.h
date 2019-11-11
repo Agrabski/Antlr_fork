@@ -140,8 +140,6 @@ namespace antlr4 {
     namespace pattern {
       class Chunk;
       class ParseTreeMatch;
-      class ParseTreePattern;
-      class ParseTreePatternMatcher;
       class RuleTagToken;
       class TagChunk;
       class TextChunk;

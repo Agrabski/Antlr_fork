@@ -45,7 +45,7 @@ namespace antlr4 {
 		};
 
 		Parser(TokenStream* input);
-		virtual ~Parser();
+		virtual ~Parser() = default;
 
 		/// reset the parser's state
 		virtual void reset();
@@ -206,26 +206,6 @@ namespace antlr4 {
 		/// lazily. The ATN is owned by us.
 		virtual const atn::ATN& getATNWithBypassAlts();
 
-		/// <summary>
-		/// The preferred method of getting a tree pattern. For example, here's a
-		/// sample use:
-		///
-		/// <pre>
-		/// ParseTree t = parser.expr();
-		/// ParseTreePattern p = parser.compileParseTreePattern("<ID>+0", MyParser.RULE_expr);
-		/// ParseTreeMatch m = p.match(t);
-		/// String id = m.get("ID");
-		/// </pre>
-		/// </summary>
-		virtual tree::pattern::ParseTreePattern compileParseTreePattern(const std::string& pattern, int patternRuleIndex);
-
-		/// <summary>
-		/// The same as <seealso cref="#compileParseTreePattern(String, int)"/> but specify a
-		/// <seealso cref="Lexer"/> rather than trying to deduce it from this parser.
-		/// </summary>
-		virtual tree::pattern::ParseTreePattern compileParseTreePattern(const std::string& pattern, int patternRuleIndex,
-			Lexer* lexer);
-
 		virtual Ref<ANTLRErrorStrategy> getErrorHandler();
 		virtual void setErrorHandler(Ref<ANTLRErrorStrategy> const& handler);
 
@@ -295,8 +275,6 @@ namespace antlr4 {
 		virtual void pushNewRecursionContext(ParserRuleContext* localctx, std::unique_ptr<ParserRuleContext>&& prevContext, size_t state, size_t ruleIndex);
 		virtual void unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx);
 		virtual ParserRuleContext* getInvokingContext(ParserRuleContext* currentCtx,size_t ruleIndex);
-		virtual ParserRuleContext* getContext();
-		virtual void setContext(std::unique_ptr<ParserRuleContext>&& ctx);
 		virtual bool precpred(RuleContext* localctx, int precedence) override;
 		virtual bool inContext(const std::string& context);
 
@@ -323,14 +301,12 @@ namespace antlr4 {
 		/// respectively.
 		/// </summary>
 		/// <seealso cref= ATN#getExpectedTokens(int, RuleContext) </seealso>
-		virtual misc::IntervalSet getExpectedTokens();
+		virtual misc::IntervalSet getExpectedTokens(ParserRuleContext* currentContext);
 
 		virtual misc::IntervalSet getExpectedTokensWithinCurrentRule();
 
 		/// Get a rule's index (i.e., {@code RULE_ruleName} field) or INVALID_INDEX if not found.
 		virtual size_t getRuleIndex(const std::string& ruleName);
-
-		virtual ParserRuleContext* getRuleContext();
 
 		/// <summary>
 		/// Return List&lt;String&gt; of the rule names in your parser instance

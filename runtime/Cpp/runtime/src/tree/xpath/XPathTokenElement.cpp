@@ -14,20 +14,21 @@ using namespace antlr4;
 using namespace antlr4::tree;
 using namespace antlr4::tree::xpath;
 
-XPathTokenElement::XPathTokenElement(const std::string &tokenName, size_t tokenType) : XPathElement(tokenName) {
-  _tokenType = tokenType;
+XPathTokenElement::XPathTokenElement(const std::string& tokenName, size_t tokenType) : XPathElement(tokenName) {
+	_tokenType = tokenType;
 }
 
-std::vector<ParseTree *> XPathTokenElement::evaluate(ParseTree *t) {
-  // return all children of t that match nodeName
-  std::vector<ParseTree *> nodes;
-  for (auto c : t->children) {
-    if (antlrcpp::is<TerminalNode *>(c)) {
-      TerminalNode *tnode = dynamic_cast<TerminalNode *>(c);
-      if ((tnode->getSymbol()->getType() == _tokenType && !_invert) || (tnode->getSymbol()->getType() != _tokenType && _invert)) {
-        nodes.push_back(tnode);
-      }
-    }
-  }
-  return nodes;
+std::vector<ParseTree*> XPathTokenElement::evaluate(ParseTree* t) {
+	// return all children of t that match nodeName
+	std::vector<ParseTree*> nodes;
+	for (auto& c : t->children)
+	{
+		if (antlrcpp::is<TerminalNode*>(c.get()))
+		{
+			TerminalNode* tnode = dynamic_cast<TerminalNode*>(c.get());
+			if ((tnode->getSymbol()->getType() == _tokenType && !_invert) || (tnode->getSymbol()->getType() != _tokenType && _invert))
+				nodes.push_back(tnode);
+		}
+	}
+	return nodes;
 }

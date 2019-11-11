@@ -15,9 +15,9 @@ namespace antlr4 {
   /// prediction.
   class ANTLR4CPP_PUBLIC FailedPredicateException : public RecognitionException {
   public:
-    FailedPredicateException(Parser *recognizer);
-    FailedPredicateException(Parser *recognizer, const std::string &predicate);
-    FailedPredicateException(Parser *recognizer, const std::string &predicate, const std::string &message);
+    FailedPredicateException(Parser *recognizer, ParserRuleContext* currentContext);
+    FailedPredicateException(Parser *recognizer, const std::string &predicate, ParserRuleContext* currentContext);
+    FailedPredicateException(Parser *recognizer, const std::string &predicate, const std::string &message, ParserRuleContext* currentContext);
 
     virtual size_t getRuleIndex();
     virtual size_t getPredIndex();

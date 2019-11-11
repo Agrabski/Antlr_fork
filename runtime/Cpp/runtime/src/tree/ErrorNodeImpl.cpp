@@ -12,12 +12,15 @@ using namespace antlr4;
 using namespace antlr4::misc;
 using namespace antlr4::tree;
 
-ErrorNodeImpl::ErrorNodeImpl(Token *token) : TerminalNodeImpl(token) {
+ErrorNodeImpl::ErrorNodeImpl(Token* token) : TerminalNodeImpl(token) {}
+
+antlrcpp::Any ErrorNodeImpl::accept(ParseTreeVisitor* visitor) {
+	return visitor->visitErrorNode(this);
 }
 
-ErrorNodeImpl::~ErrorNodeImpl() {
-}
-
-antlrcpp::Any ErrorNodeImpl::accept(ParseTreeVisitor *visitor) {
-  return visitor->visitErrorNode(this);
+std::unique_ptr<ParseTree> antlr4::tree::ErrorNodeImpl::clone(ParseTree* parent) const
+{
+	auto r = std::make_unique<ErrorNodeImpl>(*this);
+	r->parent = parent;
+	return r;
 }

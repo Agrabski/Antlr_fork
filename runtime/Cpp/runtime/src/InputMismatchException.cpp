@@ -9,8 +9,8 @@
 
 using namespace antlr4;
 
-InputMismatchException::InputMismatchException(Parser *recognizer)
-  : RecognitionException(recognizer, recognizer->getInputStream(), recognizer->getContext(),
+InputMismatchException::InputMismatchException(Parser *recognizer, ParserRuleContext* currentContext)
+  : RecognitionException(recognizer, recognizer->getInputStream(), currentContext,
                          recognizer->getCurrentToken()) {
 }
 

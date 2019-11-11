@@ -87,7 +87,7 @@ namespace antlr4 {
     /// <exception cref="RecognitionException"> if an error is detected by the error
     /// strategy but cannot be automatically recovered at the current state in
     /// the parsing process </exception>
-    virtual void sync(Parser *recognizer) = 0;
+    virtual void sync(Parser *recognizer, ParserRuleContext* currentContext) = 0;
 
     /// <summary>
     /// Tests whether or not {@code recognizer} is in the process of recovering
@@ -115,7 +115,7 @@ namespace antlr4 {
     /// </summary>
     /// <param name="recognizer"> the parser instance </param>
     /// <param name="e"> the recognition exception to report </param>
-    virtual void reportError(Parser *recognizer, const RecognitionException &e) = 0;
+    virtual void reportError(Parser *recognizer, const RecognitionException &e, ParserRuleContext* currentContext) = 0;
   };
 
 } // namespace antlr4

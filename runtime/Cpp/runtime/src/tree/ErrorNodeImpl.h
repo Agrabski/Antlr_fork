@@ -12,22 +12,26 @@
 #include "support/Any.h"
 
 namespace antlr4 {
-namespace tree {
+	namespace tree {
 
-  /// <summary>
-  /// Represents a token that was consumed during resynchronization
-  ///  rather than during a valid match operation. For example,
-  ///  we will create this kind of a node during single token insertion
-  ///  and deletion as well as during "consume until error recovery set"
-  ///  upon no viable alternative exceptions.
-  /// </summary>
-  class ANTLR4CPP_PUBLIC ErrorNodeImpl : public virtual TerminalNodeImpl, public virtual ErrorNode {
-  public:
-    ErrorNodeImpl(Token *token);
-    ~ErrorNodeImpl() override;
+		/// <summary>
+		/// Represents a token that was consumed during resynchronization
+		///  rather than during a valid match operation. For example,
+		///  we will create this kind of a node during single token insertion
+		///  and deletion as well as during "consume until error recovery set"
+		///  upon no viable alternative exceptions.
+		/// </summary>
+		class ANTLR4CPP_PUBLIC ErrorNodeImpl : public virtual TerminalNodeImpl, public virtual ErrorNode
+		{
+		public:
+			ErrorNodeImpl(Token* token);
+			ErrorNodeImpl(ErrorNodeImpl const&) = default;
+			~ErrorNodeImpl() override = default;
 
-    virtual antlrcpp::Any accept(ParseTreeVisitor *visitor) override;
-  };
+			antlrcpp::Any accept(ParseTreeVisitor* visitor) final;
+			std::unique_ptr<ParseTree> clone(ParseTree* parent) const override;
 
-} // namespace tree
+		};
+
+	} // namespace tree
 } // namespace antlr4

@@ -6,6 +6,8 @@
 #pragma once
 
 #include "support/Any.h"
+#include <gsl.h>
+using gsl::not_null;
 
 namespace antlr4 
 {
@@ -22,7 +24,8 @@ namespace antlr4
 		class ANTLR4CPP_PUBLIC ParseTree {
 		public:
 			ParseTree();
-			ParseTree(ParseTree const&) = delete;
+			ParseTree(ParseTree const&copy, ParseTree * parent);
+			ParseTree(ParseTree const&);
 			virtual ~ParseTree() = default;
 
 			ParseTree& operator=(ParseTree const&) = delete;
@@ -75,7 +78,14 @@ namespace antlr4
 			 * <p>As a weird special case, the source interval for rules matched after
 			 * EOF is unspecified.</p>
 			 */
-			virtual misc::Interval getSourceInterval() = 0;
+			virtual misc::Interval getSourceInterval() const noexcept = 0;
+
+
+			virtual std::unique_ptr<ParseTree> clone(ParseTree* parent) const = 0;
+
+
+		protected:
+			void cloneChildrenFrom(not_null< ParseTree *>parent, ParseTree const * copy);
 		};
 
 	} // namespace tree

@@ -427,7 +427,6 @@
     <ClCompile Include="src\atn\TokensStartState.cpp" />
     <ClCompile Include="src\atn\Transition.cpp" />
     <ClCompile Include="src\atn\WildcardTransition.cpp" />
-    <ClCompile Include="src\BailErrorStrategy.cpp" />
     <ClCompile Include="src\BaseErrorListener.cpp" />
     <ClCompile Include="src\BufferedTokenStream.cpp" />
     <ClCompile Include="src\CharStream.cpp" />
@@ -457,7 +456,6 @@
     <ClCompile Include="src\misc\Predicate.cpp" />
     <ClCompile Include="src\NoViableAltException.cpp" />
     <ClCompile Include="src\Parser.cpp" />
-    <ClCompile Include="src\ParserInterpreter.cpp" />
     <ClCompile Include="src\ParserRuleContext.cpp" />
     <ClCompile Include="src\ProxyErrorListener.cpp" />
     <ClCompile Include="src\RecognitionException.cpp" />
@@ -481,14 +479,6 @@
     <ClCompile Include="src\tree\ParseTreeListener.cpp" />
     <ClCompile Include="src\tree\ParseTreeVisitor.cpp" />
     <ClCompile Include="src\tree\ParseTreeWalker.cpp" />
-    <ClCompile Include="src\tree\pattern\Chunk.cpp" />
-    <ClCompile Include="src\tree\pattern\ParseTreeMatch.cpp" />
-    <ClCompile Include="src\tree\pattern\ParseTreePattern.cpp" />
-    <ClCompile Include="src\tree\pattern\ParseTreePatternMatcher.cpp" />
-    <ClCompile Include="src\tree\pattern\RuleTagToken.cpp" />
-    <ClCompile Include="src\tree\pattern\TagChunk.cpp" />
-    <ClCompile Include="src\tree\pattern\TextChunk.cpp" />
-    <ClCompile Include="src\tree\pattern\TokenTagToken.cpp" />
     <ClCompile Include="src\tree\TerminalNode.cpp" />
     <ClCompile Include="src\tree\TerminalNodeImpl.cpp" />
     <ClCompile Include="src\tree\Trees.cpp" />
@@ -582,7 +572,6 @@
     <ClInclude Include="src\atn\TokensStartState.h" />
     <ClInclude Include="src\atn\Transition.h" />
     <ClInclude Include="src\atn\WildcardTransition.h" />
-    <ClInclude Include="src\BailErrorStrategy.h" />
     <ClInclude Include="src\BaseErrorListener.h" />
     <ClInclude Include="src\BufferedTokenStream.h" />
     <ClInclude Include="src\CharStream.h" />
@@ -613,7 +602,6 @@
     <ClInclude Include="src\misc\TestRig.h" />
     <ClInclude Include="src\NoViableAltException.h" />
     <ClInclude Include="src\Parser.h" />
-    <ClInclude Include="src\ParserInterpreter.h" />
     <ClInclude Include="src\ParserRuleContext.h" />
     <ClInclude Include="src\ProxyErrorListener.h" />
     <ClInclude Include="src\RecognitionException.h" />
@@ -642,14 +630,6 @@
     <ClInclude Include="src\tree\ParseTreeProperty.h" />
     <ClInclude Include="src\tree\ParseTreeVisitor.h" />
     <ClInclude Include="src\tree\ParseTreeWalker.h" />
-    <ClInclude Include="src\tree\pattern\Chunk.h" />
-    <ClInclude Include="src\tree\pattern\ParseTreeMatch.h" />
-    <ClInclude Include="src\tree\pattern\ParseTreePattern.h" />
-    <ClInclude Include="src\tree\pattern\ParseTreePatternMatcher.h" />
-    <ClInclude Include="src\tree\pattern\RuleTagToken.h" />
-    <ClInclude Include="src\tree\pattern\TagChunk.h" />
-    <ClInclude Include="src\tree\pattern\TextChunk.h" />
-    <ClInclude Include="src\tree\pattern\TokenTagToken.h" />
     <ClInclude Include="src\tree\RuleNode.h" />
     <ClInclude Include="src\tree\SyntaxTree.h" />
     <ClInclude Include="src\tree\TerminalNode.h" />
@@ -670,7 +650,17 @@
     <ClInclude Include="src\Vocabulary.h" />
     <ClInclude Include="src\WritableToken.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets" Condition="Exists('packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Gsl.0.1.2.1\build\native\Microsoft.Gsl.targets'))" />
+  </Target>
 </Project>

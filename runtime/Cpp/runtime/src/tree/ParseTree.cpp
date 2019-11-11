@@ -7,9 +7,27 @@
 
 using namespace antlr4::tree;
 
-ParseTree::ParseTree() : parent(nullptr) {
+ParseTree::ParseTree() : parent(nullptr)
+{
 }
 
-bool ParseTree::operator == (const ParseTree &other) const {
-  return &other == this;
+antlr4::tree::ParseTree::ParseTree(ParseTree const& copy, ParseTree* parent)
+{
+	cloneChildrenFrom(parent,&copy);
+}
+
+antlr4::tree::ParseTree::ParseTree(ParseTree const& copy) : ParseTree(copy, nullptr)
+{
+}
+
+bool ParseTree::operator == (const ParseTree& other) const {
+	return &other == this;
+}
+
+void antlr4::tree::ParseTree::cloneChildrenFrom(not_null< ParseTree*>parent, ParseTree const* copy)
+{
+	for (auto const& c : copy->children)
+		children.push_back(c->clone(this));
+	this->parent = parent.get();
+
 }

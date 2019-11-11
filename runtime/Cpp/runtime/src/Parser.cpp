@@ -4,7 +4,6 @@
  */
 
 #include "atn/ATNDeserializationOptions.h"
-#include "tree/pattern/ParseTreePatternMatcher.h"
 #include "dfa/DFA.h"
 #include "ParserRuleContext.h"
 #include "tree/TerminalNode.h"
@@ -19,7 +18,6 @@
 #include "atn/ATN.h"
 #include "Exceptions.h"
 #include "ANTLRErrorListener.h"
-#include "tree/pattern/ParseTreePattern.h"
 
 #include "atn/ProfilingATNSimulator.h"
 #include "atn/ParseInfo.h"
@@ -45,8 +43,6 @@ void Parser::TraceListener::enterEveryRule(ParserRuleContext* ctx) {
 }
 
 void Parser::TraceListener::visitTerminal(tree::TerminalNode* node) {
-	std::cout << "consume " << node->getSymbol() << " rule "
-		<< outerInstance->getRuleNames()[outerInstance->getContext()->getRuleIndex()] << std::endl;
 }
 
 void Parser::TraceListener::visitErrorNode(tree::ErrorNode* /*node*/) {
@@ -108,7 +104,7 @@ Token* Parser::match(size_t ttype, ParserRuleContext* currentContext) {
 		consume(currentContext);
 	}
 	else {
-		t = _errHandler->recoverInline(this);
+		t = _errHandler->recoverInline(this, currentContext);
 		if (_buildParseTrees && t->getTokenIndex() == INVALID_INDEX) {
 			// we must have conjured up a new token during single token insertion
 			// if it's not the current symbol
@@ -126,7 +122,7 @@ Token* Parser::matchWildcard(ParserRuleContext* currentContext)
 		consume(currentContext);
 	}
 	else {
-		t = _errHandler->recoverInline(this);
+		t = _errHandler->recoverInline(this, currentContext);
 		if (_buildParseTrees && t->getTokenIndex() == INVALID_INDEX) {
 			// we must have conjured up a new token during single token insertion
 			// if it's not the current symbol
@@ -233,23 +229,6 @@ const atn::ATN& Parser::getATNWithBypassAlts() {
 	}
 
 	return bypassAltsAtnCache[serializedAtn];
-}
-
-tree::pattern::ParseTreePattern Parser::compileParseTreePattern(const std::string& pattern, int patternRuleIndex) {
-	if (getTokenStream() != nullptr) {
-		TokenSource* tokenSource = getTokenStream()->getTokenSource();
-		if (is<Lexer*>(tokenSource)) {
-			Lexer* lexer = dynamic_cast<Lexer*>(tokenSource);
-			return compileParseTreePattern(pattern, patternRuleIndex, lexer);
-		}
-	}
-	throw UnsupportedOperationException("Parser can't discover a lexer to use");
-}
-
-tree::pattern::ParseTreePattern Parser::compileParseTreePattern(const std::string& pattern, int patternRuleIndex,
-	Lexer* lexer) {
-	tree::pattern::ParseTreePatternMatcher m(lexer, this);
-	return m.compile(pattern, patternRuleIndex);
 }
 
 Ref<ANTLRErrorStrategy> Parser::getErrorHandler() {
@@ -417,7 +396,7 @@ void Parser::unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_p
 	}
 }
 
-ParserRuleContext* Parser::getInvokingContext(ParserRuleContext* currentCtx,size_t ruleIndex) {
+ParserRuleContext* Parser::getInvokingContext(ParserRuleContext* currentCtx, size_t ruleIndex) {
 	ParserRuleContext* p = currentCtx;
 	while (p) {
 		if (p->getRuleIndex() == ruleIndex) {
@@ -439,7 +418,7 @@ bool Parser::inContext(const std::string&/*context*/) {
 	return false;
 }
 
-bool Parser::isExpectedToken(ParserRuleContext*current, size_t symbol) {
+bool Parser::isExpectedToken(ParserRuleContext* current, size_t symbol) {
 	const atn::ATN& atn = getInterpreter<atn::ParserATNSimulator>()->atn;
 	ParserRuleContext* ctx = current;
 	atn::ATNState* s = atn.states[getState()];
@@ -475,8 +454,8 @@ bool Parser::isMatchedEOF() const {
 	return _matchedEOF;
 }
 
-misc::IntervalSet Parser::getExpectedTokens() {
-	return getATN().getExpectedTokens(getState(), getContext());
+misc::IntervalSet Parser::getExpectedTokens(ParserRuleContext* currentContext) {
+	return getATN().getExpectedTokens(getState(), currentContext);
 }
 
 misc::IntervalSet Parser::getExpectedTokensWithinCurrentRule() {

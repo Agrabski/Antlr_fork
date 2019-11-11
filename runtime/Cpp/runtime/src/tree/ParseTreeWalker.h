@@ -6,6 +6,7 @@
 #pragma once
 
 #include "antlr4-common.h"
+#include <gsl.h>
 
 namespace antlr4 {
 namespace tree {
@@ -16,7 +17,7 @@ namespace tree {
 
     virtual ~ParseTreeWalker();
 
-    virtual void walk(ParseTreeListener *listener, ParseTree *t) const;
+    virtual void walk(not_null<ParseTreeListener *>listener, not_null<ParseTree*>t) const;
 
   protected:
     /// The discovery of a rule node, involves sending two events: the generic

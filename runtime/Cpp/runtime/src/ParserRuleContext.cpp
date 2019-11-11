@@ -42,12 +42,12 @@ void ParserRuleContext::copyFrom(ParserRuleContext* ctx) {
 			auto errorNode = dynamic_cast<ErrorNode*>(child.get());
 			if (errorNode != nullptr) {
 				errorNode->setParent(this);
-				children.push_back(errorNode->clone());
+				children.push_back(errorNode->clone(this));
 			}
 		}
 
 		// Remove the just reparented error nodes from the source context.
-		ctx->children.erase(std::remove_if(ctx->children.begin(), ctx->children.end(), [this](tree::ParseTree* e) -> bool {
+		ctx->children.erase(std::remove_if(ctx->children.begin(), ctx->children.end(), [this](auto const& e) -> bool {
 			return std::find(children.begin(), children.end(), e) != children.end();
 		}), ctx->children.end());
 	}
@@ -116,7 +116,7 @@ std::vector<tree::TerminalNode*> ParserRuleContext::getTokens(size_t ttype) {
 	return tokens;
 }
 
-misc::Interval ParserRuleContext::getSourceInterval() {
+misc::Interval ParserRuleContext::getSourceInterval() const noexcept {
 	if (start == nullptr) {
 		return misc::Interval::INVALID;
 	}
@@ -141,5 +141,12 @@ std::string ParserRuleContext::toInfoString(Parser* recognizer) {
 	std::string rulesStr = antlrcpp::arrayToString(rules);
 	return "ParserRuleContext" + rulesStr + "{start=" + std::to_string(start->getTokenIndex()) + ", stop=" +
 		std::to_string(stop->getTokenIndex()) + '}';
+}
+
+std::unique_ptr<ParseTree> antlr4::ParserRuleContext::clone(ParseTree* parent) const
+{
+	auto result = std::make_unique<ParserRuleContext>(*this);
+	result->parent = parent;
+	return result;
 }
 

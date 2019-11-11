@@ -9,9 +9,9 @@
 
 using namespace antlr4;
 
-NoViableAltException::NoViableAltException(Parser *recognizer)
+NoViableAltException::NoViableAltException(Parser *recognizer, ParserRuleContext* currentContext)
   : NoViableAltException(recognizer, recognizer->getTokenStream(), recognizer->getCurrentToken(),
-                         recognizer->getCurrentToken(), nullptr, recognizer->getContext(), false) {
+                         recognizer->getCurrentToken(), nullptr, currentContext, false) {
 }
 
 NoViableAltException::NoViableAltException(Parser *recognizer, TokenStream *input,Token *startToken,

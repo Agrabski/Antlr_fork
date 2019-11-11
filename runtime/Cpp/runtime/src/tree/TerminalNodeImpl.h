@@ -8,26 +8,28 @@
 #include "tree/TerminalNode.h"
 
 namespace antlr4 {
-namespace tree {
+	namespace tree {
 
-  class ANTLR4CPP_PUBLIC TerminalNodeImpl : public virtual TerminalNode {
-  public:
-    Token *symbol;
+		class ANTLR4CPP_PUBLIC TerminalNodeImpl : public virtual TerminalNode {
+		public:
+			Token* symbol;
 
-    TerminalNodeImpl(Token *symbol);
+			TerminalNodeImpl(Token* symbol);
+			TerminalNodeImpl(TerminalNodeImpl const&) = default;
 
-    virtual Token* getSymbol() override;
-    virtual void setParent(RuleContext *parent) override;
-    virtual misc::Interval getSourceInterval() override;
+			Token* getSymbol() override;
+			void setParent(RuleContext* parent) override;
+			misc::Interval getSourceInterval() const noexcept override;
 
-    virtual antlrcpp::Any accept(ParseTreeVisitor *visitor) override;
+			antlrcpp::Any accept(ParseTreeVisitor* visitor) override;
 
-    virtual std::string getText() override;
-    virtual std::string toStringTree(Parser *parser) override;
-    virtual std::string toString() override;
-    virtual std::string toStringTree() override;
+			std::string getText() override;
+			std::string toStringTree(Parser* parser) override;
+			std::string toString() override;
+			std::string toStringTree() override;
+			std::unique_ptr<ParseTree> clone(ParseTree* parent) const override;
 
-  };
+		};
 
-} // namespace tree
+	} // namespace tree
 } // namespace antlr4

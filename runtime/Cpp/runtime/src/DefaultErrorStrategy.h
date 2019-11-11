@@ -98,7 +98,7 @@ namespace antlr4 {
     /// <li>All other types: calls <seealso cref="Parser#notifyErrorListeners"/> to report
     /// the exception</li>
     /// </ul>
-    virtual void reportError(Parser *recognizer, const RecognitionException &e) override;
+    virtual void reportError(Parser *recognizer, const RecognitionException &e, ParserRuleContext* currentContext) override;
 
     /// <summary>
     /// {@inheritDoc}
@@ -155,7 +155,7 @@ namespace antlr4 {
      * some reason speed is suffering for you, you can turn off this
      * functionality by simply overriding this method as a blank { }.</p>
      */
-    virtual void sync(Parser *recognizer) override;
+    void sync(Parser *recognizer, ParserRuleContext* currentContext) override;
 
     /// <summary>
     /// This is called by <seealso cref="#reportError"/> when the exception is a
@@ -186,7 +186,7 @@ namespace antlr4 {
     /// </seealso>
     /// <param name="recognizer"> the parser instance </param>
     /// <param name="e"> the recognition exception </param>
-    virtual void reportFailedPredicate(Parser *recognizer, const FailedPredicateException &e);
+    virtual void reportFailedPredicate(Parser *recognizer, const FailedPredicateException &e, ParserRuleContext* currentContext);
 
     /**
      * This method is called to report a syntax error which requires the removal
@@ -206,7 +206,7 @@ namespace antlr4 {
      *
      * @param recognizer the parser instance
      */
-    virtual void reportUnwantedToken(Parser *recognizer);
+    virtual void reportUnwantedToken(Parser *recognizer, ParserRuleContext* currentContext);
 
     /**
      * This method is called to report a syntax error which requires the
@@ -225,7 +225,7 @@ namespace antlr4 {
      *
      * @param recognizer the parser instance
      */
-    virtual void reportMissingToken(Parser *recognizer);
+    virtual void reportMissingToken(Parser *recognizer, ParserRuleContext* currentContext);
 
   public:
     /**
@@ -297,7 +297,7 @@ namespace antlr4 {
     /// <returns> {@code true} if single-token insertion is a viable recovery
     /// strategy for the current mismatched input, otherwise {@code false} </returns>
   protected:
-    virtual bool singleTokenInsertion(Parser *recognizer);
+    virtual bool singleTokenInsertion(Parser *recognizer, ParserRuleContext* currentContext);
 
     /// <summary>
     /// This method implements the single-token deletion inline error recovery
@@ -317,7 +317,7 @@ namespace antlr4 {
     /// <returns> the successfully matched <seealso cref="Token"/> instance if single-token
     /// deletion successfully recovers from the mismatched input, otherwise
     /// {@code null} </returns>
-    virtual Token* singleTokenDeletion(Parser *recognizer);
+    virtual Token* singleTokenDeletion(Parser *recognizer, ParserRuleContext* currentContext);
 
     /// <summary>
     /// Conjure up a missing token during error recovery.
@@ -339,9 +339,9 @@ namespace antlr4 {
     ///  If you change what tokens must be created by the lexer,
     ///  override this method to create the appropriate tokens.
     /// </summary>
-    virtual Token* getMissingSymbol(Parser *recognizer);
+    virtual Token* getMissingSymbol(Parser *recognizer, ParserRuleContext* currentContext);
 
-    virtual misc::IntervalSet getExpectedTokens(Parser *recognizer);
+    virtual misc::IntervalSet getExpectedTokens(Parser *recognizer, ParserRuleContext* currentContext);
 
     /// <summary>
     /// How should a token be displayed in an error message? The default
@@ -452,11 +452,11 @@ namespace antlr4 {
      *  Like Grosch I implement context-sensitive FOLLOW sets that are combined
      *  at run-time upon error to avoid overhead during parsing.
      */
-    virtual misc::IntervalSet getErrorRecoverySet(Parser *recognizer);
+    virtual misc::IntervalSet getErrorRecoverySet(Parser *recognizer, ParserRuleContext* currentContext);
 
     /// <summary>
     /// Consume tokens until one matches the given token set. </summary>
-    virtual void consumeUntil(Parser *recognizer, const misc::IntervalSet &set);
+    virtual void consumeUntil(Parser *recognizer, const misc::IntervalSet &set, ParserRuleContext* currentContext);
 
   private:
     std::vector<std::unique_ptr<Token>> _errorSymbols; // Temporarily created token.

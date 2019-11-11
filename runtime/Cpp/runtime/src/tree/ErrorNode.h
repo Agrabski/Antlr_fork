@@ -8,13 +8,12 @@
 #include "tree/TerminalNode.h"
 
 namespace antlr4 {
-namespace tree {
+	namespace tree {
 
-  class ANTLR4CPP_PUBLIC ErrorNode : public virtual TerminalNode {
-  public:
-    ~ErrorNode() override;
-    virtual std::unique_ptr<ErrorNode> clone() const = 0;
-  };
+		class ANTLR4CPP_PUBLIC ErrorNode : public virtual TerminalNode {
+		public:
+			~ErrorNode() override;
+		};
 
-} // namespace tree
+	} // namespace tree
 } // namespace antlr4
