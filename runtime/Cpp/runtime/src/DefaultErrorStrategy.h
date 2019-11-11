@@ -107,7 +107,7 @@ namespace antlr4 {
     /// until we find one in the resynchronization set--loosely the set of tokens
     /// that can follow the current rule.
     /// </summary>
-    virtual void recover(Parser *recognizer, std::exception_ptr e) override;
+    void recover(Parser *recognizer, std::exception_ptr e, ParserRuleContext* currentContext) override;
 
     /**
      * The default implementation of {@link ANTLRErrorStrategy#sync} makes sure
@@ -278,7 +278,7 @@ namespace antlr4 {
      * is in the set of tokens that can follow the {@code ')'} token reference
      * in rule {@code atom}. It can assume that you forgot the {@code ')'}.
      */
-    virtual Token* recoverInline(Parser *recognizer) override;
+    virtual Token* recoverInline(Parser *recognizer, ParserRuleContext* currentContext) override;
 
     /// <summary>
     /// This method implements the single-token insertion inline error recovery

@@ -67,7 +67,7 @@ namespace antlr4 {
 
     ParserRuleContext();
     ParserRuleContext(ParserRuleContext *parent, size_t invokingStateNumber);
-    virtual ~ParserRuleContext() {}
+    virtual ~ParserRuleContext() = default;
 
     /** COPY a ctx (I'm deliberately not using copy constructor) to avoid
      *  confusion with creating node with parent. Does not copy children
@@ -82,8 +82,8 @@ namespace antlr4 {
     virtual void exitRule(tree::ParseTreeListener *listener);
 
     /** Add a token leaf node child and force its parent to be this node. */
-    tree::TerminalNode* addChild(tree::TerminalNode *t);
-    RuleContext* addChild(RuleContext *ruleInvocation);
+    tree::TerminalNode* addChild(std::unique_ptr<tree::TerminalNode>&& t);
+    RuleContext* addChild(std::unique_ptr<RuleContext>&&ruleInvocation);
 
     /// Used by enterOuterAlt to toss out a RuleContext previously added as
     /// we entered a rule. If we have # label, we will need to remove
@@ -102,9 +102,9 @@ namespace antlr4 {
 
       size_t j = 0; // what element have we found with ctxType?
       for (auto &child : children) {
-        if (antlrcpp::is<T *>(child)) {
+        if (antlrcpp::is<T *>(child.get())) {
           if (j++ == i) {
-            return dynamic_cast<T *>(child);
+            return dynamic_cast<T *>(child.get());
           }
         }
       }

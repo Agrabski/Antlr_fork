@@ -45,7 +45,7 @@ namespace antlr4 {
     ///  original <seealso cref="RecognitionException"/>.
     /// </summary>
   public:
-    virtual void recover(Parser *recognizer, std::exception_ptr e) override;
+    void recover(Parser *recognizer, std::exception_ptr e, ParserRuleContext* currentContext) override;
 
     /// Make sure we don't attempt to recover inline; if the parser
     ///  successfully recovers, it won't throw an exception.

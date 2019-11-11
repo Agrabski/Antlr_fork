@@ -12,7 +12,7 @@
 
 using namespace antlr4;
 
-void BailErrorStrategy::recover(Parser *recognizer, std::exception_ptr e) {
+void BailErrorStrategy::recover(Parser *recognizer, std::exception_ptr e, ParserRuleContext*) {
   ParserRuleContext *context = recognizer->getContext();
   do {
     context->exception = e;

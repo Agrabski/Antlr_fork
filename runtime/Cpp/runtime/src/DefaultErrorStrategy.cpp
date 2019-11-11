@@ -72,7 +72,7 @@ void DefaultErrorStrategy::reportError(Parser *recognizer, const RecognitionExce
   }
 }
 
-void DefaultErrorStrategy::recover(Parser *recognizer, std::exception_ptr /*e*/) {
+void DefaultErrorStrategy::recover(Parser *recognizer, std::exception_ptr /*e*/, ParserRuleContext* currentContext) {
   if (lastErrorIndex == static_cast<int>(recognizer->getInputStream()->index()) &&
       lastErrorStates.contains(recognizer->getState())) {
 
@@ -80,7 +80,7 @@ void DefaultErrorStrategy::recover(Parser *recognizer, std::exception_ptr /*e*/)
     // state in ATN; must be a case where LT(1) is in the recovery
     // token set so nothing got consumed. Consume a single token
     // at least to prevent an infinite loop; this is a failsafe.
-    recognizer->consume();
+    recognizer->consume(currentContext);
   }
   lastErrorIndex = static_cast<int>(recognizer->getInputStream()->index());
   lastErrorStates.add(recognizer->getState());
@@ -190,13 +190,13 @@ void DefaultErrorStrategy::reportMissingToken(Parser *recognizer) {
   recognizer->notifyErrorListeners(t, msg, nullptr);
 }
 
-Token* DefaultErrorStrategy::recoverInline(Parser *recognizer) {
+Token* DefaultErrorStrategy::recoverInline(Parser *recognizer, ParserRuleContext* currentContext) {
   // Single token deletion.
   Token *matchedSymbol = singleTokenDeletion(recognizer);
   if (matchedSymbol) {
     // We have deleted the extra token.
     // Now, move past ttype token as if all were ok.
-    recognizer->consume();
+    recognizer->consume(currentContext);
     return matchedSymbol;
   }
 

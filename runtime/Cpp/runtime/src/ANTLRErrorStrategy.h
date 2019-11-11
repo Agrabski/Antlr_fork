@@ -54,7 +54,7 @@ namespace antlr4 {
      * @throws RecognitionException if the error strategy was not able to
      * recover from the unexpected input symbol
      */
-    virtual Token* recoverInline(Parser *recognizer) = 0;
+    virtual Token* recoverInline(Parser *recognizer, ParserRuleContext* currentContext) = 0;
 
     /// <summary>
     /// This method is called to recover from exception {@code e}. This method is
@@ -67,7 +67,7 @@ namespace antlr4 {
     /// <param name="e"> the recognition exception to recover from </param>
     /// <exception cref="RecognitionException"> if the error strategy could not recover from
     /// the recognition exception </exception>
-    virtual void recover(Parser *recognizer, std::exception_ptr e) = 0;
+    virtual void recover(Parser *recognizer, std::exception_ptr e, ParserRuleContext* currentContext) = 0;
 
     /// <summary>
     /// This method provides the error handler with an opportunity to handle

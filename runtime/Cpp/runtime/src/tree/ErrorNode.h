@@ -13,6 +13,7 @@ namespace tree {
   class ANTLR4CPP_PUBLIC ErrorNode : public virtual TerminalNode {
   public:
     ~ErrorNode() override;
+    virtual std::unique_ptr<ErrorNode> clone() const = 0;
   };
 
 } // namespace tree
