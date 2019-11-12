@@ -10,12 +10,13 @@
 namespace antlr4 {
 	namespace tree {
 
-		class ANTLR4CPP_PUBLIC TerminalNodeImpl : public virtual TerminalNode {
+		class ANTLR4CPP_PUBLIC TerminalNodeImpl : public virtual TerminalNode
+		{
 		public:
 			std::unique_ptr<Token> symbol;
 
 			TerminalNodeImpl(std::unique_ptr<Token>&& symbol);
-			TerminalNodeImpl(TerminalNodeImpl const&) = default;
+			TerminalNodeImpl(TerminalNodeImpl const&);
 
 			Token* getSymbol() override;
 			void setParent(RuleContext* parent) override;

@@ -186,6 +186,11 @@ std::string CommonToken::toString(Recognizer* r) const {
 	return ss.str();
 }
 
+std::unique_ptr<Token> antlr4::CommonToken::clone() const
+{
+	return std::make_unique<CommonToken>(*this);
+}
+
 void CommonToken::InitializeInstanceFields() {
 	_type = 0;
 	_line = 0;

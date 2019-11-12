@@ -576,8 +576,9 @@ bool Parser::isTrace() const {
 	return _tracer != nullptr;
 }
 
-std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(Token* t) {
-	return std::make_unique<tree::TerminalNodeImpl>(t);
+std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(std::unique_ptr<Token>&& t)
+{
+	return std::make_unique<tree::TerminalNodeImpl>(std::move(t));
 }
 
 std::unique_ptr<tree::ErrorNode> Parser::createErrorNode(Token* t) {

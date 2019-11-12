@@ -17,6 +17,10 @@ TerminalNodeImpl::TerminalNodeImpl(std::unique_ptr<Token>&& symbol_) : symbol(st
 {
 }
 
+antlr4::tree::TerminalNodeImpl::TerminalNodeImpl(TerminalNodeImpl const& o) : TerminalNodeImpl(o.symbol->clone())
+{
+}
+
 Token* TerminalNodeImpl::getSymbol()
 {
 	return symbol.get();
@@ -29,9 +33,8 @@ void TerminalNodeImpl::setParent(RuleContext* parent_)
 
 misc::Interval TerminalNodeImpl::getSourceInterval() const noexcept
 {
-	if (symbol == nullptr) {
+	if (symbol == nullptr)
 		return misc::Interval::INVALID;
-	}
 
 	size_t tokenIndex = symbol->getTokenIndex();
 	return misc::Interval(tokenIndex, tokenIndex);
