@@ -7,12 +7,13 @@
 #include "tree/ParseTreeVisitor.h"
 
 #include "tree/ErrorNodeImpl.h"
+#include "Token.h"
 
 using namespace antlr4;
 using namespace antlr4::misc;
 using namespace antlr4::tree;
 
-ErrorNodeImpl::ErrorNodeImpl(Token* token) : TerminalNodeImpl(token) {}
+ErrorNodeImpl::ErrorNodeImpl(Token* token) : TerminalNodeImpl(token->clone()) {}
 
 antlrcpp::Any ErrorNodeImpl::accept(ParseTreeVisitor* visitor) {
 	return visitor->visitErrorNode(this);

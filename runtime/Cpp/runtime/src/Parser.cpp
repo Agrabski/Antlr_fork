@@ -581,6 +581,11 @@ std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(std::unique_ptr<T
 	return std::make_unique<tree::TerminalNodeImpl>(std::move(t));
 }
 
+std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(Token* t)
+{
+	return std::make_unique<tree::TerminalNodeImpl>(t->clone());
+}
+
 std::unique_ptr<tree::ErrorNode> Parser::createErrorNode(Token* t) {
 	return std::make_unique<tree::ErrorNodeImpl>(t);
 }
