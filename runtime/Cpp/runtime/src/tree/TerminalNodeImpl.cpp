@@ -13,14 +13,17 @@
 using namespace antlr4;
 using namespace antlr4::tree;
 
-TerminalNodeImpl::TerminalNodeImpl(Token* symbol_) : symbol(symbol_) {
+TerminalNodeImpl::TerminalNodeImpl(std::unique_ptr<Token>&& symbol_) : symbol(std::move(symbol_))
+{
 }
 
-Token* TerminalNodeImpl::getSymbol() {
-	return symbol;
+Token* TerminalNodeImpl::getSymbol()
+{
+	return symbol.get();
 }
 
-void TerminalNodeImpl::setParent(RuleContext* parent_) {
+void TerminalNodeImpl::setParent(RuleContext* parent_)
+{
 	this->parent = parent_;
 }
 

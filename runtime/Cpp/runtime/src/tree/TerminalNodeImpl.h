@@ -12,9 +12,9 @@ namespace antlr4 {
 
 		class ANTLR4CPP_PUBLIC TerminalNodeImpl : public virtual TerminalNode {
 		public:
-			Token* symbol;
+			std::unique_ptr<Token> symbol;
 
-			TerminalNodeImpl(Token* symbol);
+			TerminalNodeImpl(std::unique_ptr<Token>&& symbol);
 			TerminalNodeImpl(TerminalNodeImpl const&) = default;
 
 			Token* getSymbol() override;

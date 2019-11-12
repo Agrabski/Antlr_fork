@@ -87,6 +87,8 @@ namespace antlr4 {
     virtual CharStream *getInputStream() const = 0;
 
     virtual std::string toString() const = 0;
+
+    virtual std::unique_ptr<Token> clone() const = 0;
   };
 
 } // namespace antlr4
