@@ -15,7 +15,7 @@ namespace atn {
   public:
     ProfilingATNSimulator(Parser *parser);
 
-    virtual size_t adaptivePredict(TokenStream *input, size_t decision, ParserRuleContext *outerContext) override;
+    size_t adaptivePredict(TokenStream *input, size_t decision, ParserRuleContext *outerContext) override;
 
     virtual std::vector<DecisionInfo> getDecisionInfo() const;
     virtual dfa::DFAState* getCurrentState() const;
@@ -43,9 +43,9 @@ namespace atn {
     /// </summary>
     size_t conflictingAltResolvedBySLL = 0;
 
-    virtual dfa::DFAState* getExistingTargetState(dfa::DFAState *previousD, size_t t) override;
-    virtual dfa::DFAState* computeTargetState(dfa::DFA &dfa, dfa::DFAState *previousD, size_t t) override;
-    virtual std::unique_ptr<ATNConfigSet> computeReachSet(ATNConfigSet *closure, size_t t, bool fullCtx) override;
+    dfa::DFAState* getExistingTargetState(dfa::DFAState *previousD, size_t t) override;
+    dfa::DFAState* computeTargetState(dfa::DFA &dfa, dfa::DFAState *previousD, size_t t) override;
+    std::unique_ptr<ATNConfigSet> computeReachSet(ATNConfigSet *closure, size_t t, bool fullCtx) override;
     virtual bool evalSemanticContext(Ref<SemanticContext> const& pred, ParserRuleContext *parserCallStack,
                                      size_t alt, bool fullCtx) override;
     virtual void reportAttemptingFullContext(dfa::DFA &dfa, const antlrcpp::BitSet &conflictingAlts, ATNConfigSet *configs,

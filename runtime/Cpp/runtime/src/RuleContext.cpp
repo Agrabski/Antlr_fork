@@ -63,26 +63,32 @@ std::string RuleContext::getText()
 	return ss.str();
 }
 
-size_t RuleContext::getRuleIndex() const {
+size_t RuleContext::getRuleIndex() const
+{
 	return INVALID_INDEX;
 }
 
-size_t RuleContext::getAltNumber() const {
+size_t RuleContext::getAltNumber() const
+{
 	return atn::ATN::INVALID_ALT_NUMBER;
 }
 
-void RuleContext::setAltNumber(size_t /*altNumber*/) {
+void RuleContext::setAltNumber(size_t /*altNumber*/)
+{
 }
 
-antlrcpp::Any RuleContext::accept(tree::ParseTreeVisitor* visitor) {
+antlrcpp::Any RuleContext::accept(tree::ParseTreeVisitor* visitor)
+{
 	return visitor->visitChildren(this);
 }
 
-std::string RuleContext::toStringTree(Parser* recog) {
+std::string RuleContext::toStringTree(Parser* recog)
+{
 	return tree::Trees::toStringTree(this, recog);
 }
 
-std::string RuleContext::toStringTree(std::vector<std::string>& ruleNames) {
+std::string RuleContext::toStringTree(std::vector<std::string_view>& ruleNames)
+{
 	return tree::Trees::toStringTree(this, ruleNames);
 }
 
@@ -91,12 +97,12 @@ std::string RuleContext::toStringTree() {
 }
 
 
-std::string RuleContext::toString(const std::vector<std::string>& ruleNames) {
+std::string RuleContext::toString(const std::vector<std::string_view>& ruleNames) {
 	return toString(ruleNames, nullptr);
 }
 
 
-std::string RuleContext::toString(const std::vector<std::string>& ruleNames, RuleContext* stop) {
+std::string RuleContext::toString(const std::vector<std::string_view>& ruleNames, RuleContext* stop) {
 	std::stringstream ss;
 
 	RuleContext* currentParent = this;
@@ -110,7 +116,7 @@ std::string RuleContext::toString(const std::vector<std::string>& ruleNames, Rul
 		else {
 			size_t ruleIndex = currentParent->getRuleIndex();
 
-			std::string ruleName = (ruleIndex < ruleNames.size()) ? ruleNames[ruleIndex] : std::to_string(ruleIndex);
+			auto ruleName = (ruleIndex < ruleNames.size()) ? ruleNames[ruleIndex] : std::to_string(ruleIndex);
 			ss << ruleName;
 		}
 
@@ -137,7 +143,7 @@ std::string RuleContext::toString(Recognizer* recog) {
 
 std::string RuleContext::toString(Recognizer* recog, RuleContext* stop) {
 	if (recog == nullptr)
-		return toString(std::vector<std::string>(), stop); // Don't use an initializer {} here or we end up calling ourselve recursivly.
+		return toString(std::vector<std::string_view>(), stop); // Don't use an initializer {} here or we end up calling ourselve recursivly.
 	return toString(recog->getRuleNames(), stop);
 }
 

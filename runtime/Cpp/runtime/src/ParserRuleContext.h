@@ -113,12 +113,9 @@ namespace antlr4 {
 		template<typename T>
 		std::vector<T*> getRuleContexts() {
 			std::vector<T*> contexts;
-			for (auto child : children) {
-				if (antlrcpp::is<T*>(child)) {
-					contexts.push_back(dynamic_cast<T*>(child));
-				}
-			}
-
+			for (auto& child : children)
+				if (antlrcpp::is<T*>(child.get()))
+					contexts.push_back(dynamic_cast<T*>(child.get()));
 			return contexts;
 		}
 

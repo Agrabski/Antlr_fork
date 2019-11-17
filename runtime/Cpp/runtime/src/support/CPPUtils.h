@@ -13,7 +13,7 @@ using gsl::not_null;
 namespace antlrcpp {
 
 	std::string join(std::vector<std::string> strings, const std::string& separator);
-	std::map<std::string, size_t> toMap(const std::vector<std::string>& keys);
+	std::map<std::string, size_t> toMap(const std::vector<std::string_view>& keys);
 	std::string escapeWhitespace(std::string str, bool escapeSpaces);
 	std::string toHexString(const int t);
 	std::string arrayToString(const std::vector<std::string>& data);

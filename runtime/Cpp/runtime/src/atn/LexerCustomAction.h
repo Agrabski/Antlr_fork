@@ -52,7 +52,7 @@ namespace atn {
     /// {@inheritDoc}
     /// </summary>
     /// <returns> This method returns <seealso cref="LexerActionType#CUSTOM"/>. </returns>
-    virtual LexerActionType getActionType() const override;
+    LexerActionType getActionType() const override;
 
     /// <summary>
     /// Gets whether the lexer action is position-dependent. Position-dependent
@@ -64,7 +64,7 @@ namespace atn {
     /// <seealso cref="Lexer#getText"/>.</para>
     /// </summary>
     /// <returns> This method returns {@code true}. </returns>
-    virtual bool isPositionDependent() const override;
+    bool isPositionDependent() const override;
 
     /// <summary>
     /// {@inheritDoc}
@@ -72,11 +72,11 @@ namespace atn {
     /// <para>Custom actions are implemented by calling <seealso cref="Lexer#action"/> with the
     /// appropriate rule and action indexes.</para>
     /// </summary>
-    virtual void execute(Lexer *lexer) override;
+    void execute(Lexer *lexer) override;
 
-    virtual size_t hashCode() const override;
-    virtual bool operator == (const LexerAction &obj) const override;
-    virtual std::string toString() const override;
+    size_t hashCode() const override;
+    bool operator == (const LexerAction &obj) const override;
+    std::string toString() const override;
 
   private:
     const size_t _ruleIndex;

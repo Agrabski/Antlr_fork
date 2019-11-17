@@ -11,42 +11,43 @@
 
 namespace antlr4 {
 
-  class ANTLR4CPP_PUBLIC LexerInterpreter : public Lexer {
-  public:
-    // @deprecated
-    LexerInterpreter(const std::string &grammarFileName, const std::vector<std::string> &tokenNames,
-                     const std::vector<std::string> &ruleNames, const std::vector<std::string> &channelNames,
-                     const std::vector<std::string> &modeNames, const atn::ATN &atn, CharStream *input);
-    LexerInterpreter(const std::string &grammarFileName, const dfa::Vocabulary &vocabulary,
-                     const std::vector<std::string> &ruleNames, const std::vector<std::string> &channelNames,
-                     const std::vector<std::string> &modeNames, const atn::ATN &atn, CharStream *input);
+	class ANTLR4CPP_PUBLIC LexerInterpreter : public Lexer
+	{
+	public:
+		// @deprecated
+		LexerInterpreter(const std::string& grammarFileName, const std::vector<std::string_view>& tokenNames,
+			const std::vector<std::string_view>& ruleNames, const std::vector<std::string_view>& channelNames,
+			const std::vector<std::string_view>& modeNames, const atn::ATN& atn, CharStream* input);
+		LexerInterpreter(const std::string& grammarFileName, const dfa::Vocabulary& vocabulary,
+			const std::vector<std::string_view>& ruleNames, const std::vector<std::string_view>& channelNames,
+			const std::vector<std::string_view>& modeNames, const atn::ATN& atn, CharStream* input);
 
-    ~LexerInterpreter();
+		~LexerInterpreter() noexcept;
 
-    virtual const atn::ATN& getATN() const override;
-    virtual std::string getGrammarFileName() const override;
-    virtual const std::vector<std::string>& getTokenNames() const override;
-    virtual const std::vector<std::string>& getRuleNames() const override;
-    virtual const std::vector<std::string>& getChannelNames() const override;
-    virtual const std::vector<std::string>& getModeNames() const override;
+		const atn::ATN& getATN() const noexcept override;
+		std::string getGrammarFileName() const noexcept override;
+		const std::vector<std::string_view>& getTokenNames() const noexcept override;
+		const std::vector<std::string_view>& getRuleNames() const noexcept override;
+		const std::vector<std::string_view>& getChannelNames() const noexcept override;
+		const std::vector<std::string_view>& getModeNames() const noexcept override;
 
-    virtual const dfa::Vocabulary& getVocabulary() const override;
+		const dfa::Vocabulary& getVocabulary() const noexcept override;
 
-  protected:
-    const std::string _grammarFileName;
-    const atn::ATN &_atn;
+	protected:
+		const std::string _grammarFileName;
+		const atn::ATN& _atn;
 
-    // @deprecated
-    std::vector<std::string> _tokenNames;
-    const std::vector<std::string> &_ruleNames;
-    const std::vector<std::string> &_channelNames;
-    const std::vector<std::string> &_modeNames;
-    std::vector<dfa::DFA> _decisionToDFA;
+		// @deprecated
+		std::vector<std::string_view> _tokenNames;
+		const std::vector<std::string_view>& _ruleNames;
+		const std::vector<std::string_view>& _channelNames;
+		const std::vector<std::string_view>& _modeNames;
+		std::vector<dfa::DFA> _decisionToDFA;
 
-    atn::PredictionContextCache _sharedContextCache;
+		atn::PredictionContextCache _sharedContextCache;
 
-  private:
-    dfa::Vocabulary _vocabulary;
-  };
+	private:
+		dfa::Vocabulary _vocabulary;
+	};
 
 } // namespace antlr4

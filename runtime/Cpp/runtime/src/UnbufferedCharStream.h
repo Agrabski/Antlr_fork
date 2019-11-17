@@ -20,8 +20,8 @@ namespace antlr4 {
 
     UnbufferedCharStream(std::wistream &input);
 
-    virtual void consume() override;
-    virtual size_t LA(ssize_t i) override;
+    void consume() override;
+    size_t LA(ssize_t i) override;
 
     /// <summary>
     /// Return a marker that we can release later.
@@ -30,22 +30,22 @@ namespace antlr4 {
     /// protection against misuse where {@code seek()} is called on a mark or
     /// {@code release()} is called in the wrong order.
     /// </summary>
-    virtual ssize_t mark() override;
+    ssize_t mark() override;
 
     /// <summary>
     /// Decrement number of markers, resetting buffer if we hit 0. </summary>
     /// <param name="marker"> </param>
-    virtual void release(ssize_t marker) override;
-    virtual size_t index() override;
+    void release(ssize_t marker) override;
+    size_t index() override;
 
     /// <summary>
     /// Seek to absolute character index, which might not be in the current
     ///  sliding window.  Move {@code p} to {@code index-bufferStartIndex}.
     /// </summary>
-    virtual void seek(size_t index) override;
-    virtual size_t size() override;
-    virtual std::string getSourceName() const override;
-    virtual std::string getText(const misc::Interval &interval) override;
+    void seek(size_t index) override;
+    size_t size() override;
+    std::string getSourceName() const override;
+    std::string getText(const misc::Interval &interval) override;
 
   protected:
     /// A moving window buffer of the data being scanned. While there's a marker,

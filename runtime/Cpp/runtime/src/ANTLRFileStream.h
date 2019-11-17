@@ -21,7 +21,7 @@ namespace antlr4 {
     ANTLRFileStream(const std::string &fileName);
 
     virtual void loadFromFile(const std::string &fileName);
-    virtual std::string getSourceName() const override;
+    std::string getSourceName() const override;
   };
 
 } // namespace antlr4

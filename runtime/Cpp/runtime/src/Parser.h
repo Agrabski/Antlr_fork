@@ -23,10 +23,10 @@ namespace antlr4 {
 			TraceListener(Parser* outerInstance);
 			virtual ~TraceListener();
 
-			virtual void enterEveryRule(ParserRuleContext* ctx) override;
-			virtual void visitTerminal(tree::TerminalNode* node) override;
-			virtual void visitErrorNode(tree::ErrorNode* node) override;
-			virtual void exitEveryRule(ParserRuleContext* ctx) override;
+			void enterEveryRule(ParserRuleContext* ctx) override;
+			void visitTerminal(tree::TerminalNode* node) override;
+			void visitErrorNode(tree::ErrorNode* node) override;
+			void exitEveryRule(ParserRuleContext* ctx) override;
 
 		private:
 			Parser* const outerInstance;
@@ -38,10 +38,10 @@ namespace antlr4 {
 
 			virtual ~TrimToSizeListener();
 
-			virtual void enterEveryRule(ParserRuleContext* ctx) override;
-			virtual void visitTerminal(tree::TerminalNode* node) override;
-			virtual void visitErrorNode(tree::ErrorNode* node) override;
-			virtual void exitEveryRule(ParserRuleContext* ctx) override;
+			void enterEveryRule(ParserRuleContext* ctx) override;
+			void visitTerminal(tree::TerminalNode* node) override;
+			void visitErrorNode(tree::ErrorNode* node) override;
+			void exitEveryRule(ParserRuleContext* ctx) override;
 		};
 
 		Parser(TokenStream* input);
@@ -193,7 +193,7 @@ namespace antlr4 {
 		/// <seealso cref= #notifyErrorListeners </seealso>
 		virtual size_t getNumberOfSyntaxErrors();
 
-		virtual Ref<TokenFactory<CommonToken>> getTokenFactory() override;
+		Ref<TokenFactory<CommonToken>> getTokenFactory() override;
 
 		/// <summary>
 		/// Tell our token source and error strategy about a new way to create tokens. </summary>
@@ -209,7 +209,7 @@ namespace antlr4 {
 		virtual Ref<ANTLRErrorStrategy> getErrorHandler();
 		virtual void setErrorHandler(Ref<ANTLRErrorStrategy> const& handler);
 
-		virtual IntStream* getInputStream() override;
+		IntStream* getInputStream() override;
 		void setInputStream(IntStream* input) override;
 
 		virtual TokenStream* getTokenStream();
@@ -275,7 +275,7 @@ namespace antlr4 {
 		virtual void pushNewRecursionContext(ParserRuleContext* localctx, std::unique_ptr<ParserRuleContext>&& prevContext, size_t state, size_t ruleIndex);
 		virtual void unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx);
 		virtual ParserRuleContext* getInvokingContext(ParserRuleContext* currentCtx,size_t ruleIndex);
-		virtual bool precpred(RuleContext* localctx, int precedence) override;
+		bool precpred(RuleContext* localctx, int precedence) override;
 		virtual bool inContext(const std::string& context);
 
 		/// <summary>
@@ -318,7 +318,7 @@ namespace antlr4 {
 		/// </summary>
 		virtual std::vector<std::string> getRuleInvocationStack(ParserRuleContext* current);
 
-		virtual std::vector<std::string> getRuleInvocationStack(RuleContext* p);
+		virtual std::vector<std::string_view> getRuleInvocationStack(RuleContext* p);
 
 		/// <summary>
 		/// For debugging and other purposes. </summary>

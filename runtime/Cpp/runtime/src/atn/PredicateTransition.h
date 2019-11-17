@@ -24,14 +24,14 @@ namespace atn {
 
     PredicateTransition(ATNState *target, size_t ruleIndex, size_t predIndex, bool isCtxDependent);
 
-    virtual SerializationType getSerializationType() const override;
+    SerializationType getSerializationType() const override;
 
-    virtual bool isEpsilon() const override;
-    virtual bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
+    bool isEpsilon() const override;
+    bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
 
     Ref<SemanticContext::Predicate> getPredicate() const;
 
-    virtual std::string toString() const override;
+    std::string toString() const override;
 
   };
 

@@ -26,7 +26,7 @@ namespace atn {
     Ref<LexerActionExecutor> getLexerActionExecutor() const;
     bool hasPassedThroughNonGreedyDecision();
 
-    virtual size_t hashCode() const override;
+    size_t hashCode() const override;
 
     bool operator == (const LexerATNConfig& other) const;
 

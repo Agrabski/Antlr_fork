@@ -17,7 +17,7 @@ namespace atn {
     RuleStopState *stopState = nullptr;
     bool isLeftRecursiveRule = false;
 
-    virtual size_t getStateType() override;
+    size_t getStateType() override;
 
   };
 

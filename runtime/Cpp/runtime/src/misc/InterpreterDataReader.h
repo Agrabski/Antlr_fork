@@ -18,7 +18,7 @@ namespace misc {
     std::vector<std::string> modes; // ditto
 
     InterpreterData() {}; // For invalid content.
-    InterpreterData(std::vector<std::string> const& literalNames, std::vector<std::string> const& symbolicNames);
+    InterpreterData(std::vector<std::string_view> const& literalNames, std::vector<std::string_view> const& symbolicNames);
   };
 
   // A class to read plain text interpreter data produced by ANTLR.

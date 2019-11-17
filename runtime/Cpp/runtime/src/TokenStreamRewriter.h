@@ -184,7 +184,7 @@ namespace antlr4 {
     public:
       InsertBeforeOp(TokenStreamRewriter *outerInstance, size_t index, const std::string& text);
 
-      virtual size_t execute(std::string *buf) override;
+      size_t execute(std::string *buf) override;
     };
 
     class ReplaceOp : public RewriteOperation {
@@ -195,8 +195,8 @@ namespace antlr4 {
       size_t lastIndex;
 
       ReplaceOp(TokenStreamRewriter *outerInstance, size_t from, size_t to, const std::string& text);
-      virtual size_t execute(std::string *buf) override;
-      virtual std::string toString() override;
+      size_t execute(std::string *buf) override;
+      std::string toString() override;
 
     private:
       void InitializeInstanceFields();

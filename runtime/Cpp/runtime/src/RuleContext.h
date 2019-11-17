@@ -78,7 +78,7 @@ namespace antlr4 {
 
 		misc::Interval getSourceInterval() const noexcept override;
 
-		virtual std::string getText() override;
+		std::string getText() override;
 
 		virtual size_t getRuleIndex() const;
 
@@ -103,32 +103,32 @@ namespace antlr4 {
 		 */
 		virtual void setAltNumber(size_t altNumber);
 
-		virtual antlrcpp::Any accept(tree::ParseTreeVisitor* visitor) override;
+		antlrcpp::Any accept(tree::ParseTreeVisitor* visitor) override;
 
 		/// <summary>
 		/// Print out a whole tree, not just a node, in LISP format
 		///  (root child1 .. childN). Print just a node if this is a leaf.
 		///  We have to know the recognizer so we can get rule names.
 		/// </summary>
-		virtual std::string toStringTree(Parser* recog) override;
+		std::string toStringTree(Parser* recog) override;
 
 		/// <summary>
 		/// Print out a whole tree, not just a node, in LISP format
 		///  (root child1 .. childN). Print just a node if this is a leaf.
 		/// </summary>
-		virtual std::string toStringTree(std::vector<std::string>& ruleNames);
+		virtual std::string toStringTree(std::vector<std::string_view>& ruleNames);
 
-		virtual std::string toStringTree() override;
-		virtual std::string toString() override;
+		std::string toStringTree() override;
+		std::string toString() override;
 		std::string toString(Recognizer* recog);
-		std::string toString(const std::vector<std::string>& ruleNames);
+		std::string toString(const std::vector<std::string_view>& ruleNames);
 
 		// recog null unless ParserRuleContext, in which case we use subclass toString(...)
 		std::string toString(Recognizer* recog, RuleContext* stop);
 
-		virtual std::string toString(const std::vector<std::string>& ruleNames, RuleContext* stop);
+		virtual std::string toString(const std::vector<std::string_view>& ruleNames, RuleContext* stop);
 
-		bool operator == (const RuleContext& other) { return this == &other; } // Simple address comparison.
+		bool operator == (const RuleContext& other) const noexcept { return this == &other; } // Simple address comparison.
 
 	private:
 		void InitializeInstanceFields();

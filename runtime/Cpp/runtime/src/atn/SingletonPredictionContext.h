@@ -25,11 +25,11 @@ namespace atn {
 
     static Ref<SingletonPredictionContext> create(Ref<PredictionContext> const& parent, size_t returnState);
 
-    virtual size_t size() const override;
-    virtual Ref<PredictionContext> getParent(size_t index) const override;
-    virtual size_t getReturnState(size_t index) const override;
-    virtual bool operator == (const PredictionContext &o) const override;
-    virtual std::string toString() const override;
+    size_t size() const override;
+    Ref<PredictionContext> getParent(size_t index) const override;
+    size_t getReturnState(size_t index) const override;
+    bool operator == (const PredictionContext &o) const override;
+    std::string toString() const override;
   };
 
 } // namespace atn

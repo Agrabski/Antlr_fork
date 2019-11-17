@@ -1,30 +1,30 @@
 /*
  * [The "BSD license"]
- *  Copyright (c) 2016, Mike Lischke
- *  All rights reserved.
+ *	Copyright (c) 2016, Mike Lischke
+ *	All rights reserved.
  *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
+ *	Redistribution and use in source and binary forms, with or without
+ *	modification, are permitted provided that the following conditions
+ *	are met:
  *
- *  1. Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *  3. The name of the author may not be used to endorse or promote products
- *     derived from this software without specific prior written permission.
+ *	1. Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
+ *	2. Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in the
+ *		 documentation and/or other materials provided with the distribution.
+ *	3. The name of the author may not be used to endorse or promote products
+ *		 derived from this software without specific prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *	THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *	IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *	IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *	NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 codeFileExtension() ::= ".cpp"
@@ -52,7 +52,7 @@ LexerFileHeader(file, lexer, namedActions) ::= <<
 <lexer>
 
 <if (file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 
@@ -89,7 +89,7 @@ ParserFileHeader(file, parser, namedActions, contextSuperClass) ::= <<
 <parser>
 
 <if (file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 
@@ -137,23 +137,23 @@ public:
 <namedActions.baselistenerdeclarations>
 
 <file.listenerNames: {lname |
-  void enter<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
-  void exit<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
+	void enter<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
+	void exit<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
 }; separator="\n">
 
-  void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
-  void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
-  void visitTerminal(antlr4::tree::TerminalNode * /*node*/) override { }
-  void visitErrorNode(antlr4::tree::ErrorNode * /*node*/) override { }
-  
+	void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
+	void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
+	void visitTerminal(antlr4::tree::TerminalNode * /*node*/) override { }
+	void visitErrorNode(antlr4::tree::ErrorNode * /*node*/) override { }
+	
 <if (namedActions.baselistenermembers)>
-private:  
+private:	
 <namedActions.baselistenermembers>
 <endif>
 };
 
 <if (file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 
@@ -197,18 +197,18 @@ public:
 <namedActions.listenerdeclarations>
 
 <file.listenerNames: {lname |
-  virtual void enter<lname; format = "cap">(<file.parserName>::<lname; format ="cap">Context *ctx) = 0;
-  virtual void exit<lname; format = "cap">(<file.parserName>::<lname; format="cap">Context *ctx) = 0;
+	virtual void enter<lname; format = "cap">(<file.parserName>::<lname; format ="cap">Context *ctx) = 0;
+	virtual void exit<lname; format = "cap">(<file.parserName>::<lname; format="cap">Context *ctx) = 0;
 }; separator = "\n">
 
 <if (namedActions.listenermembers)>
-private:  
+private:	
 <namedActions.listenermembers>
 <endif>
 };
 
 <if(file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 
@@ -253,19 +253,19 @@ public:
 <namedActions.basevisitordeclarations>
 
 <file.visitorNames: { lname |
-  antlrcpp::Any visit<lname; format = "cap">(<file.parserName>::<lname; format = "cap">Context *ctx) override {
-    return visitChildren(ctx);
-  \}
+	antlrcpp::Any visit<lname; format = "cap">(<file.parserName>::<lname; format = "cap">Context *ctx) override {
+		return visitChildren(ctx);
+	\}
 }; separator="\n">
 
 <if (namedActions.basevisitormembers)>
-private:  
+private:	
 <namedActions.basevisitormembers>
 <endif>
 };
 
 <if(file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 
@@ -306,23 +306,23 @@ VisitorFileHeader(file, header, namedActions) ::= <<
  */
 class <file.exportMacro> <file.grammarName>Visitor : public antlr4::tree::AbstractParseTreeVisitor {
 public:
-  <namedActions.visitordeclarations>
-  
-  /**
-   * Visit parse trees produced by <file.parserName>.
-   */
-  <file.visitorNames: {lname |
-  virtual antlrcpp::Any visit<lname; format = "cap">(<file.parserName>::<lname; format = "cap">Context *context) = 0;
-  }; separator="\n">
+	<namedActions.visitordeclarations>
+	
+	/**
+	 * Visit parse trees produced by <file.parserName>.
+	 */
+	<file.visitorNames: {lname |
+	virtual antlrcpp::Any visit<lname; format = "cap">(<file.parserName>::<lname; format = "cap">Context *context) = 0;
+	}; separator="\n">
 
 <if (namedActions.visitormembers)>
-private:  
+private:	
 <namedActions.visitormembers>
 <endif>
 };
 
 <if(file.genPackage)>
-}  // namespace <file.genPackage>
+}	// namespace <file.genPackage>
 <endif>
 >>
 

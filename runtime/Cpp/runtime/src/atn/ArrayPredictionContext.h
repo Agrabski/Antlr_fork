@@ -29,13 +29,13 @@ namespace atn {
     ArrayPredictionContext(std::vector<Ref<PredictionContext>> const& parents_, std::vector<size_t> const& returnStates);
     virtual ~ArrayPredictionContext();
 
-    virtual bool isEmpty() const override;
-    virtual size_t size() const override;
-    virtual Ref<PredictionContext> getParent(size_t index) const override;
-    virtual size_t getReturnState(size_t index) const override;
+    bool isEmpty() const override;
+    size_t size() const override;
+    Ref<PredictionContext> getParent(size_t index) const override;
+    size_t getReturnState(size_t index) const override;
     bool operator == (const PredictionContext &o) const override;
 
-    virtual std::string toString() const override;
+    std::string toString() const override;
   };
 
 } // namespace atn

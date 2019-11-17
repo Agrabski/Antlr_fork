@@ -14,13 +14,13 @@ namespace atn {
   public:
     EmptyPredictionContext();
 
-    virtual bool isEmpty() const override;
-    virtual size_t size() const override;
-    virtual Ref<PredictionContext> getParent(size_t index) const override;
-    virtual size_t getReturnState(size_t index) const override;
-    virtual std::string toString() const override;
+    bool isEmpty() const override;
+    size_t size() const override;
+    Ref<PredictionContext> getParent(size_t index) const override;
+    size_t getReturnState(size_t index) const override;
+    std::string toString() const override;
 
-    virtual bool operator == (const PredictionContext &o) const override;
+    bool operator == (const PredictionContext &o) const override;
   };
 
 } // namespace atn

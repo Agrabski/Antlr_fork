@@ -8,25 +8,26 @@
 #include "Vocabulary.h"
 
 namespace antlr4 {
-namespace dfa {
+	namespace dfa {
 
-  /// A DFA walker that knows how to dump them to serialized strings.
-  class ANTLR4CPP_PUBLIC DFASerializer {
-  public:
-    DFASerializer(const DFA *dfa, const std::vector<std::string>& tnames);
-    DFASerializer(const DFA *dfa, const Vocabulary &vocabulary);
-    virtual ~DFASerializer();
+		/// A DFA walker that knows how to dump them to serialized strings.
+		class ANTLR4CPP_PUBLIC DFASerializer
+		{
+		public:
+			DFASerializer(const DFA* dfa, const std::vector<std::string_view>& tnames);
+			DFASerializer(const DFA* dfa, const Vocabulary& vocabulary);
+			virtual ~DFASerializer() = default;
 
-    virtual std::string toString() const;
+			virtual std::string toString() const;
 
-  protected:
-    virtual std::string getEdgeLabel(size_t i) const;
-    virtual std::string getStateString(DFAState *s) const;
+		protected:
+			virtual std::string getEdgeLabel(size_t i) const;
+			virtual std::string_view getStateString(DFAState* s) const;
 
-  private:
-    const DFA *_dfa;
-    const Vocabulary &_vocabulary;
-  };
+		private:
+			const DFA* _dfa;
+			const Vocabulary& _vocabulary;
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

@@ -30,23 +30,23 @@ namespace atn {
     /// <summary>
     /// {@inheritDoc} </summary>
     /// <returns> This method returns <seealso cref="LexerActionType#POP_MODE"/>. </returns>
-    virtual LexerActionType getActionType() const override;
+    LexerActionType getActionType() const override;
 
     /// <summary>
     /// {@inheritDoc} </summary>
     /// <returns> This method returns {@code false}. </returns>
-    virtual bool isPositionDependent() const override;
+    bool isPositionDependent() const override;
 
     /// <summary>
     /// {@inheritDoc}
     ///
     /// <para>This action is implemented by calling <seealso cref="Lexer#popMode"/>.</para>
     /// </summary>
-    virtual void execute(Lexer *lexer) override;
+    void execute(Lexer *lexer) override;
 
-    virtual size_t hashCode() const override;
-    virtual bool operator == (const LexerAction &obj) const override;
-    virtual std::string toString() const override;
+    size_t hashCode() const override;
+    bool operator == (const LexerAction &obj) const override;
+    std::string toString() const override;
 
   private:
     /// Constructs the singleton instance of the lexer {@code popMode} command.

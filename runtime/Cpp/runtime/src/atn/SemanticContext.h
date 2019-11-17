@@ -112,10 +112,10 @@ namespace atn {
   public:
     Predicate(size_t ruleIndex, size_t predIndex, bool isCtxDependent);
 
-    virtual bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual size_t hashCode() const override;
-    virtual bool operator == (const SemanticContext &other) const override;
-    virtual std::string toString() const override;
+    bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
+    size_t hashCode() const override;
+    bool operator == (const SemanticContext &other) const override;
+    std::string toString() const override;
   };
 
   class ANTLR4CPP_PUBLIC SemanticContext::PrecedencePredicate : public SemanticContext {
@@ -128,12 +128,12 @@ namespace atn {
   public:
     PrecedencePredicate(int precedence);
 
-    virtual bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
+    bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
+    Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
     virtual int compareTo(PrecedencePredicate *o);
-    virtual size_t hashCode() const override;
-    virtual bool operator == (const SemanticContext &other) const override;
-    virtual std::string toString() const override;
+    size_t hashCode() const override;
+    bool operator == (const SemanticContext &other) const override;
+    std::string toString() const override;
   };
 
   /**
@@ -144,7 +144,7 @@ namespace atn {
    */
   class ANTLR4CPP_PUBLIC SemanticContext::Operator : public SemanticContext {
   public:
-    virtual ~Operator() override;
+    ~Operator() override;
 
     /**
      * Gets the operands for the semantic context operator.
@@ -168,17 +168,17 @@ namespace atn {
 
     AND(Ref<SemanticContext> const& a, Ref<SemanticContext> const& b) ;
 
-    virtual std::vector<Ref<SemanticContext>> getOperands() const override;
-    virtual bool operator == (const SemanticContext &other) const override;
-    virtual size_t hashCode() const override;
+    std::vector<Ref<SemanticContext>> getOperands() const override;
+    bool operator == (const SemanticContext &other) const override;
+    size_t hashCode() const override;
 
     /**
      * The evaluation of predicates by this context is short-circuiting, but
      * unordered.</p>
      */
-    virtual bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual std::string toString() const override;
+    bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
+    Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
+    std::string toString() const override;
   };
 
   /**
@@ -191,17 +191,17 @@ namespace atn {
 
     OR(Ref<SemanticContext> const& a, Ref<SemanticContext> const& b);
 
-    virtual std::vector<Ref<SemanticContext>> getOperands() const override;
-    virtual bool operator == (const SemanticContext &other) const override;
-    virtual size_t hashCode() const override;
+    std::vector<Ref<SemanticContext>> getOperands() const override;
+    bool operator == (const SemanticContext &other) const override;
+    size_t hashCode() const override;
 
     /**
      * The evaluation of predicates by this context is short-circuiting, but
      * unordered.
      */
-    virtual bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
-    virtual std::string toString() const override;
+    bool eval(Recognizer *parser, RuleContext *parserCallStack) override;
+    Ref<SemanticContext> evalPrecedence(Recognizer *parser, RuleContext *parserCallStack) override;
+    std::string toString() const override;
   };
 
 } // namespace atn

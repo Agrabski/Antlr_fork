@@ -90,9 +90,9 @@ namespace atn {
 
     virtual void copyState(LexerATNSimulator *simulator);
     virtual size_t match(CharStream *input, size_t mode);
-    virtual void reset() override;
+    void reset() override;
 
-    virtual void clearDFA() override;
+    void clearDFA() override;
 
   protected:
     virtual size_t matchATN(CharStream *input);

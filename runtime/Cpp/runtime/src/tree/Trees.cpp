@@ -33,11 +33,11 @@ std::string Trees::toStringTree(ParseTree* t)
 std::string Trees::toStringTree(ParseTree* t, Parser* recog)
 {
 	if (recog == nullptr)
-		return toStringTree(t, std::vector<std::string>());
+		return toStringTree(t, std::vector<std::string_view>());
 	return toStringTree(t, recog->getRuleNames());
 }
 
-std::string Trees::toStringTree(ParseTree* t, const std::vector<std::string>& ruleNames)
+std::string Trees::toStringTree(ParseTree* t, const std::vector<std::string_view>& ruleNames)
 {
 	std::string temp = antlrcpp::escapeWhitespace(Trees::getNodeText(t, ruleNames), false);
 	if (t->children.empty()) {
@@ -90,17 +90,17 @@ std::string Trees::getNodeText(ParseTree* t, Parser* recog)
 	return getNodeText(t, recog->getRuleNames());
 }
 
-std::string Trees::getNodeText(ParseTree* t, const std::vector<std::string>& ruleNames)
+std::string Trees::getNodeText(ParseTree* t, const std::vector<std::string_view>& ruleNames)
 {
 	if (ruleNames.size() > 0) {
 		if (is<RuleContext*>(t)) {
 			size_t ruleIndex = dynamic_cast<RuleContext*>(t)->getRuleIndex();
-			std::string ruleName = ruleNames[ruleIndex];
+			auto ruleName = ruleNames[ruleIndex];
 			size_t altNumber = dynamic_cast<RuleContext*>(t)->getAltNumber();
 			if (altNumber != atn::ATN::INVALID_ALT_NUMBER) {
-				return ruleName + ":" + std::to_string(altNumber);
+				return std::string(ruleName) + ":" + std::to_string(altNumber);
 			}
-			return ruleName;
+			return std::string(ruleName);
 		}
 		else if (is<ErrorNode*>(t)) {
 			return t->toString();

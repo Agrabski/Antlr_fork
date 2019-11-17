@@ -24,27 +24,30 @@ using namespace antlr4::atn;
 
 using namespace antlrcpp;
 
-DefaultErrorStrategy::DefaultErrorStrategy() {
+DefaultErrorStrategy::DefaultErrorStrategy() noexcept
+{
 	InitializeInstanceFields();
 }
 
-DefaultErrorStrategy::~DefaultErrorStrategy() {
-}
 
-void DefaultErrorStrategy::reset(Parser* recognizer) {
+void DefaultErrorStrategy::reset(Parser* recognizer)
+{
 	_errorSymbols.clear();
 	endErrorCondition(recognizer);
 }
 
-void DefaultErrorStrategy::beginErrorCondition(Parser* /*recognizer*/) {
+void DefaultErrorStrategy::beginErrorCondition(Parser* /*recognizer*/)
+{
 	errorRecoveryMode = true;
 }
 
-bool DefaultErrorStrategy::inErrorRecoveryMode(Parser* /*recognizer*/) {
+bool DefaultErrorStrategy::inErrorRecoveryMode(Parser* /*recognizer*/)
+{
 	return errorRecoveryMode;
 }
 
-void DefaultErrorStrategy::endErrorCondition(Parser* /*recognizer*/) {
+void DefaultErrorStrategy::endErrorCondition(Parser* /*recognizer*/)
+{
 	errorRecoveryMode = false;
 	lastErrorIndex = -1;
 }
@@ -160,9 +163,11 @@ void DefaultErrorStrategy::reportInputMismatch(Parser* recognizer, const InputMi
 	recognizer->notifyErrorListeners(e.getOffendingToken(), msg, std::make_exception_ptr(e));
 }
 
-void DefaultErrorStrategy::reportFailedPredicate(Parser* recognizer, const FailedPredicateException& e, ParserRuleContext* currentContext) {
-	const std::string& ruleName = recognizer->getRuleNames()[currentContext->getRuleIndex()];
-	std::string msg = "rule " + ruleName + " " + e.what();
+void DefaultErrorStrategy::reportFailedPredicate(Parser* recognizer, const FailedPredicateException& e, ParserRuleContext* currentContext)
+{
+	using namespace std::string_literals;
+	const auto ruleName = recognizer->getRuleNames()[currentContext->getRuleIndex()];
+	std::string msg = "rule "s + std::string(ruleName) + " " + e.what();
 	recognizer->notifyErrorListeners(e.getOffendingToken(), msg, std::make_exception_ptr(e));
 }
 
@@ -253,12 +258,10 @@ Token* DefaultErrorStrategy::getMissingSymbol(Parser* recognizer, ParserRuleCont
 	misc::IntervalSet expecting = getExpectedTokens(recognizer, currentContext);
 	size_t expectedTokenType = expecting.getMinElement(); // get any element
 	std::string tokenText;
-	if (expectedTokenType == Token::EOF) {
+	if (expectedTokenType == Token::EOF)
 		tokenText = "<missing EOF>";
-	}
-	else {
-		tokenText = "<missing " + recognizer->getVocabulary().getDisplayName(expectedTokenType) + ">";
-	}
+	else
+		tokenText = "<missing " + std::string( recognizer->getVocabulary().getDisplayName(expectedTokenType)) + ">";
 	Token* current = currentSymbol;
 	Token* lookback = recognizer->getTokenStream()->LT(-1);
 	if (current->getType() == Token::EOF && lookback != nullptr) {
@@ -338,7 +341,8 @@ void DefaultErrorStrategy::consumeUntil(Parser* recognizer, const misc::Interval
 	}
 }
 
-void DefaultErrorStrategy::InitializeInstanceFields() {
+void DefaultErrorStrategy::InitializeInstanceFields() noexcept
+{
 	errorRecoveryMode = false;
 	lastErrorIndex = -1;
 }

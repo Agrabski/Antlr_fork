@@ -878,9 +878,6 @@
     <ClCompile Include="src\tree\IterativeParseTreeWalker.cpp">
       <Filter>Source Files\tree</Filter>
     </ClCompile>
-    <ClCompile Include="src\misc\InterpreterDataReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ANTLRErrorListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

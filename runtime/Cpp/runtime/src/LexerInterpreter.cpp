@@ -14,14 +14,14 @@
 
 using namespace antlr4;
 
-LexerInterpreter::LexerInterpreter(const std::string &grammarFileName, const std::vector<std::string> &tokenNames,
-  const std::vector<std::string> &ruleNames, const std::vector<std::string> &channelNames, const std::vector<std::string> &modeNames,
+LexerInterpreter::LexerInterpreter(const std::string &grammarFileName, const std::vector<std::string_view> &tokenNames,
+  const std::vector<std::string_view> &ruleNames, const std::vector<std::string_view> &channelNames, const std::vector<std::string_view> &modeNames,
   const atn::ATN &atn, CharStream *input)
   : LexerInterpreter(grammarFileName, dfa::Vocabulary::fromTokenNames(tokenNames), ruleNames, channelNames, modeNames, atn, input) {
 }
 
 LexerInterpreter::LexerInterpreter(const std::string &grammarFileName, const dfa::Vocabulary &vocabulary,
-  const std::vector<std::string> &ruleNames, const std::vector<std::string> &channelNames, const std::vector<std::string> &modeNames,
+  const std::vector<std::string_view> &ruleNames, const std::vector<std::string_view> &channelNames, const std::vector<std::string_view> &modeNames,
   const atn::ATN &atn, CharStream *input)
   : Lexer(input), _grammarFileName(grammarFileName), _atn(atn), _ruleNames(ruleNames),
                   _channelNames(channelNames), _modeNames(modeNames),
@@ -41,35 +41,42 @@ LexerInterpreter::LexerInterpreter(const std::string &grammarFileName, const dfa
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache); /* mem-check: deleted in d-tor */
 }
 
-LexerInterpreter::~LexerInterpreter()
+LexerInterpreter::~LexerInterpreter() noexcept
 {
   delete _interpreter;
 }
 
-const atn::ATN& LexerInterpreter::getATN() const {
+const atn::ATN& LexerInterpreter::getATN() const noexcept
+{
   return _atn;
 }
 
-std::string LexerInterpreter::getGrammarFileName() const {
+std::string LexerInterpreter::getGrammarFileName() const noexcept
+{
   return _grammarFileName;
 }
 
-const std::vector<std::string>& LexerInterpreter::getTokenNames() const {
+const std::vector<std::string_view>& LexerInterpreter::getTokenNames() const noexcept
+{
   return _tokenNames;
 }
 
-const std::vector<std::string>& LexerInterpreter::getRuleNames() const {
+const std::vector<std::string_view>& LexerInterpreter::getRuleNames() const noexcept
+{
   return _ruleNames;
 }
 
-const std::vector<std::string>& LexerInterpreter::getChannelNames() const {
+const std::vector<std::string_view>& LexerInterpreter::getChannelNames() const noexcept
+{
   return _channelNames;
 }
 
-const std::vector<std::string>& LexerInterpreter::getModeNames() const {
+const std::vector<std::string_view>& LexerInterpreter::getModeNames() const noexcept
+{
   return _modeNames;
 }
 
-const dfa::Vocabulary& LexerInterpreter::getVocabulary() const {
+const dfa::Vocabulary& LexerInterpreter::getVocabulary() const noexcept
+{
   return _vocabulary;
 }

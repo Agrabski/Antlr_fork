@@ -17,7 +17,7 @@ namespace atn {
 
     BlockEndState();
 
-    virtual size_t getStateType() override;
+    size_t getStateType() override;
   };
 
 } // namespace atn

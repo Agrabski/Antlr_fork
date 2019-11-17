@@ -60,17 +60,17 @@ namespace atn {
     /// </summary>
     /// <returns> This method returns the result of calling <seealso cref="#getActionType"/>
     /// on the <seealso cref="LexerAction"/> returned by <seealso cref="#getAction"/>. </returns>
-    virtual LexerActionType getActionType() const override;
+    LexerActionType getActionType() const override;
 
     /// <summary>
     /// {@inheritDoc} </summary>
     /// <returns> This method returns {@code true}. </returns>
-    virtual bool isPositionDependent() const override;
+    bool isPositionDependent() const override;
 
-    virtual void execute(Lexer *lexer) override;
-    virtual size_t hashCode() const override;
-    virtual bool operator == (const LexerAction &obj) const override;
-    virtual std::string toString() const override;
+    void execute(Lexer *lexer) override;
+    size_t hashCode() const override;
+    bool operator == (const LexerAction &obj) const override;
+    std::string toString() const override;
 
   private:
     const int _offset;
