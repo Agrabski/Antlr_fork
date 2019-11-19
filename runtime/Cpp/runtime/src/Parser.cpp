@@ -308,7 +308,11 @@ void Parser::addContextToParseTree(std::unique_ptr<ParserRuleContext>&& currentC
 {
 	// Add current context to parent if we have a parent.
 	if (currentContext->parent == nullptr)
+	{
+		assert(_root == nullptr);
+		_root = std::move(currentContext);
 		return;
+	}
 
 	ParserRuleContext* parent = dynamic_cast<ParserRuleContext*>(currentContext->parent);
 	parent->addChild(std::move(currentContext));

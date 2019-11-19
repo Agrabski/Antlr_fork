@@ -67,6 +67,10 @@ namespace antlr4 {
 
 		ParserRuleContext();
 		ParserRuleContext(ParserRuleContext* parent, size_t invokingStateNumber);
+		~ParserRuleContext()
+		{
+			int n = 0;
+		}
 
 		/** COPY a ctx (I'm deliberately not using copy constructor) to avoid
 		 *  confusion with creating node with parent. Does not copy children

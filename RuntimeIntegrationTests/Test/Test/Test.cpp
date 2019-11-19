@@ -22,7 +22,7 @@ public:
 
 int main()
 {
-	std::string s = "int main() {return 0;}";
+	std::string s = "int main(){return 0;}";
 	std::stringstream stream(s);
 	AntlrHelper helper(stream);
 	std::cout << helper.getParser()->translationunit()->getText();

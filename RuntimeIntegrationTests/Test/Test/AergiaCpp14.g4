@@ -29,62 +29,7 @@ translationunit
    : declarationseq? EOF
    ;
 /*Expressions*/
-aergiaexpressionbegin : '$' ;
-aergiaexpressionend : '$$';
-aergiaBlock : '${'statementseq'$}';
 
-aergiaexpression
-   : aergiaexpressionbegin callchain aergiaexpressionend
-   | aergiaexpressionbegin anonymousExpression aergiaexpressionend
-   ;
-
-aergiaExpression_type_target
-    : aergiaexpression;
-
-aergiaExpression_value_target
-    : aergiaexpression;
-
-aergiaExpression_identifier_target
-    : aergiaexpression;
-
-aergiaexpression_any_target
-    : aergiaexpression;
-
-fragment Encodingprefix
-   : 'u8'
-   | 'u'
-   | 'U'
-   | 'L'
-   ;
-
-aergiaString :
-    Encodingprefix? '@'aergiaexpression_any_target'@';
-
-anonymousExpression
-   : 'anonymous' '('anoynmousBody')';
-
-anoynmousBody
-   : initializerclause;
-
-foreach
-   :'$foreach('foreachheader')' foreachbody
-   ;
-
-foreachheader
-   : aergiaexpressionbegin Identifier 'in' aergiaexpressionbegin callchain
-   ;
-
-foreachbody
-   : statement
-   | aergiaBlock
-   ;
-
-callchain
-   : Identifier'.'callchain
-   | Identifier'('Identifier').'callchain
-   | Identifier'('Identifier')' 
-   | Identifier
-   ;
 
 primaryexpression
    : literal
@@ -97,7 +42,6 @@ primaryexpression
 idexpression
    : unqualifiedid
    | qualifiedid
-   | aergiaExpression_identifier_target
    ;
 
 unqualifiedid
@@ -394,8 +338,6 @@ statement
    | attributespecifierseq? iterationstatement
    | attributespecifierseq? jumpstatement
    | declarationstatement
-   | aergiaexpression
-   | foreach
    | attributespecifierseq? tryblock
    ;
 
@@ -480,7 +422,6 @@ declaration
    | namespacedefinition
    | emptydeclaration
    | attributedeclaration
-   | preprocessorDirective
    ;
 
 blockdeclaration
@@ -551,7 +492,6 @@ typespecifier
    : trailingtypespecifier
    | classspecifier
    | enumspecifier
-   | aergiaExpression_type_target
    ;
 
 trailingtypespecifier
@@ -668,12 +608,16 @@ namespacedefinition
 
 namednamespacedefinition
    : originalnamespacedefinition
+   | extensionnamespacedefinition
    ;
 
 originalnamespacedefinition
    : Inline? Namespace Identifier '{' namespacebody '}'
    ;
 
+extensionnamespacedefinition
+   : Inline? Namespace originalnamespacename '{' namespacebody '}'
+   ;
 
 unnamednamespacedefinition
    : Inline? Namespace '{' namespacebody '}'
@@ -903,7 +847,6 @@ braceorequalinitializer
 initializerclause
    : assignmentexpression
    | bracedinitlist
-   | aergiaExpression_value_target
    ;
 
 initializerlist
@@ -952,9 +895,8 @@ memberspecification
    ;
 
 memberdeclaration
-   : functiondefinition
-   | memberFunctionDeclaration
-   | attributespecifierseq? declspecifierseq? memberdeclaratorlist? ';'
+   : attributespecifierseq? declspecifierseq? memberdeclaratorlist? ';'
+   | functiondefinition
    | usingdeclaration
    | static_assertdeclaration
    | templatedeclaration
@@ -973,10 +915,6 @@ memberdeclarator
    | Identifier? attributespecifierseq? ':' constantexpression
    ;
 
-memberFunctionDeclaration
-    : declspecifierseq unqualifiedid parametersandqualifiers virtspecifierseq? purespecifier? ';'
-    ;
-
 virtspecifierseq
    : virtspecifier
    | virtspecifierseq virtspecifier
@@ -986,10 +924,16 @@ virtspecifier
    : Override
    | Final
    ;
-
+/*
 purespecifier:
    '=' '0'//Conflicts with the lexer
  ;
+ */
+
+
+purespecifier
+   : Assign val = Octalliteral
+   ;
 /*Derived classes*/
 
 
@@ -1176,20 +1120,15 @@ noexceptspecification
    : Noexcept '(' constantexpression ')'
    | Noexcept
    ;
-   
-preprocessorDirective
-   : MultiLineMacro
-   | Directive
-   ;
 /*Preprocessing directives*/
 
 
 MultiLineMacro
-   : '#' (~ [\n]*? '\\' '\r'? '\n')+ ~ [\n]+
+   : '#' (~ [\n]*? '\\' '\r'? '\n')+ ~ [\n]+ -> channel (HIDDEN)
    ;
 
 Directive
-   : '#' ~ [\n]*
+   : '#' ~ [\n]* -> channel (HIDDEN)
    ;
 /*Lexer*/
 
@@ -1789,7 +1728,6 @@ literal
    | booleanliteral
    | pointerliteral
    | userdefinedliteral
-   | aergiaString
    ;
 
 Integerliteral
@@ -1863,13 +1801,11 @@ fragment Cchar
    | Escapesequence
    | Universalcharactername
    ;
-
 fragment Escapesequence
    : Simpleescapesequence
    | Octalescapesequence
    | Hexadecimalescapesequence
    ;
-
 fragment Simpleescapesequence
    : '\\\''
    | '\\"'
@@ -1926,68 +1862,62 @@ Stringliteral
    | Encodingprefix? 'R' Rawstring
    ;
 
+fragment Encodingprefix
+   : 'u8'
+   | 'u'
+   | 'U'
+   | 'L'
+   ;
+
 fragment Schar
    : ~ ["\\\r\n]
    | Escapesequence
    | Universalcharactername
    ;
-
 fragment Rawstring
    : '"' .*? '(' .*? ')' .*? '"'
    ;
-
 booleanliteral
    : False
    | True
    ;
-
 pointerliteral
    : Nullptr
    ;
-
 userdefinedliteral
    : Userdefinedintegerliteral
    | Userdefinedfloatingliteral
    | Userdefinedstringliteral
    | Userdefinedcharacterliteral
    ;
-
 Userdefinedintegerliteral
    : Decimalliteral Udsuffix
    | Octalliteral Udsuffix
    | Hexadecimalliteral Udsuffix
    | Binaryliteral Udsuffix
    ;
-
 Userdefinedfloatingliteral
    : Fractionalconstant Exponentpart? Udsuffix
    | Digitsequence Exponentpart Udsuffix
    ;
-
 Userdefinedstringliteral
    : Stringliteral Udsuffix
    ;
-
 Userdefinedcharacterliteral
    : Characterliteral Udsuffix
    ;
-
 fragment Udsuffix
    : Identifier
    ;
-
 Whitespace
    : [ \t]+ -> skip
    ;
-
 Newline
    : ('\r' '\n'? | '\n') -> skip
    ;
-
 BlockComment
    : '/*' .*? '*/' -> skip
    ;
-
 LineComment
    : '//' ~ [\r\n]* -> skip
    ;

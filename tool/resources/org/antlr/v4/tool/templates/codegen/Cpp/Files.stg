@@ -40,6 +40,7 @@ LexerFileHeader(file, lexer, namedActions) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion, namedActions.header)>
 
 #pragma once
+#include \<iostream>
 
 <namedActions.preinclude>
 

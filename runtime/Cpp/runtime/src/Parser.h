@@ -11,6 +11,7 @@
 #include "TokenStream.h"
 #include "TokenSource.h"
 #include "misc/Interval.h"
+#include "ParserRuleContext.h"
 
 namespace antlr4 {
 
@@ -413,6 +414,8 @@ namespace antlr4 {
 
 		/** Indicates parser has match()ed EOF token. See {@link #exitRule()}. */
 		bool _matchedEOF;
+
+		std::unique_ptr<ParserRuleContext>_root;
 
 		virtual void addContextToParseTree(std::unique_ptr<ParserRuleContext>&& currentContext);
 
