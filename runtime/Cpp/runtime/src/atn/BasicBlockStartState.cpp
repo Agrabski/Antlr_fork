@@ -8,5 +8,5 @@
 using namespace antlr4::atn;
 
 size_t BasicBlockStartState::getStateType() {
-  return BLOCK_START;
+	return BLOCK_START;
 }

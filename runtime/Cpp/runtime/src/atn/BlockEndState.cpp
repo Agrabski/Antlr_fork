@@ -11,5 +11,5 @@ BlockEndState::BlockEndState() : startState(nullptr) {
 }
 
 size_t BlockEndState::getStateType() {
-  return BLOCK_END;
+	return BLOCK_END;
 }

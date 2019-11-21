@@ -159,9 +159,6 @@
     <ClInclude Include="src\UnbufferedTokenStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WritableToken.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\atn\DecisionState.h">
       <Filter>Header Files\atn</Filter>
     </ClInclude>
@@ -897,9 +894,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TokenSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WritableToken.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\support\Any.cpp">

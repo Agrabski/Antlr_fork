@@ -8,17 +8,17 @@
 #include "atn/Transition.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  class ANTState;
+		class ANTState;
 
-  class ANTLR4CPP_PUBLIC AbstractPredicateTransition : public Transition {
+		class ANTLR4CPP_PUBLIC AbstractPredicateTransition : public Transition {
 
-  public:
-    AbstractPredicateTransition(ATNState *target);
-    ~AbstractPredicateTransition();
+		public:
+			AbstractPredicateTransition(ATNState* target);
+			~AbstractPredicateTransition();
 
-  };
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

@@ -12,17 +12,17 @@ using namespace antlr4::dfa;
 const Vocabulary Vocabulary::EMPTY_VOCABULARY;
 
 Vocabulary::Vocabulary(const std::vector<std::string_view>& literalNames, const std::vector<std::string_view>& symbolicNames)
-	: Vocabulary(literalNames, symbolicNames, {}) {
+	: Vocabulary(literalNames, symbolicNames,
+		{})
+{
 }
 
 Vocabulary::Vocabulary(const std::vector<std::string_view>& literalNames,
 	const std::vector<std::string_view>& symbolicNames, const std::vector<std::string_view>& displayNames)
 	: _literalNames(literalNames), _symbolicNames(symbolicNames), _displayNames(displayNames),
-	_maxTokenType(std::max(_displayNames.size(), std::max(_literalNames.size(), _symbolicNames.size())) - 1) {
+	_maxTokenType(std::max(_displayNames.size(), std::max(_literalNames.size(), _symbolicNames.size())) - 1)
+{
 	// See note here on -1 part: https://github.com/antlr/antlr4/pull/1146
-}
-
-Vocabulary::~Vocabulary() {
 }
 
 Vocabulary Vocabulary::fromTokenNames(const std::vector<std::string_view>& tokenNames)
@@ -33,19 +33,24 @@ Vocabulary Vocabulary::fromTokenNames(const std::vector<std::string_view>& token
 	auto literalNames = tokenNames;
 	auto symbolicNames = tokenNames;
 	std::locale locale;
-	for (size_t i = 0; i < tokenNames.size(); i++) {
+	for (size_t i = 0; i < tokenNames.size(); i++)
+	{
 		auto tokenName = tokenNames[i];
-		if (tokenName == "") {
+		if (tokenName == "")
+		{
 			continue;
 		}
 
-		if (!tokenName.empty()) {
+		if (!tokenName.empty())
+		{
 			char firstChar = tokenName[0];
-			if (firstChar == '\'') {
+			if (firstChar == '\'')
+			{
 				symbolicNames[i] = "";
 				continue;
 			}
-			else if (std::isupper(firstChar, locale)) {
+			else if (std::isupper(firstChar, locale))
+			{
 				literalNames[i] = "";
 				continue;
 			}
@@ -59,7 +64,8 @@ Vocabulary Vocabulary::fromTokenNames(const std::vector<std::string_view>& token
 	return Vocabulary(literalNames, symbolicNames, tokenNames);
 }
 
-size_t Vocabulary::getMaxTokenType() const {
+size_t Vocabulary::getMaxTokenType() const
+{
 	return _maxTokenType;
 }
 
@@ -82,8 +88,10 @@ std::string_view Vocabulary::getSymbolicName(size_t tokenType) const
 	return "";
 }
 
-std::string_view Vocabulary::getDisplayName(size_t tokenType) const {
-	if (tokenType < _displayNames.size()) {
+std::string_view Vocabulary::getDisplayName(size_t tokenType) const
+{
+	if (tokenType < _displayNames.size())
+	{
 		auto displayName = _displayNames[tokenType];
 		if (!displayName.empty())
 			return displayName;

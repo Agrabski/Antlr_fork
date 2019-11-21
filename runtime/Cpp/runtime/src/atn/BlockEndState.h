@@ -8,17 +8,17 @@
 #include "atn/ATNState.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  /// Terminal node of a simple {@code (a|b|c)} block.
-  class ANTLR4CPP_PUBLIC BlockEndState final : public ATNState {
-  public:
-    BlockStartState *startState = nullptr;
+		/// Terminal node of a simple {@code (a|b|c)} block.
+		class ANTLR4CPP_PUBLIC BlockEndState final : public ATNState{
+		public:
+		  BlockStartState * startState = nullptr;
 
-    BlockEndState();
+		  BlockEndState();
 
-    size_t getStateType() override;
-  };
+		  size_t getStateType() override;
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

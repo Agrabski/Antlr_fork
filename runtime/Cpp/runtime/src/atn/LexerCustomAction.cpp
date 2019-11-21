@@ -17,46 +17,46 @@ LexerCustomAction::LexerCustomAction(size_t ruleIndex, size_t actionIndex) : _ru
 }
 
 size_t LexerCustomAction::getRuleIndex() const {
-  return _ruleIndex;
+	return _ruleIndex;
 }
 
 size_t LexerCustomAction::getActionIndex() const {
-  return _actionIndex;
+	return _actionIndex;
 }
 
 LexerActionType LexerCustomAction::getActionType() const {
-  return LexerActionType::CUSTOM;
+	return LexerActionType::CUSTOM;
 }
 
 bool LexerCustomAction::isPositionDependent() const {
-  return true;
+	return true;
 }
 
-void LexerCustomAction::execute(Lexer *lexer) {
-  lexer->action(nullptr, _ruleIndex, _actionIndex);
+void LexerCustomAction::execute(Lexer* lexer) {
+	lexer->action(nullptr, _ruleIndex, _actionIndex);
 }
 
 size_t LexerCustomAction::hashCode() const {
-  size_t hash = MurmurHash::initialize();
-  hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
-  hash = MurmurHash::update(hash, _ruleIndex);
-  hash = MurmurHash::update(hash, _actionIndex);
-  return MurmurHash::finish(hash, 3);
+	size_t hash = MurmurHash::initialize();
+	hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
+	hash = MurmurHash::update(hash, _ruleIndex);
+	hash = MurmurHash::update(hash, _actionIndex);
+	return MurmurHash::finish(hash, 3);
 }
 
-bool LexerCustomAction::operator == (const LexerAction &obj) const {
-  if (&obj == this) {
-    return true;
-  }
+bool LexerCustomAction::operator == (const LexerAction& obj) const {
+	if (&obj == this) {
+		return true;
+	}
 
-  const LexerCustomAction *action = dynamic_cast<const LexerCustomAction *>(&obj);
-  if (action == nullptr) {
-    return false;
-  }
+	const LexerCustomAction* action = dynamic_cast<const LexerCustomAction*>(&obj);
+	if (action == nullptr) {
+		return false;
+	}
 
-  return _ruleIndex == action->_ruleIndex && _actionIndex == action->_actionIndex;
+	return _ruleIndex == action->_ruleIndex && _actionIndex == action->_actionIndex;
 }
 
 std::string LexerCustomAction::toString() const {
-  return antlrcpp::toString(this);
+	return antlrcpp::toString(this);
 }

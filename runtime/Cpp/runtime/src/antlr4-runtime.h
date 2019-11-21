@@ -5,7 +5,7 @@
 
 #pragma once
 
-// This is the umbrella header for all ANTLR4 C++ runtime headers.
+ // This is the umbrella header for all ANTLR4 C++ runtime headers.
 
 #include "antlr4-common.h"
 
@@ -49,7 +49,6 @@
 #include "UnbufferedTokenStream.h"
 #include "Vocabulary.h"
 #include "Vocabulary.h"
-#include "WritableToken.h"
 #include "atn/ATN.h"
 #include "atn/ATNConfig.h"
 #include "atn/ATNConfigSet.h"

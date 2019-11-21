@@ -45,7 +45,7 @@ Ref<PredictionContext> PredictionContext::fromRuleContext(const ATN& atn, RuleCo
 	// If we have a parent, convert it to a PredictionContext graph
 	Ref<PredictionContext> parent = PredictionContext::fromRuleContext(atn, dynamic_cast<RuleContext*>(outerContext->parent));
 
-	ATNState* state = atn.states.at(outerContext->invokingState);
+	ATNState* state = atn.states.at(outerContext->invokingState).get();
 	RuleTransition* transition = (RuleTransition*)state->transitions[0];
 	return SingletonPredictionContext::create(parent, transition->followState->stateNumber);
 }
@@ -589,7 +589,7 @@ std::vector<std::string> PredictionContext::toStrings(Recognizer* recognizer, co
 				}
 
 				const ATN& atn = recognizer->getATN();
-				ATNState* s = atn.states[stateNumber];
+				ATNState* s = atn.states[stateNumber].get();
 				auto ruleName = recognizer->getRuleNames()[s->ruleIndex];
 				ss << ruleName;
 			}

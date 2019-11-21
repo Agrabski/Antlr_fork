@@ -16,41 +16,41 @@ LexerModeAction::LexerModeAction(int mode) : _mode(mode) {
 }
 
 int LexerModeAction::getMode() {
-  return _mode;
+	return _mode;
 }
 
 LexerActionType LexerModeAction::getActionType() const {
-  return LexerActionType::MODE;
+	return LexerActionType::MODE;
 }
 
 bool LexerModeAction::isPositionDependent() const {
-  return false;
+	return false;
 }
 
-void LexerModeAction::execute(Lexer *lexer) {
-  lexer->setMode(_mode);
+void LexerModeAction::execute(Lexer* lexer) {
+	lexer->setMode(_mode);
 }
 
 size_t LexerModeAction::hashCode() const {
-  size_t hash = MurmurHash::initialize();
-  hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
-  hash = MurmurHash::update(hash, _mode);
-  return MurmurHash::finish(hash, 2);
+	size_t hash = MurmurHash::initialize();
+	hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
+	hash = MurmurHash::update(hash, _mode);
+	return MurmurHash::finish(hash, 2);
 }
 
-bool LexerModeAction::operator == (const LexerAction &obj) const {
-  if (&obj == this) {
-    return true;
-  }
+bool LexerModeAction::operator == (const LexerAction& obj) const {
+	if (&obj == this) {
+		return true;
+	}
 
-  const LexerModeAction *action = dynamic_cast<const LexerModeAction *>(&obj);
-  if (action == nullptr) {
-    return false;
-  }
+	const LexerModeAction* action = dynamic_cast<const LexerModeAction*>(&obj);
+	if (action == nullptr) {
+		return false;
+	}
 
-  return _mode == action->_mode;
+	return _mode == action->_mode;
 }
 
 std::string LexerModeAction::toString() const {
-  return "mode(" + std::to_string(_mode) + ")";
+	return "mode(" + std::to_string(_mode) + ")";
 }

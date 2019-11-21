@@ -8,14 +8,14 @@
 #include "atn/DecisionState.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  ///  The start of a regular {@code (...)} block.
-  class ANTLR4CPP_PUBLIC BlockStartState : public DecisionState {
-  public:
-    ~BlockStartState();
-    BlockEndState *endState = nullptr;
-  };
+		///  The start of a regular {@code (...)} block.
+		class ANTLR4CPP_PUBLIC BlockStartState : public DecisionState {
+		public:
+			~BlockStartState();
+			BlockEndState* endState = nullptr;
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

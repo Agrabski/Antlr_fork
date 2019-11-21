@@ -67,11 +67,6 @@ namespace antlr4 {
 
 		ParserRuleContext();
 		ParserRuleContext(ParserRuleContext* parent, size_t invokingStateNumber);
-		~ParserRuleContext()
-		{
-			int n = 0;
-		}
-
 		/** COPY a ctx (I'm deliberately not using copy constructor) to avoid
 		 *  confusion with creating node with parent. Does not copy children
 		 *  (except error leaves).
@@ -144,6 +139,15 @@ namespace antlr4 {
 		virtual std::string toInfoString(Parser* recognizer);
 
 		std::unique_ptr<ParseTree> clone(ParseTree* parent) const override;
+
+		template<typename T, typename... Args>
+		T* constructChild(Args... arguments)
+		{
+			auto result = std::make_unique<T>(this, arguments...);
+			auto r = result.get();
+			addChild(std::move(result));
+			return r;
+		}
 	};
 
 } // namespace antlr4

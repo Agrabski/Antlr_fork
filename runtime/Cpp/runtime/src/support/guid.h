@@ -68,10 +68,10 @@ public:
   bool operator!=(const Guid &other) const;
 
   const std::string toString() const;
-  std::vector<unsigned char>::const_iterator begin() { return _bytes.begin(); }
-  std::vector<unsigned char>::const_iterator end() { return _bytes.end(); }
-  std::vector<unsigned char>::const_reverse_iterator rbegin() { return _bytes.rbegin(); }
-  std::vector<unsigned char>::const_reverse_iterator rend() { return _bytes.rend(); }
+  std::vector<unsigned char>::const_iterator begin() noexcept { return _bytes.begin(); }
+  std::vector<unsigned char>::const_iterator end() noexcept { return _bytes.end(); }
+  std::vector<unsigned char>::const_reverse_iterator rbegin() noexcept { return _bytes.rbegin(); }
+  std::vector<unsigned char>::const_reverse_iterator rend() noexcept { return _bytes.rend(); }
 
 
 private:
@@ -96,7 +96,7 @@ public:
 #ifdef GUID_ANDROID
   GuidGenerator(JNIEnv *env);
 #else
-  GuidGenerator() { }
+  GuidGenerator() noexcept { }
 #endif
 
   Guid newGuid();

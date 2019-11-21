@@ -8,5 +8,5 @@
 using namespace antlr4::atn;
 
 size_t BasicState::getStateType() {
-  return BASIC;
+	return BASIC;
 }

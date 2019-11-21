@@ -13,7 +13,7 @@ ParseTree::ParseTree() : parent(nullptr)
 
 antlr4::tree::ParseTree::ParseTree(ParseTree const& copy, ParseTree* parent)
 {
-	cloneChildrenFrom(parent,&copy);
+	cloneChildrenFrom(parent, &copy);
 }
 
 antlr4::tree::ParseTree::ParseTree(ParseTree const& copy) : ParseTree(copy, nullptr)

@@ -102,7 +102,7 @@ tree::TerminalNode* ParserRuleContext::getToken(size_t ttype, size_t i) {
 
 std::vector<tree::TerminalNode*> ParserRuleContext::getTokens(size_t ttype) {
 	std::vector<tree::TerminalNode*> tokens;
-	for (auto& o : children) 
+	for (auto& o : children)
 	{
 		if (is<tree::TerminalNode*>(o.get()))
 		{

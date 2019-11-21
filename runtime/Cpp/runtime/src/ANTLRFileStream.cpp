@@ -9,26 +9,26 @@
 
 using namespace antlr4;
 
-ANTLRFileStream::ANTLRFileStream(const std::string &fileName) {
-  _fileName = fileName;
-  loadFromFile(fileName);
+ANTLRFileStream::ANTLRFileStream(const std::string& fileName) {
+	_fileName = fileName;
+	loadFromFile(fileName);
 }
 
-void ANTLRFileStream::loadFromFile(const std::string &fileName) {
-  _fileName = fileName;
-  if (_fileName.empty()) {
-    return;
-  }
+void ANTLRFileStream::loadFromFile(const std::string& fileName) {
+	_fileName = fileName;
+	if (_fileName.empty()) {
+		return;
+	}
 
 #ifdef _MSC_VER
-  std::ifstream stream(antlrcpp::s2ws(fileName), std::ios::binary);
+	std::ifstream stream(antlrcpp::s2ws(fileName), std::ios::binary);
 #else
-  std::ifstream stream(fileName, std::ios::binary);
+	std::ifstream stream(fileName, std::ios::binary);
 #endif
 
-  ANTLRInputStream::load(stream);
+	ANTLRInputStream::load(stream);
 }
 
 std::string ANTLRFileStream::getSourceName() const {
-  return _fileName;
+	return _fileName;
 }

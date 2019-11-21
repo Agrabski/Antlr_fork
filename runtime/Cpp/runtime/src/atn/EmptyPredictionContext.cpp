@@ -11,25 +11,25 @@ EmptyPredictionContext::EmptyPredictionContext() : SingletonPredictionContext(nu
 }
 
 bool EmptyPredictionContext::isEmpty() const {
-  return true;
+	return true;
 }
 
 size_t EmptyPredictionContext::size() const {
-  return 1;
+	return 1;
 }
 
 Ref<PredictionContext> EmptyPredictionContext::getParent(size_t /*index*/) const {
-  return nullptr;
+	return nullptr;
 }
 
 size_t EmptyPredictionContext::getReturnState(size_t /*index*/) const {
-  return returnState;
+	return returnState;
 }
 
-bool EmptyPredictionContext::operator == (const PredictionContext &o) const {
-  return this == &o;
+bool EmptyPredictionContext::operator == (const PredictionContext& o) const {
+	return this == &o;
 }
 
 std::string EmptyPredictionContext::toString() const {
-  return "$";
+	return "$";
 }

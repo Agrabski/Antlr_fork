@@ -8,43 +8,43 @@
 #include "antlr4-common.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  class ANTLR4CPP_PUBLIC ATNDeserializationOptions {
-  private:
-    static ATNDeserializationOptions defaultOptions;
+		class ANTLR4CPP_PUBLIC ATNDeserializationOptions {
+		private:
+			static ATNDeserializationOptions defaultOptions;
 
-    bool readOnly;
-    bool verifyATN;
-    bool generateRuleBypassTransitions;
+			bool readOnly;
+			bool verifyATN;
+			bool generateRuleBypassTransitions;
 
-  public:
-    ATNDeserializationOptions();
-    ATNDeserializationOptions(ATNDeserializationOptions *options);
-    ATNDeserializationOptions(ATNDeserializationOptions const&) = default;
-    virtual ~ATNDeserializationOptions();
-    ATNDeserializationOptions& operator=(ATNDeserializationOptions const&) = default;
+		public:
+			ATNDeserializationOptions();
+			ATNDeserializationOptions(ATNDeserializationOptions* options);
+			ATNDeserializationOptions(ATNDeserializationOptions const&) = default;
+			virtual ~ATNDeserializationOptions();
+			ATNDeserializationOptions& operator=(ATNDeserializationOptions const&) = default;
 
-    static const ATNDeserializationOptions& getDefaultOptions();
+			static const ATNDeserializationOptions& getDefaultOptions();
 
-    bool isReadOnly();
+			bool isReadOnly();
 
-    void makeReadOnly();
+			void makeReadOnly();
 
-    bool isVerifyATN();
+			bool isVerifyATN();
 
-    void setVerifyATN(bool verify);
+			void setVerifyATN(bool verify);
 
-    bool isGenerateRuleBypassTransitions();
+			bool isGenerateRuleBypassTransitions();
 
-    void setGenerateRuleBypassTransitions(bool generate);
+			void setGenerateRuleBypassTransitions(bool generate);
 
-  protected:
-    virtual void throwIfReadOnly();
+		protected:
+			virtual void throwIfReadOnly();
 
-  private:
-    void InitializeInstanceFields();
-  };
+		private:
+			void InitializeInstanceFields();
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

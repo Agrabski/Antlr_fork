@@ -7,20 +7,20 @@
 
 using namespace antlr4;
 
-RuntimeException::RuntimeException(const std::string &msg) : std::exception(), _message(msg) {
+RuntimeException::RuntimeException(const std::string& msg) : std::exception(), _message(msg) {
 }
 
 const char* RuntimeException::what() const NOEXCEPT {
-  return _message.c_str();
+	return _message.c_str();
 }
 
 //------------------ IOException ---------------------------------------------------------------------------------------
 
-IOException::IOException(const std::string &msg) : std::exception(), _message(msg) {
+IOException::IOException(const std::string& msg) : std::exception(), _message(msg) {
 }
 
 const char* IOException::what() const NOEXCEPT {
-  return _message.c_str();
+	return _message.c_str();
 }
 
 //------------------ IllegalStateException -----------------------------------------------------------------------------

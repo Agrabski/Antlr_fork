@@ -11,21 +11,21 @@
 using namespace antlr4::misc;
 using namespace antlr4::atn;
 
-AtomTransition::AtomTransition(ATNState *target, size_t label) : Transition(target), _label(label) {
+AtomTransition::AtomTransition(ATNState* target, size_t label) : Transition(target), _label(label) {
 }
 
 Transition::SerializationType AtomTransition::getSerializationType() const {
-  return ATOM;
+	return ATOM;
 }
 
 IntervalSet AtomTransition::label() const {
-  return IntervalSet::of((int)_label);
+	return IntervalSet::of((int)_label);
 }
 
 bool AtomTransition::matches(size_t symbol, size_t /*minVocabSymbol*/, size_t /*maxVocabSymbol*/) const {
-  return _label == symbol;
+	return _label == symbol;
 }
 
 std::string AtomTransition::toString() const {
-  return "ATOM " + Transition::toString() + " { label: " + std::to_string(_label) + " }";
+	return "ATOM " + Transition::toString() + " { label: " + std::to_string(_label) + " }";
 }

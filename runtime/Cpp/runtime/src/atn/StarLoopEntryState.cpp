@@ -11,5 +11,5 @@ StarLoopEntryState::StarLoopEntryState() : DecisionState(), isPrecedenceDecision
 }
 
 size_t StarLoopEntryState::getStateType() {
-  return STAR_LOOP_ENTRY;
+	return STAR_LOOP_ENTRY;
 }

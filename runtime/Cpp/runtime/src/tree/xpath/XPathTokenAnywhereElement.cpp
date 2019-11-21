@@ -11,10 +11,10 @@
 using namespace antlr4::tree;
 using namespace antlr4::tree::xpath;
 
-XPathTokenAnywhereElement::XPathTokenAnywhereElement(const std::string &tokenName, int tokenType) : XPathElement(tokenName) {
-  this->tokenType = tokenType;
+XPathTokenAnywhereElement::XPathTokenAnywhereElement(const std::string& tokenName, int tokenType) : XPathElement(tokenName) {
+	this->tokenType = tokenType;
 }
 
-std::vector<ParseTree *> XPathTokenAnywhereElement::evaluate(ParseTree *t) {
-  return Trees::findAllTokenNodes(t, tokenType);
+std::vector<ParseTree*> XPathTokenAnywhereElement::evaluate(ParseTree* t) {
+	return Trees::findAllTokenNodes(t, tokenType);
 }

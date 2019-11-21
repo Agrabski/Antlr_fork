@@ -9,19 +9,19 @@
 
 namespace antlr4 {
 
-  /// This is an ANTLRInputStream that is loaded from a file all at once
-  /// when you construct the object (or call load()).
-  // TODO: this class needs testing.
-  class ANTLR4CPP_PUBLIC ANTLRFileStream : public ANTLRInputStream {
-  protected:
-    std::string _fileName; // UTF-8 encoded file name.
+	/// This is an ANTLRInputStream that is loaded from a file all at once
+	/// when you construct the object (or call load()).
+	// TODO: this class needs testing.
+	class ANTLR4CPP_PUBLIC ANTLRFileStream : public ANTLRInputStream {
+	protected:
+		std::string _fileName; // UTF-8 encoded file name.
 
-  public:
-    // Assumes a file name encoded in UTF-8 and file content in the same encoding (with or w/o BOM).
-    ANTLRFileStream(const std::string &fileName);
+	public:
+		// Assumes a file name encoded in UTF-8 and file content in the same encoding (with or w/o BOM).
+		ANTLRFileStream(const std::string& fileName);
 
-    virtual void loadFromFile(const std::string &fileName);
-    std::string getSourceName() const override;
-  };
+		virtual void loadFromFile(const std::string& fileName);
+		std::string getSourceName() const override;
+	};
 
 } // namespace antlr4

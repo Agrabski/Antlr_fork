@@ -7,26 +7,26 @@
 
 using namespace antlr4::atn;
 
-PrecedencePredicateTransition::PrecedencePredicateTransition(ATNState *target, int precedence)
-  : AbstractPredicateTransition(target), precedence(precedence) {
+PrecedencePredicateTransition::PrecedencePredicateTransition(ATNState* target, int precedence)
+	: AbstractPredicateTransition(target), precedence(precedence) {
 }
 
 Transition::SerializationType PrecedencePredicateTransition::getSerializationType() const {
-  return PRECEDENCE;
+	return PRECEDENCE;
 }
 
 bool PrecedencePredicateTransition::isEpsilon() const {
-  return true;
+	return true;
 }
 
 bool PrecedencePredicateTransition::matches(size_t /*symbol*/, size_t /*minVocabSymbol*/, size_t /*maxVocabSymbol*/) const {
-  return false;
+	return false;
 }
 
 Ref<SemanticContext::PrecedencePredicate> PrecedencePredicateTransition::getPredicate() const {
-  return std::make_shared<SemanticContext::PrecedencePredicate>(precedence);
+	return std::make_shared<SemanticContext::PrecedencePredicate>(precedence);
 }
 
 std::string PrecedencePredicateTransition::toString() const {
-  return "PRECEDENCE " + Transition::toString() + " { precedence: " + std::to_string(precedence) + " }";
+	return "PRECEDENCE " + Transition::toString() + " { precedence: " + std::to_string(precedence) + " }";
 }

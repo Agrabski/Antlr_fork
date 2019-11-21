@@ -8,24 +8,24 @@
 #include "antlr4-common.h"
 
 namespace antlr4 {
-namespace misc {
+	namespace misc {
 
-  struct InterpreterData {
-    atn::ATN atn;
-    dfa::Vocabulary vocabulary;
-    std::vector<std::string> ruleNames;
-    std::vector<std::string> channels; // Only valid for lexer grammars.
-    std::vector<std::string> modes; // ditto
+		struct InterpreterData {
+			atn::ATN atn;
+			dfa::Vocabulary vocabulary;
+			std::vector<std::string> ruleNames;
+			std::vector<std::string> channels; // Only valid for lexer grammars.
+			std::vector<std::string> modes; // ditto
 
-    InterpreterData() {}; // For invalid content.
-    InterpreterData(std::vector<std::string_view> const& literalNames, std::vector<std::string_view> const& symbolicNames);
-  };
+			InterpreterData() {}; // For invalid content.
+			InterpreterData(std::vector<std::string_view> const& literalNames, std::vector<std::string_view> const& symbolicNames);
+		};
 
-  // A class to read plain text interpreter data produced by ANTLR.
-  class ANTLR4CPP_PUBLIC InterpreterDataReader {
-  public:
-    static InterpreterData parseFile(std::string const& fileName);
-  };
+		// A class to read plain text interpreter data produced by ANTLR.
+		class ANTLR4CPP_PUBLIC InterpreterDataReader {
+		public:
+			static InterpreterData parseFile(std::string const& fileName);
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

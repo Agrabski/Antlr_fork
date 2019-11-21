@@ -43,7 +43,7 @@ std::string DFASerializer::toString() const
 
 std::string DFASerializer::getEdgeLabel(size_t i) const
 {
-	return std::string( _vocabulary.getDisplayName(i)); // ml: no longer needed -1 as we use a map for edges, without offset.
+	return std::string(_vocabulary.getDisplayName(i)); // ml: no longer needed -1 as we use a map for edges, without offset.
 }
 
 std::string_view DFASerializer::getStateString(DFAState* s) const

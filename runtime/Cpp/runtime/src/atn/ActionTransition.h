@@ -8,26 +8,26 @@
 #include "atn/Transition.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  class ANTLR4CPP_PUBLIC ActionTransition final : public Transition {
-  public:
-    const size_t ruleIndex;
-    const size_t actionIndex;
-    const bool isCtxDependent; // e.g., $i ref in action
+		class ANTLR4CPP_PUBLIC ActionTransition final : public Transition{
+		public:
+		  const size_t ruleIndex;
+		  const size_t actionIndex;
+		  const bool isCtxDependent; // e.g., $i ref in action
 
-    ActionTransition(ATNState *target, size_t ruleIndex);
+		  ActionTransition(ATNState* target, size_t ruleIndex);
 
-    ActionTransition(ATNState *target, size_t ruleIndex, size_t actionIndex, bool isCtxDependent);
+		  ActionTransition(ATNState* target, size_t ruleIndex, size_t actionIndex, bool isCtxDependent);
 
-    SerializationType getSerializationType() const override;
+		  SerializationType getSerializationType() const override;
 
-    bool isEpsilon() const override;
+		  bool isEpsilon() const override;
 
-    bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
+		  bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
 
-    std::string toString() const override;
-  };
+		  std::string toString() const override;
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

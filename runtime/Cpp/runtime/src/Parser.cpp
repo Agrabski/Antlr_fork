@@ -425,7 +425,7 @@ bool Parser::inContext(const std::string&/*context*/) {
 bool Parser::isExpectedToken(ParserRuleContext* current, size_t symbol) {
 	const atn::ATN& atn = getInterpreter<atn::ParserATNSimulator>()->atn;
 	ParserRuleContext* ctx = current;
-	atn::ATNState* s = atn.states[getState()];
+	atn::ATNState* s = atn.states[getState()].get();
 	misc::IntervalSet following = atn.nextTokens(s);
 
 	if (following.contains(symbol)) {
@@ -437,7 +437,7 @@ bool Parser::isExpectedToken(ParserRuleContext* current, size_t symbol) {
 	}
 
 	while (ctx && ctx->invokingState != ATNState::INVALID_STATE_NUMBER && following.contains(Token::EPSILON)) {
-		atn::ATNState* invokingState = atn.states[ctx->invokingState];
+		atn::ATNState* invokingState = atn.states[ctx->invokingState].get();
 		atn::RuleTransition* rt = static_cast<atn::RuleTransition*>(invokingState->transitions[0]);
 		following = atn.nextTokens(rt->followState);
 		if (following.contains(symbol)) {
@@ -464,7 +464,7 @@ misc::IntervalSet Parser::getExpectedTokens(ParserRuleContext* currentContext) {
 
 misc::IntervalSet Parser::getExpectedTokensWithinCurrentRule() {
 	const atn::ATN& atn = getInterpreter<atn::ParserATNSimulator>()->atn;
-	atn::ATNState* s = atn.states[getState()];
+	atn::ATNState* s = atn.states[getState()].get();
 	return atn.nextTokens(s);
 }
 

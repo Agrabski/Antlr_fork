@@ -20,12 +20,19 @@ public:
 	AergiaCpp14Parser* getParser() { return &parser; }
 };
 
-int main()
+void x()
 {
-	std::string s = "int main(){return 0;}";
+	std::string s = "class A{int n; int t();} int main(){auto x = new A(); x->t();}";
 	std::stringstream stream(s);
 	AntlrHelper helper(stream);
 	std::cout << helper.getParser()->translationunit()->getText();
+
+}
+
+int main()
+{
+	x();
+	std::cout << "done";
 
 }
 

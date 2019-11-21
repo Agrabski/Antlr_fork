@@ -8,5 +8,5 @@
 using namespace antlr4::atn;
 
 size_t TokensStartState::getStateType() {
-  return TOKEN_START;
+	return TOKEN_START;
 }

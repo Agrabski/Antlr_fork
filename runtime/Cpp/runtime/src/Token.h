@@ -19,20 +19,20 @@ namespace antlr4 {
 
 		/// During lookahead operations, this "token" signifies we hit rule end ATN state
 		/// and did not follow it despite needing to.
-		static const size_t EPSILON = static_cast<size_t>(-2);
-		static const size_t MIN_USER_TOKEN_TYPE = 1;
-		static const size_t EOF = IntStream::EOF;
+		static constexpr  size_t EPSILON = static_cast<size_t>(-2);
+		static constexpr  size_t MIN_USER_TOKEN_TYPE = 1;
+		static constexpr  size_t EOF = IntStream::EOF;
 
 		virtual ~Token();
 
 		/// All tokens go to the parser (unless skip() is called in that rule)
 		/// on a particular "channel".  The parser tunes to a particular channel
 		/// so that whitespace etc... can go to the parser on a "hidden" channel.
-		static const size_t DEFAULT_CHANNEL = 0;
+		static constexpr size_t DEFAULT_CHANNEL = 0;
 
 		/// Anything on different channel than DEFAULT_CHANNEL is not parsed
 		/// by parser.
-		static const size_t HIDDEN_CHANNEL = 1;
+		static constexpr size_t HIDDEN_CHANNEL = 1;
 
 		/**
 		 * This is the minimum constant value which can be assigned to a
@@ -45,7 +45,7 @@ namespace antlr4 {
 		 *
 		 * @see Token#getChannel()
 		 */
-		static const size_t MIN_USER_CHANNEL_VALUE = 2;
+		static constexpr  size_t MIN_USER_CHANNEL_VALUE = 2;
 
 		/// Get the text of the token.
 		virtual std::string getText() const = 0;
@@ -80,12 +80,6 @@ namespace antlr4 {
 		/// The last character index of the token.
 		/// This method is optional; return INVALID_INDEX if not implemented.
 		virtual size_t getStopIndex() const = 0;
-
-		/// Gets the <seealso cref="TokenSource"/> which created this token.
-		virtual TokenSource* getTokenSource() const = 0;
-
-		/// Gets the <seealso cref="CharStream"/> from which this token was derived.
-		virtual CharStream* getInputStream() const = 0;
 
 		virtual std::string toString() const = 0;
 

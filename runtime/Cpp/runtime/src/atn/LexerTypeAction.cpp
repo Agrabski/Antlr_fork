@@ -16,41 +16,41 @@ LexerTypeAction::LexerTypeAction(int type) : _type(type) {
 }
 
 int LexerTypeAction::getType() const {
-  return _type;
+	return _type;
 }
 
 LexerActionType LexerTypeAction::getActionType() const {
-  return LexerActionType::TYPE;
+	return LexerActionType::TYPE;
 }
 
 bool LexerTypeAction::isPositionDependent() const {
-  return false;
+	return false;
 }
 
-void LexerTypeAction::execute(Lexer *lexer) {
-  lexer->setType(_type);
+void LexerTypeAction::execute(Lexer* lexer) {
+	lexer->setType(_type);
 }
 
 size_t LexerTypeAction::hashCode() const {
-  size_t hash = MurmurHash::initialize();
-  hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
-  hash = MurmurHash::update(hash, _type);
-  return MurmurHash::finish(hash, 2);
+	size_t hash = MurmurHash::initialize();
+	hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
+	hash = MurmurHash::update(hash, _type);
+	return MurmurHash::finish(hash, 2);
 }
 
-bool LexerTypeAction::operator == (const LexerAction &obj) const {
-  if (&obj == this) {
-    return true;
-  }
+bool LexerTypeAction::operator == (const LexerAction& obj) const {
+	if (&obj == this) {
+		return true;
+	}
 
-  const LexerTypeAction *action = dynamic_cast<const LexerTypeAction *>(&obj);
-  if (action == nullptr) {
-    return false;
-  }
+	const LexerTypeAction* action = dynamic_cast<const LexerTypeAction*>(&obj);
+	if (action == nullptr) {
+		return false;
+	}
 
-  return _type == action->_type;
+	return _type == action->_type;
 }
 
 std::string LexerTypeAction::toString() const {
-  return "type(" + std::to_string(_type) + ")";
+	return "type(" + std::to_string(_type) + ")";
 }

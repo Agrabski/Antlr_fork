@@ -9,5 +9,5 @@ using namespace antlrcpp;
 
 Any::~Any()
 {
-    delete _ptr;
+	delete _ptr;
 }

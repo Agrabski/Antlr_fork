@@ -8,14 +8,14 @@
 #include "atn/ATNState.h"
 
 namespace antlr4 {
-namespace atn {
+	namespace atn {
 
-  class ANTLR4CPP_PUBLIC BasicState final : public ATNState {
+		class ANTLR4CPP_PUBLIC BasicState final : public ATNState{
 
-  public:
-    size_t getStateType() override;
+		public:
+		  size_t getStateType() override;
 
-  };
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

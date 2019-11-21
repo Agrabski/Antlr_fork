@@ -5,52 +5,35 @@
 
 #pragma once
 
-#include "WritableToken.h"
+#include "Token.h"
+#include "support/CPPUtils.h"
 
-namespace antlr4 {
+namespace antlr4
+{
 
-	class ANTLR4CPP_PUBLIC CommonToken : public WritableToken {
+	class ANTLR4CPP_PUBLIC CommonToken : public Token {
 	protected:
-		/**
-		 * An empty {@link Pair} which is used as the default value of
-		 * {@link #source} for tokens that do not have a source.
-		 */
-		static const std::pair<TokenSource*, CharStream*> EMPTY_SOURCE;
-
 		/**
 		 * This is the backing field for {@link #getType} and {@link #setType}.
 		 */
-		size_t _type;
+		size_t _type = INVALID_TYPE;
 
 		/**
 		 * This is the backing field for {@link #getLine} and {@link #setLine}.
 		 */
-		size_t _line;
+		size_t _line = 0ULL;
 
 		/**
 		 * This is the backing field for {@link #getCharPositionInLine} and
 		 * {@link #setCharPositionInLine}.
 		 */
-		size_t _charPositionInLine; // set to invalid position
+		size_t _charPositionInLine = 0ULL; // set to invalid position
 
 		/**
 		 * This is the backing field for {@link #getChannel} and
 		 * {@link #setChannel}.
 		 */
-		size_t _channel;
-
-		/**
-		 * This is the backing field for {@link #getTokenSource} and
-		 * {@link #getInputStream}.
-		 *
-		 * <p>
-		 * These properties share a field to reduce the memory footprint of
-		 * {@link CommonToken}. Tokens created by a {@link CommonTokenFactory} from
-		 * the same source and input stream share a reference to the same
-		 * {@link Pair} containing these values.</p>
-		 */
-
-		std::pair<TokenSource*, CharStream*> _source; // ml: pure references, usually from statically allocated classes.
+		size_t _channel = DEFAULT_CHANNEL;
 
 		/**
 		 * This is the backing field for {@link #getText} when the token text is
@@ -64,19 +47,19 @@ namespace antlr4 {
 		 * This is the backing field for {@link #getTokenIndex} and
 		 * {@link #setTokenIndex}.
 		 */
-		size_t _index;
+		size_t _index = INVALID_INDEX;
 
 		/**
 		 * This is the backing field for {@link #getStartIndex} and
 		 * {@link #setStartIndex}.
 		 */
-		size_t _start;
+		size_t _start = 0ULL;
 
 		/**
 		 * This is the backing field for {@link #getStopIndex} and
 		 * {@link #setStopIndex}.
 		 */
-		size_t _stop;
+		size_t _stop = 0ULL;
 
 	public:
 		/**
@@ -84,8 +67,8 @@ namespace antlr4 {
 		 *
 		 * @param type The token type.
 		 */
-		CommonToken(size_t type);
-		CommonToken(std::pair<TokenSource*, CharStream*> source, size_t type, size_t channel, size_t start, size_t stop);
+		CommonToken(size_t type) noexcept;
+		CommonToken(size_t type, size_t channel, size_t start, size_t stop, size_t line, size_t charPositionInLine) noexcept;
 
 		/**
 		 * Constructs a new {@link CommonToken} with the specified token type and
@@ -109,7 +92,7 @@ namespace antlr4 {
 		 *
 		 * @param oldToken The token to copy.
 		 */
-		CommonToken(Token* oldToken);
+		CommonToken(not_null<Token*> oldToken);
 
 		size_t getType() const override;
 
@@ -122,31 +105,20 @@ namespace antlr4 {
 		 * should be obtained from the input along with the start and stop indexes
 		 * of the token.
 		 */
-		void setText(const std::string& text) override;
+		void setText(const std::string& text);
 		std::string getText() const override;
 
-		void setLine(size_t line) override;
-		size_t getLine() const override;
+		size_t getLine() const noexcept override;
 
 		size_t getCharPositionInLine() const override;
-		void setCharPositionInLine(size_t charPositionInLine) override;
 
-		size_t getChannel() const override;
-		void setChannel(size_t channel) override;
+		size_t getChannel() const noexcept override;
 
-		void setType(size_t type) override;
+		size_t getStartIndex() const noexcept override;
 
-		size_t getStartIndex() const override;
-		virtual void setStartIndex(size_t start);
+		size_t getStopIndex() const noexcept override;
 
-		size_t getStopIndex() const override;
-		virtual void setStopIndex(size_t stop);
-
-		size_t getTokenIndex() const override;
-		void setTokenIndex(size_t index) override;
-
-		TokenSource* getTokenSource() const override;
-		CharStream* getInputStream() const override;
+		size_t getTokenIndex() const noexcept override;
 
 		std::string toString() const override;
 
@@ -154,7 +126,6 @@ namespace antlr4 {
 		std::unique_ptr<Token> clone() const override;
 
 	private:
-		void InitializeInstanceFields();
 	};
 
 } // namespace antlr4

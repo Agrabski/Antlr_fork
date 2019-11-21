@@ -9,26 +9,26 @@
 
 using namespace antlr4;
 
-NoViableAltException::NoViableAltException(Parser *recognizer, ParserRuleContext* currentContext)
-  : NoViableAltException(recognizer, recognizer->getTokenStream(), recognizer->getCurrentToken(),
-                         recognizer->getCurrentToken(), nullptr, currentContext, false) {
+NoViableAltException::NoViableAltException(Parser* recognizer, ParserRuleContext* currentContext)
+	: NoViableAltException(recognizer, recognizer->getTokenStream(), recognizer->getCurrentToken(),
+		recognizer->getCurrentToken(), nullptr, currentContext, false) {
 }
 
-NoViableAltException::NoViableAltException(Parser *recognizer, TokenStream *input,Token *startToken,
-  Token *offendingToken, atn::ATNConfigSet *deadEndConfigs, ParserRuleContext *ctx, bool deleteConfigs)
-  : RecognitionException("No viable alternative", recognizer, input, ctx, offendingToken),
-    _deadEndConfigs(deadEndConfigs), _startToken(startToken), _deleteConfigs(deleteConfigs) {
+NoViableAltException::NoViableAltException(Parser* recognizer, TokenStream* input, Token* startToken,
+	Token* offendingToken, atn::ATNConfigSet* deadEndConfigs, ParserRuleContext* ctx, bool deleteConfigs)
+	: RecognitionException("No viable alternative", recognizer, input, ctx, offendingToken),
+	_deadEndConfigs(deadEndConfigs), _startToken(startToken), _deleteConfigs(deleteConfigs) {
 }
 
 NoViableAltException::~NoViableAltException() {
-  if (_deleteConfigs)
-    delete _deadEndConfigs;
+	if (_deleteConfigs)
+		delete _deadEndConfigs;
 }
 
 Token* NoViableAltException::getStartToken() const {
-  return _startToken;
+	return _startToken;
 }
 
 atn::ATNConfigSet* NoViableAltException::getDeadEndConfigs() const {
-  return _deadEndConfigs;
+	return _deadEndConfigs;
 }

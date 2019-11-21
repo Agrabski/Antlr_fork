@@ -7,6 +7,6 @@
 
 using namespace antlr4::atn;
 
-size_t OrderedATNConfigSet::getHash(ATNConfig *c) {
-  return c->hashCode();
+size_t OrderedATNConfigSet::getHash(ATNConfig* c) {
+	return c->hashCode();
 }

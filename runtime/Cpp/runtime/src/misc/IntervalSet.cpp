@@ -444,7 +444,7 @@ std::string IntervalSet::elementName(const dfa::Vocabulary& vocabulary, ssize_t 
 		if (a == -2)
 			return "<EPSILON>";
 		else
-			return std::string( vocabulary.getDisplayName(a));
+			return std::string(vocabulary.getDisplayName(a));
 }
 
 size_t IntervalSet::size() const {

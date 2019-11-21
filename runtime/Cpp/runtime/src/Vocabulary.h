@@ -7,15 +7,18 @@
 
 #include "antlr4-common.h"
 
-namespace antlr4 {
-	namespace dfa {
+namespace antlr4
+{
+	namespace dfa
+	{
 
 		/// This class provides a default implementation of the <seealso cref="Vocabulary"/>
 		/// interface.
-		class ANTLR4CPP_PUBLIC Vocabulary {
+		class ANTLR4CPP_PUBLIC Vocabulary
+		{
 		public:
 			Vocabulary(Vocabulary const&) = default;
-			virtual ~Vocabulary();
+			virtual ~Vocabulary() = default;
 			Vocabulary& operator=(Vocabulary const&) = default;
 
 			/// Gets an empty <seealso cref="Vocabulary"/> instance.

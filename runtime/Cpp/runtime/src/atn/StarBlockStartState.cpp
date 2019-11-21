@@ -8,5 +8,5 @@
 using namespace antlr4::atn;
 
 size_t StarBlockStartState::getStateType() {
-  return STAR_BLOCK_START;
+	return STAR_BLOCK_START;
 }

@@ -11,10 +11,10 @@
 using namespace antlr4::tree;
 using namespace antlr4::tree::xpath;
 
-XPathRuleAnywhereElement::XPathRuleAnywhereElement(const std::string &ruleName, int ruleIndex) : XPathElement(ruleName) {
-  _ruleIndex = ruleIndex;
+XPathRuleAnywhereElement::XPathRuleAnywhereElement(const std::string& ruleName, int ruleIndex) : XPathElement(ruleName) {
+	_ruleIndex = ruleIndex;
 }
 
-std::vector<ParseTree *> XPathRuleAnywhereElement::evaluate(ParseTree *t) {
-  return Trees::findAllRuleNodes(t, _ruleIndex);
+std::vector<ParseTree*> XPathRuleAnywhereElement::evaluate(ParseTree* t) {
+	return Trees::findAllRuleNodes(t, _ruleIndex);
 }

@@ -136,7 +136,7 @@ namespace atn {
     virtual void accept(CharStream *input, const Ref<LexerActionExecutor> &lexerActionExecutor, size_t startIndex, size_t index,
                         size_t line, size_t charPos);
 
-    virtual ATNState *getReachableTarget(Transition *trans, size_t t);
+    virtual ATNState *getReachableTarget(not_null<Transition*> trans, size_t t);
 
     virtual std::unique_ptr<ATNConfigSet> computeStartState(CharStream *input, ATNState *p);
 

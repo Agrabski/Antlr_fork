@@ -502,7 +502,6 @@
     <ClCompile Include="src\UnbufferedCharStream.cpp" />
     <ClCompile Include="src\UnbufferedTokenStream.cpp" />
     <ClCompile Include="src\Vocabulary.cpp" />
-    <ClCompile Include="src\WritableToken.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\antlr4-common.h" />
@@ -655,7 +654,6 @@
     <ClInclude Include="src\UnbufferedCharStream.h" />
     <ClInclude Include="src\UnbufferedTokenStream.h" />
     <ClInclude Include="src\Vocabulary.h" />
-    <ClInclude Include="src\WritableToken.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -275,7 +275,7 @@ namespace antlr4 {
 		 */
 		virtual void pushNewRecursionContext(ParserRuleContext* localctx, std::unique_ptr<ParserRuleContext>&& prevContext, size_t state, size_t ruleIndex);
 		virtual void unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx);
-		virtual ParserRuleContext* getInvokingContext(ParserRuleContext* currentCtx,size_t ruleIndex);
+		virtual ParserRuleContext* getInvokingContext(ParserRuleContext* currentCtx, size_t ruleIndex);
 		bool precpred(RuleContext* localctx, int precedence) override;
 		virtual bool inContext(const std::string& context);
 
@@ -292,7 +292,7 @@ namespace antlr4 {
 		/// <param name="symbol"> the symbol type to check </param>
 		/// <returns> {@code true} if {@code symbol} can follow the current state in
 		/// the ATN, otherwise {@code false}. </returns>
-		virtual bool isExpectedToken(ParserRuleContext* current,size_t symbol);
+		virtual bool isExpectedToken(ParserRuleContext* current, size_t symbol);
 
 		bool isMatchedEOF() const;
 

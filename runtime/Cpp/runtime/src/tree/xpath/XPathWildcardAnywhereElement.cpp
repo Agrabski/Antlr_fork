@@ -15,9 +15,9 @@ using namespace antlr4::tree::xpath;
 XPathWildcardAnywhereElement::XPathWildcardAnywhereElement() : XPathElement(XPath::WILDCARD) {
 }
 
-std::vector<ParseTree *> XPathWildcardAnywhereElement::evaluate(ParseTree *t) {
-  if (_invert) {
-    return {}; // !* is weird but valid (empty)
-  }
-  return Trees::getDescendants(t);
+std::vector<ParseTree*> XPathWildcardAnywhereElement::evaluate(ParseTree* t) {
+	if (_invert) {
+		return {}; // !* is weird but valid (empty)
+	}
+	return Trees::getDescendants(t);
 }

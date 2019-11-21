@@ -17,28 +17,28 @@ const std::vector<std::string> Transition::serializationNames = {
   "INVALID", "EPSILON", "RANGE", "RULE", "PREDICATE", "ATOM", "ACTION", "SET", "NOT_SET", "WILDCARD", "PRECEDENCE"
 };
 
-Transition::Transition(ATNState *target) {
-  if (target == nullptr) {
-    throw NullPointerException("target cannot be null.");
-  }
+Transition::Transition(ATNState* target) {
+	if (target == nullptr) {
+		throw NullPointerException("target cannot be null.");
+	}
 
-  this->target = target;
+	this->target = target;
 }
 
 Transition::~Transition() {
 }
 
 bool Transition::isEpsilon() const {
-  return false;
+	return false;
 }
 
 misc::IntervalSet Transition::label() const {
-  return misc::IntervalSet::EMPTY_SET;
+	return misc::IntervalSet::EMPTY_SET;
 }
 
 std::string Transition::toString() const {
-  std::stringstream ss;
-  ss << "(Transition " << std::hex << this << ", target: " << std::hex << target << ')';
+	std::stringstream ss;
+	ss << "(Transition " << std::hex << this << ", target: " << std::hex << target << ')';
 
-  return ss.str();
+	return ss.str();
 }

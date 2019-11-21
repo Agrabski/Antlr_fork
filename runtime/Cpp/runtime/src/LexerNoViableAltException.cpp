@@ -12,25 +12,25 @@
 
 using namespace antlr4;
 
-LexerNoViableAltException::LexerNoViableAltException(Lexer *lexer, CharStream *input, size_t startIndex,
-                                                     atn::ATNConfigSet *deadEndConfigs)
-  : RecognitionException(lexer, input, nullptr, nullptr), _startIndex(startIndex), _deadEndConfigs(deadEndConfigs) {
+LexerNoViableAltException::LexerNoViableAltException(Lexer* lexer, CharStream* input, size_t startIndex,
+	atn::ATNConfigSet* deadEndConfigs)
+	: RecognitionException(lexer, input, nullptr, nullptr), _startIndex(startIndex), _deadEndConfigs(deadEndConfigs) {
 }
 
 size_t LexerNoViableAltException::getStartIndex() {
-  return _startIndex;
+	return _startIndex;
 }
 
 atn::ATNConfigSet* LexerNoViableAltException::getDeadEndConfigs() {
-  return _deadEndConfigs;
+	return _deadEndConfigs;
 }
 
 std::string LexerNoViableAltException::toString() {
-  std::string symbol;
-  if (_startIndex < getInputStream()->size()) {
-    symbol = static_cast<CharStream *>(getInputStream())->getText(misc::Interval(_startIndex, _startIndex));
-    symbol = antlrcpp::escapeWhitespace(symbol, false);
-  }
-  std::string format = "LexerNoViableAltException('" + symbol + "')";
-  return format;
+	std::string symbol;
+	if (_startIndex < getInputStream()->size()) {
+		symbol = static_cast<CharStream*>(getInputStream())->getText(misc::Interval(_startIndex, _startIndex));
+		symbol = antlrcpp::escapeWhitespace(symbol, false);
+	}
+	std::string format = "LexerNoViableAltException('" + symbol + "')";
+	return format;
 }

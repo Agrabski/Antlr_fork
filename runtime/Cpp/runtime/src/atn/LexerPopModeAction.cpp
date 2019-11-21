@@ -13,35 +13,35 @@ using namespace antlr4::atn;
 using namespace antlr4::misc;
 
 const Ref<LexerPopModeAction> LexerPopModeAction::getInstance() {
-  static Ref<LexerPopModeAction> instance(new LexerPopModeAction());
-  return instance;
+	static Ref<LexerPopModeAction> instance(new LexerPopModeAction());
+	return instance;
 }
 
 LexerPopModeAction::LexerPopModeAction() {
 }
 
 LexerActionType LexerPopModeAction::getActionType() const {
-  return LexerActionType::POP_MODE;
+	return LexerActionType::POP_MODE;
 }
 
 bool LexerPopModeAction::isPositionDependent() const {
-  return false;
+	return false;
 }
 
-void LexerPopModeAction::execute(Lexer *lexer) {
-  lexer->popMode();
+void LexerPopModeAction::execute(Lexer* lexer) {
+	lexer->popMode();
 }
 
 size_t LexerPopModeAction::hashCode() const {
-  size_t hash = MurmurHash::initialize();
-  hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
-  return MurmurHash::finish(hash, 1);
+	size_t hash = MurmurHash::initialize();
+	hash = MurmurHash::update(hash, static_cast<size_t>(getActionType()));
+	return MurmurHash::finish(hash, 1);
 }
 
-bool LexerPopModeAction::operator == (const LexerAction &obj) const {
-  return &obj == this;
+bool LexerPopModeAction::operator == (const LexerAction& obj) const {
+	return &obj == this;
 }
 
 std::string LexerPopModeAction::toString() const {
-  return "popMode";
+	return "popMode";
 }

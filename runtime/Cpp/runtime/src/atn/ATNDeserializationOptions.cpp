@@ -10,55 +10,55 @@ using namespace antlr4::atn;
 ATNDeserializationOptions ATNDeserializationOptions::defaultOptions;
 
 ATNDeserializationOptions::ATNDeserializationOptions() {
-  InitializeInstanceFields();
+	InitializeInstanceFields();
 }
 
-ATNDeserializationOptions::ATNDeserializationOptions(ATNDeserializationOptions *options) : ATNDeserializationOptions() {
-  this->verifyATN = options->verifyATN;
-  this->generateRuleBypassTransitions = options->generateRuleBypassTransitions;
+ATNDeserializationOptions::ATNDeserializationOptions(ATNDeserializationOptions* options) : ATNDeserializationOptions() {
+	this->verifyATN = options->verifyATN;
+	this->generateRuleBypassTransitions = options->generateRuleBypassTransitions;
 }
 
 ATNDeserializationOptions::~ATNDeserializationOptions() {
 }
 
 const ATNDeserializationOptions& ATNDeserializationOptions::getDefaultOptions() {
-  return defaultOptions;
+	return defaultOptions;
 }
 
 bool ATNDeserializationOptions::isReadOnly() {
-  return readOnly;
+	return readOnly;
 }
 
 void ATNDeserializationOptions::makeReadOnly() {
-  readOnly = true;
+	readOnly = true;
 }
 
 bool ATNDeserializationOptions::isVerifyATN() {
-  return verifyATN;
+	return verifyATN;
 }
 
 void ATNDeserializationOptions::setVerifyATN(bool verify) {
-  throwIfReadOnly();
-  verifyATN = verify;
+	throwIfReadOnly();
+	verifyATN = verify;
 }
 
 bool ATNDeserializationOptions::isGenerateRuleBypassTransitions() {
-  return generateRuleBypassTransitions;
+	return generateRuleBypassTransitions;
 }
 
 void ATNDeserializationOptions::setGenerateRuleBypassTransitions(bool generate) {
-  throwIfReadOnly();
-  generateRuleBypassTransitions = generate;
+	throwIfReadOnly();
+	generateRuleBypassTransitions = generate;
 }
 
 void ATNDeserializationOptions::throwIfReadOnly() {
-  if (isReadOnly()) {
-    throw "The object is read only.";
-  }
+	if (isReadOnly()) {
+		throw "The object is read only.";
+	}
 }
 
 void ATNDeserializationOptions::InitializeInstanceFields() {
-  readOnly = false;
-  verifyATN = true;
-  generateRuleBypassTransitions = false;
+	readOnly = false;
+	verifyATN = true;
+	generateRuleBypassTransitions = false;
 }
