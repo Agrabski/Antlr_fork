@@ -7,34 +7,38 @@
 
 #include "atn/Transition.h"
 
-namespace antlr4 {
-namespace atn {
+namespace antlr4
+{
+	namespace atn
+	{
 
-  class ANTLR4CPP_PUBLIC RuleTransition : public Transition {
-  public:
-    /// Ptr to the rule definition object for this rule ref.
-    const size_t ruleIndex; // no Rule object at runtime
+		class ANTLR4CPP_PUBLIC RuleTransition : public Transition
+		{
+		public:
+			/// Ptr to the rule definition object for this rule ref.
+			const size_t ruleIndex; // no Rule object at runtime
 
-    const int precedence;
+			const int precedence;
 
-    /// What node to begin computations following ref to rule.
-    ATNState *followState;
+			/// What node to begin computations following ref to rule.
+			ATNState* followState;
 
-    /// @deprecated Use
-    /// <seealso cref="#RuleTransition(RuleStartState, size_t, int, ATNState)"/> instead.
-    RuleTransition(RuleStartState *ruleStart, size_t ruleIndex, ATNState *followState);
+			/// @deprecated Use
+			/// <seealso cref="#RuleTransition(RuleStartState, size_t, int, ATNState)"/> instead.
+			[[deprecated("use RuleTransition(RuleStartState, size_t, int, ATNState)")]]
+			RuleTransition(RuleStartState* ruleStart, size_t ruleIndex, ATNState* followState);
 
-    RuleTransition(RuleStartState *ruleStart, size_t ruleIndex, int precedence, ATNState *followState);
-    RuleTransition(RuleTransition const&) = delete;
-    RuleTransition& operator=(RuleTransition const&) = delete;
+			RuleTransition(RuleStartState* ruleStart, size_t ruleIndex, int precedence, ATNState* followState);
+			RuleTransition(RuleTransition const&) = delete;
+			RuleTransition& operator=(RuleTransition const&) = delete;
 
-    SerializationType getSerializationType() const override;
+			SerializationType getSerializationType() const noexcept override;
 
-    bool isEpsilon() const override;
-    bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
+			bool isEpsilon() const override;
+			bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;
 
-    std::string toString() const override;
-  };
+			std::string toString() const override;
+		};
 
-} // namespace atn
+	} // namespace atn
 } // namespace antlr4

@@ -158,9 +158,7 @@ namespace antlr4 {
 			std::string toString(const dfa::Vocabulary& vocabulary) const;
 
 		protected:
-			/**
-			 * @deprecated Use {@link #elementName(Vocabulary, int)} instead.
-			 */
+			[[deprecated("Use elementName(Vocabulary, int) instead")]]
 			std::string elementName(const std::vector<std::string_view>& tokenNames, ssize_t a) const;
 			std::string elementName(const dfa::Vocabulary& vocabulary, ssize_t a) const;
 
@@ -177,7 +175,7 @@ namespace antlr4 {
 			void remove(ssize_t el);
 
 		private:
-			void addItems() { /* No-op */ }
+			void addItems() noexcept { /* No-op */ }
 		};
 
 	} // namespace atn

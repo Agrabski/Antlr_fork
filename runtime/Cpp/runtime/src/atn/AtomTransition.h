@@ -7,18 +7,21 @@
 
 #include "atn/Transition.h"
 
-namespace antlr4 {
-	namespace atn {
+namespace antlr4
+{
+	namespace atn
+	{
 
 		/// TO_DO: make all transitions sets? no, should remove set edges.
-		class ANTLR4CPP_PUBLIC AtomTransition final : public Transition{
+		class ANTLR4CPP_PUBLIC AtomTransition final : public Transition
+		{
 		public:
 			/// The token type or character value; or, signifies special label.
 			const size_t _label;
 
 			AtomTransition(ATNState* target, size_t label);
 
-			SerializationType getSerializationType() const override;
+			SerializationType getSerializationType() const noexcept override;
 
 			misc::IntervalSet label() const override;
 			bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;

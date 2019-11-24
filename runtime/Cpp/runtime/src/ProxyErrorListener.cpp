@@ -7,19 +7,21 @@
 
 using namespace antlr4;
 
-void ProxyErrorListener::addErrorListener(ANTLRErrorListener* listener) {
-	if (listener == nullptr) {
-		throw "listener cannot be null.";
+void ProxyErrorListener::addErrorListener(not_null<ANTLRErrorListener*> listener) noexcept
+{
+	try
+	{
+		_delegates.insert(listener);
 	}
-
-	_delegates.insert(listener);
+	catch (...) {}
 }
 
 void ProxyErrorListener::removeErrorListener(ANTLRErrorListener* listener) {
 	_delegates.erase(listener);
 }
 
-void ProxyErrorListener::removeErrorListeners() {
+void ProxyErrorListener::removeErrorListeners() noexcept
+{
 	_delegates.clear();
 }
 

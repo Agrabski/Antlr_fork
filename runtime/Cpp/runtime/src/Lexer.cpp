@@ -20,7 +20,7 @@
 using namespace antlrcpp;
 using namespace antlr4;
 
-Lexer::Lexer() : Recognizer() {
+Lexer::Lexer() noexcept : Recognizer() {
 	InitializeInstanceFields();
 	_input = nullptr;
 }
@@ -53,7 +53,7 @@ void Lexer::reset() {
 std::unique_ptr<Token> Lexer::nextToken() {
 	// Mark start location in char stream so unbuffered streams are
 	// guaranteed at least have text of current token
-	ssize_t tokenStartMarker = _input->mark();
+	ssize_t const tokenStartMarker = _input->mark();
 
 	auto onExit = finally([this, tokenStartMarker] {
 		// make sure we release marker after match or
@@ -80,7 +80,7 @@ std::unique_ptr<Token> Lexer::nextToken() {
 			try {
 				ttype = getInterpreter<atn::LexerATNSimulator>()->match(_input, mode);
 			}
-			catch (LexerNoViableAltException & e) {
+			catch (LexerNoViableAltException const & e) {
 				notifyListeners(e); // report error
 				recover(e);
 				ttype = SKIP;
@@ -150,7 +150,8 @@ std::string Lexer::getSourceName() {
 	return _input->getSourceName();
 }
 
-CharStream* Lexer::getInputStream() {
+CharStream* Lexer::getInputStream() noexcept
+{
 	return _input;
 }
 
@@ -176,8 +177,8 @@ Token* Lexer::emit() {
 }
 
 Token* Lexer::emitEOF() {
-	size_t cpos = getCharPositionInLine();
-	size_t line = getLine();
+	size_t const cpos = getCharPositionInLine();
+	size_t const line = getLine();
 	emit(_factory->create(EOF, "", Token::DEFAULT_CHANNEL, _input->index(), _input->index() - 1, line, cpos));
 	return token.get();
 }
@@ -289,11 +290,13 @@ void Lexer::recover(RecognitionException* /*re*/) {
 	_input->consume();
 }
 
-size_t Lexer::getNumberOfSyntaxErrors() {
+size_t Lexer::getNumberOfSyntaxErrors()
+{
 	return _syntaxErrors;
 }
 
-void Lexer::InitializeInstanceFields() {
+void Lexer::InitializeInstanceFields() noexcept
+{
 	_syntaxErrors = 0;
 	token = nullptr;
 	_factory = CommonTokenFactory::DEFAULT;

@@ -17,7 +17,7 @@ namespace atn {
 
     RangeTransition(ATNState *target, size_t from, size_t to);
 
-    SerializationType getSerializationType() const override;
+    SerializationType getSerializationType() const noexcept override;
 
     misc::IntervalSet label() const override;
     bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;

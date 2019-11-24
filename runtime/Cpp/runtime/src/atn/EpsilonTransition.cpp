@@ -11,25 +11,31 @@ EpsilonTransition::EpsilonTransition(ATNState* target) : EpsilonTransition(targe
 }
 
 EpsilonTransition::EpsilonTransition(ATNState* target, size_t outermostPrecedenceReturn)
-	: Transition(target), _outermostPrecedenceReturn(outermostPrecedenceReturn) {
+	: Transition(target), _outermostPrecedenceReturn(outermostPrecedenceReturn)
+{
 }
 
-size_t EpsilonTransition::outermostPrecedenceReturn() {
+size_t EpsilonTransition::outermostPrecedenceReturn()
+{
 	return _outermostPrecedenceReturn;
 }
 
-Transition::SerializationType EpsilonTransition::getSerializationType() const {
+Transition::SerializationType EpsilonTransition::getSerializationType() const noexcept
+{
 	return EPSILON;
 }
 
-bool EpsilonTransition::isEpsilon() const {
+bool EpsilonTransition::isEpsilon() const
+{
 	return true;
 }
 
-bool EpsilonTransition::matches(size_t /*symbol*/, size_t /*minVocabSymbol*/, size_t /*maxVocabSymbol*/) const {
+bool EpsilonTransition::matches(size_t /*symbol*/, size_t /*minVocabSymbol*/, size_t /*maxVocabSymbol*/) const
+{
 	return false;
 }
 
-std::string EpsilonTransition::toString() const {
+std::string EpsilonTransition::toString() const
+{
 	return "EPSILON " + Transition::toString() + " {}";
 }

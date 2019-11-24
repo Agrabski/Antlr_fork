@@ -10,7 +10,7 @@ using namespace antlr4::atn;
 PredicateTransition::PredicateTransition(ATNState* target, size_t ruleIndex, size_t predIndex, bool isCtxDependent) : AbstractPredicateTransition(target), ruleIndex(ruleIndex), predIndex(predIndex), isCtxDependent(isCtxDependent) {
 }
 
-Transition::SerializationType PredicateTransition::getSerializationType() const {
+Transition::SerializationType PredicateTransition::getSerializationType() const noexcept {
 	return PREDICATE;
 }
 

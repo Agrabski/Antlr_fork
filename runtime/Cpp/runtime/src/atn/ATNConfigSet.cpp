@@ -15,19 +15,15 @@
 using namespace antlr4::atn;
 using namespace antlrcpp;
 
-ATNConfigSet::ATNConfigSet(bool fullCtx) : fullCtx(fullCtx) {
-	InitializeInstanceFields();
+ATNConfigSet::ATNConfigSet(bool fullCtx) noexcept : fullCtx(fullCtx)
+{
 }
-
 ATNConfigSet::ATNConfigSet(const Ref<ATNConfigSet>& old) : ATNConfigSet(old->fullCtx) {
 	addAll(old);
 	uniqueAlt = old->uniqueAlt;
 	conflictingAlts = old->conflictingAlts;
 	hasSemanticContext = old->hasSemanticContext;
 	dipsIntoOuterContext = old->dipsIntoOuterContext;
-}
-
-ATNConfigSet::~ATNConfigSet() {
 }
 
 bool ATNConfigSet::add(const Ref<ATNConfig>& config) {
@@ -45,7 +41,7 @@ bool ATNConfigSet::add(const Ref<ATNConfig>& config, PredictionContextMergeCache
 		dipsIntoOuterContext = true;
 	}
 
-	size_t hash = getHash(config.get());
+	auto const hash = getHash(config.get());
 	ATNConfig* existing = _configLookup[hash];
 	if (existing == nullptr) {
 		_configLookup[hash] = config.get();
@@ -56,7 +52,7 @@ bool ATNConfigSet::add(const Ref<ATNConfig>& config, PredictionContextMergeCache
 	}
 
 	// a previous (s,i,pi,_), merge with it and save result
-	bool rootIsWildcard = !fullCtx;
+	auto const rootIsWildcard = !fullCtx;
 	Ref<PredictionContext> merged = PredictionContext::merge(existing->context, config->context, rootIsWildcard, mergeCache);
 	// no need to check for existing.context, config.context in cache
 	// since only way to create new graphs is "call rule" and here. We
@@ -73,8 +69,8 @@ bool ATNConfigSet::add(const Ref<ATNConfig>& config, PredictionContextMergeCache
 	return true;
 }
 
-bool ATNConfigSet::addAll(const Ref<ATNConfigSet>& other) {
-	for (auto& c : other->configs) {
+bool ATNConfigSet::addAll(ATNConfigSet const& other) {
+	for (auto& c : other.configs) {
 		add(c);
 	}
 	return false;
@@ -105,30 +101,29 @@ BitSet ATNConfigSet::getAlts() {
 	return alts;
 }
 
-std::vector<Ref<SemanticContext>> ATNConfigSet::getPredicates() {
+std::vector<Ref<SemanticContext>> ATNConfigSet::getPredicates()
+{
 	std::vector<Ref<SemanticContext>> preds;
-	for (auto c : configs) {
-		if (c->semanticContext != SemanticContext::NONE) {
+	for (auto c : configs)
+		if (c->semanticContext != SemanticContext::NONE)
 			preds.push_back(c->semanticContext);
-		}
-	}
 	return preds;
 }
 
-Ref<ATNConfig> ATNConfigSet::get(size_t i) const {
+Ref<ATNConfig> ATNConfigSet::get(size_t i) const noexcept
+{
 	return configs[i];
 }
 
-void ATNConfigSet::optimizeConfigs(ATNSimulator* interpreter) {
-	if (_readonly) {
+void ATNConfigSet::optimizeConfigs(not_null<ATNSimulator*> interpreter)
+{
+	if (_readonly)
 		throw IllegalStateException("This set is readonly");
-	}
 	if (_configLookup.empty())
 		return;
 
-	for (auto& config : configs) {
+	for (auto& config : configs)
 		config->context = interpreter->getCachedContext(config->context);
-	}
 }
 
 bool ATNConfigSet::operator == (const ATNConfigSet& other) {
@@ -158,15 +153,18 @@ size_t ATNConfigSet::hashCode() {
 	return _cachedHashCode;
 }
 
-size_t ATNConfigSet::size() {
+size_t ATNConfigSet::size() const noexcept
+{
 	return configs.size();
 }
 
-bool ATNConfigSet::isEmpty() {
+bool ATNConfigSet::isEmpty() const noexcept
+{
 	return configs.empty();
 }
 
-void ATNConfigSet::clear() {
+void ATNConfigSet::clear()
+{
 	if (_readonly) {
 		throw IllegalStateException("This set is readonly");
 	}
@@ -175,11 +173,13 @@ void ATNConfigSet::clear() {
 	_configLookup.clear();
 }
 
-bool ATNConfigSet::isReadonly() {
+bool ATNConfigSet::isReadonly() const noexcept
+{
 	return _readonly;
 }
 
-void ATNConfigSet::setReadonly(bool readonly) {
+void ATNConfigSet::setReadonly(bool readonly) noexcept
+{
 	_readonly = readonly;
 	_configLookup.clear();
 }
@@ -216,13 +216,4 @@ size_t ATNConfigSet::getHash(ATNConfig* c) {
 	hashCode = 31 * hashCode + c->alt;
 	hashCode = 31 * hashCode + c->semanticContext->hashCode();
 	return hashCode;
-}
-
-void ATNConfigSet::InitializeInstanceFields() {
-	uniqueAlt = 0;
-	hasSemanticContext = false;
-	dipsIntoOuterContext = false;
-
-	_readonly = false;
-	_cachedHashCode = 0;
 }

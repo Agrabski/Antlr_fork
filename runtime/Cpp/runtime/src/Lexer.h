@@ -76,7 +76,7 @@ namespace antlr4 {
 		std::vector<size_t> modeStack;
 		size_t mode;
 
-		Lexer();
+		Lexer() noexcept;
 		Lexer(CharStream* input);
 		virtual ~Lexer() {}
 
@@ -108,7 +108,7 @@ namespace antlr4 {
 
 		std::string getSourceName() override;
 
-		CharStream* getInputStream() override;
+		CharStream* getInputStream() noexcept override;
 
 		/// By default does not support multiple emits per nextToken invocation
 		/// for efficiency reasons. Subclasses can override this method, nextToken,
@@ -191,7 +191,7 @@ namespace antlr4 {
 
 	private:
 		size_t _syntaxErrors;
-		void InitializeInstanceFields();
+		void InitializeInstanceFields() noexcept;
 	};
 
 } // namespace antlr4

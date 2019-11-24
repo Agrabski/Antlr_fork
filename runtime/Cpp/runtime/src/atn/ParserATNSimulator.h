@@ -348,17 +348,32 @@ namespace antlr4 {
 			bool canDropLoopEntryEdgeInLeftRecursiveRule(ATNConfig& config) const;
 			virtual std::string_view getRuleName(size_t index);
 
-			virtual Ref<ATNConfig> precedenceTransition(Ref<ATNConfig>const& config, PrecedencePredicateTransition* pt,
+			Ref<ATNConfig> precedenceTransition(ATNConfig& config, not_null<PrecedencePredicateTransition*> pt,
 				bool collectPredicates, bool inContext, bool fullCtx);
 
-			void setPredictionMode(PredictionMode newMode);
-			PredictionMode getPredictionMode();
+			void setPredictionMode(PredictionMode newMode) noexcept
+			{
+				_mode = newMode;
+			}
 
-			Parser* getParser();
+			PredictionMode getPredictionMode() noexcept
+			{
+				return _mode;
+			}
+
+			Parser* getParser() noexcept
+			{
+				return parser;
+			}
+
+			Parser const* getParser() const noexcept
+			{
+				return parser;
+			}
 
 			virtual std::string getTokenName(size_t t);
 
-			virtual std::string getLookaheadName(TokenStream* input);
+			virtual std::string getLookaheadName(not_null<TokenStream*> input);
 
 			/// <summary>
 			/// Used for debugging in adaptivePredict around execATN but I cut
@@ -383,7 +398,7 @@ namespace antlr4 {
 
 			// LAME globals to avoid parameters!!!!! I need these down deep in predTransition
 			TokenStream* _input;
-			size_t _startIndex;
+			size_t _startIndex = 0ULL;
 			ParserRuleContext* _outerContext;
 			dfa::DFA* _dfa; // Reference into the decisionToDFA vector.
 
@@ -714,8 +729,8 @@ namespace antlr4 {
 			 *  Assumption: the input stream has been restored to the starting point
 			 *  prediction, which is where predicates need to evaluate.
 			 */
-			std::pair<ATNConfigSet*, ATNConfigSet*> splitAccordingToSemanticValidity(ATNConfigSet* configs,
-				ParserRuleContext* outerContext);
+			std::pair<std::unique_ptr<ATNConfigSet>, std::unique_ptr<ATNConfigSet>> splitAccordingToSemanticValidity(not_null<ATNConfigSet*> configs,
+				not_null<ParserRuleContext*> outerContext);
 
 			/// <summary>
 			/// Look through a list of predicate/alt pairs, returning alts for the
@@ -776,11 +791,11 @@ namespace antlr4 {
 			virtual void closure_(Ref<ATNConfig>const& config, ATNConfigSet* configs, ATNConfig::Set& closureBusy,
 				bool collectPredicates, bool fullCtx, int depth, bool treatEofAsEpsilon);
 
-			virtual Ref<ATNConfig> getEpsilonTarget(Ref<ATNConfig>const& config, Transition* t, bool collectPredicates,
+			Ref<ATNConfig> getEpsilonTarget(ATNConfig& config, not_null<Transition*> t, bool collectPredicates,
 				bool inContext, bool fullCtx, bool treatEofAsEpsilon);
 			virtual Ref<ATNConfig> actionTransition(ATNConfig& config, ActionTransition* t);
 
-			virtual Ref<ATNConfig> predTransition(ATNConfig& config, PredicateTransition* pt, bool collectPredicates,
+			virtual Ref<ATNConfig> predTransition(ATNConfig& config, not_null<PredicateTransition*> pt, bool collectPredicates,
 				bool inContext, bool fullCtx);
 
 			virtual Ref<ATNConfig> ruleTransition(ATNConfig& config, RuleTransition* t);
@@ -835,10 +850,10 @@ namespace antlr4 {
 
 			virtual antlrcpp::BitSet getConflictingAltsOrUniqueAlt(ATNConfigSet* configs);
 
-			virtual NoViableAltException noViableAlt(TokenStream* input, ParserRuleContext* outerContext,
+			virtual NoViableAltException noViableAlt(not_null<TokenStream*> input, ParserRuleContext* outerContext,
 				ATNConfigSet* configs, size_t startIndex, bool deleteConfigs);
 
-			static size_t getUniqueAlt(ATNConfigSet* configs);
+			static size_t getUniqueAlt(not_null<ATNConfigSet*> configs);
 
 			/// <summary>
 			/// Add an edge to the DFA, if possible. This method calls
@@ -893,10 +908,9 @@ namespace antlr4 {
 
 		private:
 			// SLL, LL, or LL + exact ambig detection?
-			PredictionMode _mode;
+			PredictionMode _mode = PredictionMode::LL;
 
 			static bool getLrLoopSetting();
-			void InitializeInstanceFields();
 		};
 
 	} // namespace atn

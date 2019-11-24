@@ -9,8 +9,8 @@
 #include "Token.h"
 #include "atn/ATNConfigSet.h"
 
-namespace antlr4 {
-
+namespace antlr4
+{
 	/// Indicates that the parser could not decide which of two or more paths
 	/// to take based upon the remaining input. It tracks the starting token
 	/// of the offending input and also knows where the parser was

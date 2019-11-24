@@ -364,7 +364,7 @@ namespace antlr4 {
 		 * @since 4.7
 		 */
 		std::unique_ptr<tree::TerminalNode> createTerminalNode(std::unique_ptr<Token>&& t);
-		std::unique_ptr<tree::TerminalNode> createTerminalNode(Token* t);
+		std::unique_ptr<tree::TerminalNode> createTerminalNode(not_null<Token const*> t);
 
 
 		/** How to create an error node, given a token, associated with a parent.

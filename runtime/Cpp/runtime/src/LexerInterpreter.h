@@ -15,6 +15,7 @@ namespace antlr4 {
 	{
 	public:
 		// @deprecated
+		[[deprecated]]
 		LexerInterpreter(const std::string& grammarFileName, const std::vector<std::string_view>& tokenNames,
 			const std::vector<std::string_view>& ruleNames, const std::vector<std::string_view>& channelNames,
 			const std::vector<std::string_view>& modeNames, const atn::ATN& atn, CharStream* input);
@@ -22,7 +23,7 @@ namespace antlr4 {
 			const std::vector<std::string_view>& ruleNames, const std::vector<std::string_view>& channelNames,
 			const std::vector<std::string_view>& modeNames, const atn::ATN& atn, CharStream* input);
 
-		~LexerInterpreter() noexcept;
+		~LexerInterpreter() noexcept = default;
 
 		const atn::ATN& getATN() const noexcept override;
 		std::string getGrammarFileName() const noexcept override;
@@ -37,7 +38,7 @@ namespace antlr4 {
 		const std::string _grammarFileName;
 		const atn::ATN& _atn;
 
-		// @deprecated
+		[[deprecated]]
 		std::vector<std::string_view> _tokenNames;
 		const std::vector<std::string_view>& _ruleNames;
 		const std::vector<std::string_view>& _channelNames;

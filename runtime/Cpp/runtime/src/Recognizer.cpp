@@ -22,14 +22,10 @@ using namespace antlr4::atn;
 std::map<const dfa::Vocabulary*, std::map<std::string, size_t>> Recognizer::_tokenTypeMapCache;
 std::map<std::vector<std::string_view>, std::map<std::string, size_t>> Recognizer::_ruleIndexMapCache;
 
-Recognizer::Recognizer() {
-	InitializeInstanceFields();
+Recognizer::Recognizer() noexcept
+{
 	_proxListener.addErrorListener(&ConsoleErrorListener::INSTANCE);
 }
-
-Recognizer::~Recognizer() {
-}
-
 dfa::Vocabulary const& Recognizer::getVocabulary() const {
 	static dfa::Vocabulary vocabulary = dfa::Vocabulary::fromTokenNames(getTokenNames());
 	return vocabulary;
@@ -46,11 +42,11 @@ std::map<std::string, size_t> Recognizer::getTokenTypeMap() {
 	}
 	else {
 		for (size_t i = 0; i <= getATN().maxTokenType; ++i) {
-			auto literalName = vocabulary.getLiteralName(i);
+			auto const literalName = vocabulary.getLiteralName(i);
 			if (!literalName.empty())
 				result[std::string(literalName)] = i;
 
-			auto symbolicName = vocabulary.getSymbolicName(i);
+			auto const symbolicName = vocabulary.getSymbolicName(i);
 			if (!symbolicName.empty())
 				result[std::string(symbolicName)] = i;
 		}
@@ -89,18 +85,16 @@ size_t Recognizer::getTokenType(const std::string& tokenName) {
 	return iterator->second;
 }
 
-void Recognizer::setInterpreter(atn::ATNSimulator* interpreter) {
-	// Usually the interpreter is set by the descendant (lexer or parser (simulator), but can also be exchanged
-	// by the profiling ATN simulator.
-	delete _interpreter;
-	_interpreter = interpreter;
+void Recognizer::setInterpreter(std::unique_ptr<atn::ATNSimulator>&& interpreter) noexcept
+{
+	_interpreter = std::move(interpreter);
 }
 
 std::string Recognizer::getErrorHeader(RecognitionException* e) {
 	// We're having issues with cross header dependencies, these two classes will need to be
 	// rewritten to remove that.
-	size_t line = e->getOffendingToken()->getLine();
-	size_t charPositionInLine = e->getOffendingToken()->getCharPositionInLine();
+	size_t const line = e->getOffendingToken()->getLine();
+	size_t const charPositionInLine = e->getOffendingToken()->getCharPositionInLine();
 	return std::string("line ") + std::to_string(line) + ":" + std::to_string(charPositionInLine);
 
 }
@@ -153,16 +147,12 @@ bool Recognizer::precpred(RuleContext* /*localctx*/, int /*precedence*/) {
 void Recognizer::action(RuleContext* /*localctx*/, size_t /*ruleIndex*/, size_t /*actionIndex*/) {
 }
 
-size_t Recognizer::getState() const {
+size_t Recognizer::getState() const noexcept
+{
 	return _stateNumber;
 }
 
-void Recognizer::setState(size_t atnState) {
+void Recognizer::setState(size_t atnState) noexcept
+{
 	_stateNumber = atnState;
 }
-
-void Recognizer::InitializeInstanceFields() {
-	_stateNumber = ATNState::INVALID_STATE_NUMBER;
-	_interpreter = nullptr;
-}
-

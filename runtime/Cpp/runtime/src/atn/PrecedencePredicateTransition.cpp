@@ -11,7 +11,7 @@ PrecedencePredicateTransition::PrecedencePredicateTransition(ATNState* target, i
 	: AbstractPredicateTransition(target), precedence(precedence) {
 }
 
-Transition::SerializationType PrecedencePredicateTransition::getSerializationType() const {
+Transition::SerializationType PrecedencePredicateTransition::getSerializationType() const noexcept {
 	return PRECEDENCE;
 }
 

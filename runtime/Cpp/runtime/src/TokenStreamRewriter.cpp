@@ -269,7 +269,7 @@ std::string TokenStreamRewriter::getText(const std::string& programName, const I
 		start = 0;
 	}
 
-	if (rewrites.empty() || rewrites.empty()) {
+	if (rewrites.empty()) {
 		return tokens->getText(interval); // no instructions to execute
 	}
 	std::string buf;

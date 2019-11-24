@@ -5,11 +5,7 @@ using namespace antlr4;
 
 
 XPathLexer::XPathLexer(CharStream* input) : Lexer(input) {
-	_interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
-}
-
-XPathLexer::~XPathLexer() {
-	delete _interpreter;
+	_interpreter = std::make_unique<atn::LexerATNSimulator>(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
 std::string XPathLexer::getGrammarFileName() const {

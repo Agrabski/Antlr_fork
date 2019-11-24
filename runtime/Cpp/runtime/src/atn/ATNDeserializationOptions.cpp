@@ -9,10 +9,6 @@ using namespace antlr4::atn;
 
 ATNDeserializationOptions ATNDeserializationOptions::defaultOptions;
 
-ATNDeserializationOptions::ATNDeserializationOptions() {
-	InitializeInstanceFields();
-}
-
 ATNDeserializationOptions::ATNDeserializationOptions(ATNDeserializationOptions* options) : ATNDeserializationOptions() {
 	this->verifyATN = options->verifyATN;
 	this->generateRuleBypassTransitions = options->generateRuleBypassTransitions;
@@ -21,29 +17,18 @@ ATNDeserializationOptions::ATNDeserializationOptions(ATNDeserializationOptions* 
 ATNDeserializationOptions::~ATNDeserializationOptions() {
 }
 
-const ATNDeserializationOptions& ATNDeserializationOptions::getDefaultOptions() {
+const ATNDeserializationOptions& ATNDeserializationOptions::getDefaultOptions() noexcept {
 	return defaultOptions;
 }
 
-bool ATNDeserializationOptions::isReadOnly() {
-	return readOnly;
-}
 
 void ATNDeserializationOptions::makeReadOnly() {
 	readOnly = true;
 }
 
-bool ATNDeserializationOptions::isVerifyATN() {
-	return verifyATN;
-}
-
 void ATNDeserializationOptions::setVerifyATN(bool verify) {
 	throwIfReadOnly();
 	verifyATN = verify;
-}
-
-bool ATNDeserializationOptions::isGenerateRuleBypassTransitions() {
-	return generateRuleBypassTransitions;
 }
 
 void ATNDeserializationOptions::setGenerateRuleBypassTransitions(bool generate) {
@@ -55,10 +40,4 @@ void ATNDeserializationOptions::throwIfReadOnly() {
 	if (isReadOnly()) {
 		throw "The object is read only.";
 	}
-}
-
-void ATNDeserializationOptions::InitializeInstanceFields() {
-	readOnly = false;
-	verifyATN = true;
-	generateRuleBypassTransitions = false;
 }

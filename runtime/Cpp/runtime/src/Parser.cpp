@@ -546,16 +546,17 @@ atn::ParseInfo Parser::getParseInfo() const {
 
 void Parser::setProfile(bool profile) {
 	atn::ParserATNSimulator* interp = getInterpreter<atn::ProfilingATNSimulator>();
-	atn::PredictionMode saveMode = interp != nullptr ? interp->getPredictionMode() : atn::PredictionMode::LL;
+	auto const saveMode = interp != nullptr ? interp->getPredictionMode() : atn::PredictionMode::LL;
 	if (profile) {
 		if (!is<atn::ProfilingATNSimulator*>(interp)) {
-			setInterpreter(new atn::ProfilingATNSimulator(this)); /* mem-check: replacing existing interpreter which gets deleted. */
+			setInterpreter(std::make_unique<atn::ProfilingATNSimulator>(this)); /* mem-check: replacing existing interpreter which gets deleted. */
 		}
 	}
-	else if (is<atn::ProfilingATNSimulator*>(interp)) {
-		/* mem-check: replacing existing interpreter which gets deleted. */
-		atn::ParserATNSimulator* sim = new atn::ParserATNSimulator(this, getATN(), interp->decisionToDFA, interp->getSharedContextCache());
-		setInterpreter(sim);
+	else
+	{
+		auto const interpeter = dynamic_cast<atn::ProfilingATNSimulator*>(interp);
+		if (interpeter != nullptr)
+			setInterpreter(std::make_unique<atn::ParserATNSimulator>(this, getATN(), interp->decisionToDFA, interp->getSharedContextCache()));
 	}
 	getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(saveMode);
 }
@@ -584,7 +585,7 @@ std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(std::unique_ptr<T
 	return std::make_unique<tree::TerminalNodeImpl>(std::move(t));
 }
 
-std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(Token* t)
+std::unique_ptr<tree::TerminalNode> Parser::createTerminalNode(not_null<Token const*> t)
 {
 	return std::make_unique<tree::TerminalNodeImpl>(t->clone());
 }

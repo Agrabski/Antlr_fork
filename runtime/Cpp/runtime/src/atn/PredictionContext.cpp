@@ -59,7 +59,7 @@ bool PredictionContext::hasEmptyPath() const {
 	return getReturnState(size() - 1) == EMPTY_RETURN_STATE;
 }
 
-size_t PredictionContext::hashCode() const {
+size_t PredictionContext::hashCode() const noexcept {
 	return cachedHashCode;
 }
 

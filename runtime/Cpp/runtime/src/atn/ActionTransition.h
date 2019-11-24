@@ -20,7 +20,7 @@ namespace antlr4 {
 
 		  ActionTransition(ATNState* target, size_t ruleIndex, size_t actionIndex, bool isCtxDependent);
 
-		  SerializationType getSerializationType() const override;
+		  SerializationType getSerializationType() const noexcept override;
 
 		  bool isEpsilon() const override;
 

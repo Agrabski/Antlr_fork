@@ -15,7 +15,7 @@ SetTransition::SetTransition(ATNState* target, const misc::IntervalSet& aSet)
 	: Transition(target), set(aSet.isEmpty() ? misc::IntervalSet::of(Token::INVALID_TYPE) : aSet) {
 }
 
-Transition::SerializationType SetTransition::getSerializationType() const {
+Transition::SerializationType SetTransition::getSerializationType() const noexcept {
 	return SET;
 }
 

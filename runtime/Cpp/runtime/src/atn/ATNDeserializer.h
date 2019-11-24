@@ -19,9 +19,9 @@ namespace antlr4 {
 			// ml: defined as function to avoid the “static initialization order fiasco”.
 			static Guid SERIALIZED_UUID();
 
-			ATNDeserializer();
-			ATNDeserializer(const ATNDeserializationOptions& dso);
-			virtual ~ATNDeserializer();
+			ATNDeserializer() noexcept;
+			ATNDeserializer(const ATNDeserializationOptions& dso) noexcept;
+			virtual ~ATNDeserializer() = default;
 
 			static Guid toUUID(const unsigned short* data, size_t offset);
 

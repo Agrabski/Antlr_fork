@@ -30,7 +30,7 @@ namespace antlrcpp {
 		}
 		~FinalAction() { if (_enabled) _cleanUp(); }
 
-		void disable() { _enabled = false; }
+		void disable() noexcept { _enabled = false; }
 	private:
 		std::function<void()> _cleanUp;
 		bool _enabled{ true };

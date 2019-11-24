@@ -21,8 +21,8 @@ namespace antlrcpp {
 
 	struct ANTLR4CPP_PUBLIC Any
 	{
-		bool isNull() const { return _ptr == nullptr; }
-		bool isNotNull() const { return _ptr != nullptr; }
+		bool isNull() const noexcept { return _ptr == nullptr; }
+		bool isNotNull() const noexcept { return _ptr != nullptr; }
 
 		Any() : _ptr(nullptr) {
 		}
@@ -99,7 +99,8 @@ namespace antlrcpp {
 
 		virtual ~Any();
 
-		virtual bool equals(Any other) const {
+		virtual bool equals(Any other) const noexcept
+		{
 			return _ptr == other._ptr;
 		}
 

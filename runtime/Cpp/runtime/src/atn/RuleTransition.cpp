@@ -17,7 +17,7 @@ RuleTransition::RuleTransition(RuleStartState* ruleStart, size_t ruleIndex, int 
 	this->followState = followState;
 }
 
-Transition::SerializationType RuleTransition::getSerializationType() const {
+Transition::SerializationType RuleTransition::getSerializationType() const noexcept {
 	return RULE;
 }
 

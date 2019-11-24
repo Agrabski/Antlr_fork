@@ -14,28 +14,37 @@ namespace antlr4 {
 		private:
 			static ATNDeserializationOptions defaultOptions;
 
-			bool readOnly;
-			bool verifyATN;
-			bool generateRuleBypassTransitions;
+			bool readOnly =false;
+			bool verifyATN = true;
+			bool generateRuleBypassTransitions = false;
 
 		public:
-			ATNDeserializationOptions();
+			constexpr ATNDeserializationOptions() noexcept = default;
 			ATNDeserializationOptions(ATNDeserializationOptions* options);
 			ATNDeserializationOptions(ATNDeserializationOptions const&) = default;
 			virtual ~ATNDeserializationOptions();
 			ATNDeserializationOptions& operator=(ATNDeserializationOptions const&) = default;
 
-			static const ATNDeserializationOptions& getDefaultOptions();
+			static const ATNDeserializationOptions& getDefaultOptions() noexcept;
 
-			bool isReadOnly();
+			constexpr bool isReadOnly() const noexcept
+			{
+				return readOnly;
+			}
 
 			void makeReadOnly();
 
-			bool isVerifyATN();
+			constexpr bool isVerifyATN() const noexcept
+			{
+				return verifyATN;
+			}
 
 			void setVerifyATN(bool verify);
 
-			bool isGenerateRuleBypassTransitions();
+			constexpr bool isGenerateRuleBypassTransitions() const noexcept
+			{
+				return generateRuleBypassTransitions;
+			}
 
 			void setGenerateRuleBypassTransitions(bool generate);
 
@@ -43,7 +52,6 @@ namespace antlr4 {
 			virtual void throwIfReadOnly();
 
 		private:
-			void InitializeInstanceFields();
 		};
 
 	} // namespace atn

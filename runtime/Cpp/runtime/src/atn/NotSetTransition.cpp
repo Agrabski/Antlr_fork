@@ -13,7 +13,7 @@ using namespace antlr4::atn;
 NotSetTransition::NotSetTransition(ATNState* target, const misc::IntervalSet& set) : SetTransition(target, set) {
 }
 
-Transition::SerializationType NotSetTransition::getSerializationType() const {
+Transition::SerializationType NotSetTransition::getSerializationType() const noexcept {
 	return NOT_SET;
 }
 

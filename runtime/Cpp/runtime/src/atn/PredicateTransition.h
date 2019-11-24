@@ -24,7 +24,7 @@ namespace atn {
 
     PredicateTransition(ATNState *target, size_t ruleIndex, size_t predIndex, bool isCtxDependent);
 
-    SerializationType getSerializationType() const override;
+    SerializationType getSerializationType() const noexcept override;
 
     bool isEpsilon() const override;
     bool matches(size_t symbol, size_t minVocabSymbol, size_t maxVocabSymbol) const override;

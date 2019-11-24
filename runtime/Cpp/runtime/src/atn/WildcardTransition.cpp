@@ -12,7 +12,7 @@ using namespace antlr4::atn;
 WildcardTransition::WildcardTransition(ATNState* target) : Transition(target) {
 }
 
-Transition::SerializationType WildcardTransition::getSerializationType() const {
+Transition::SerializationType WildcardTransition::getSerializationType() const noexcept {
 	return WILDCARD;
 }
 

@@ -6,6 +6,8 @@
 #pragma once
 
 #include "ProxyErrorListener.h"
+#include "atn/ATNState.h"
+#include "atn/ATNSimulator.h"
 #include <string_view>
 
 namespace antlr4
@@ -16,9 +18,9 @@ namespace antlr4
 	public:
 		static const size_t EOF = std::numeric_limits<size_t>::max();
 
-		Recognizer();
+		Recognizer() noexcept;
 		Recognizer(Recognizer const&) = delete;
-		virtual ~Recognizer();
+		virtual ~Recognizer() = default;
 
 		Recognizer& operator=(Recognizer const&) = delete;
 
@@ -76,7 +78,7 @@ namespace antlr4
 		/// @returns The ATN interpreter used by the recognizer for prediction.
 		template <class T>
 		T* getInterpreter() const {
-			return dynamic_cast<T*>(_interpreter);
+			return dynamic_cast<T*>(_interpreter.get());
 		}
 
 		/**
@@ -85,7 +87,7 @@ namespace antlr4
 		 * @param interpreter The ATN interpreter used by the recognizer for
 		 * prediction.
 		 */
-		void setInterpreter(atn::ATNSimulator* interpreter);
+		void setInterpreter(std::unique_ptr<atn::ATNSimulator>&& interpreter) noexcept;
 
 		/// What is the error header, normally line/character position information?
 		virtual std::string getErrorHeader(RecognitionException* e);
@@ -122,7 +124,7 @@ namespace antlr4
 
 		virtual void action(RuleContext* localctx, size_t ruleIndex, size_t actionIndex);
 
-		virtual size_t getState() const;
+		virtual size_t getState() const noexcept;
 
 		// Get the ATN used by the recognizer for prediction.
 		virtual const atn::ATN& getATN() const noexcept = 0;
@@ -135,7 +137,7 @@ namespace antlr4
 		///  invoking rules. Combine this and we have complete ATN
 		///  configuration information.
 		/// </summary>
-		void setState(size_t atnState);
+		void setState(size_t atnState) noexcept;
 
 		virtual IntStream* getInputStream() = 0;
 
@@ -147,7 +149,7 @@ namespace antlr4
 		void setTokenFactory(TokenFactory<T1>* input);
 
 	protected:
-		atn::ATNSimulator* _interpreter; // Set and deleted in descendants (or the profiler).
+		std::unique_ptr<atn::ATNSimulator> _interpreter = nullptr;
 
 		// Mutex to manage synchronized access for multithreading.
 		std::mutex _mutex;
@@ -158,10 +160,7 @@ namespace antlr4
 
 		ProxyErrorListener _proxListener; // Manages a collection of listeners.
 
-		size_t _stateNumber;
-
-		void InitializeInstanceFields();
-
+		size_t _stateNumber = atn::ATNState::INVALID_STATE_NUMBER;
 	};
 
 } // namespace antlr4

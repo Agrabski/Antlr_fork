@@ -7,6 +7,8 @@
 
 #include "ANTLRErrorStrategy.h"
 #include "misc/IntervalSet.h"
+#include "atn/PredictionContext.h"
+
 
 namespace antlr4 {
 

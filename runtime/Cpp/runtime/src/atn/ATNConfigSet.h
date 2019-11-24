@@ -20,7 +20,7 @@ namespace antlr4 {
 
 			// TO_DO: these fields make me pretty uncomfortable but nice to pack up info together, saves recomputation
 			// TO_DO: can we track conflicts as they are added to save scanning configs later?
-			size_t uniqueAlt;
+			size_t uniqueAlt = 0;
 
 			/** Currently this is only used when we detect SLL conflict; this does
 			 *  not necessarily represent the ambiguous alternatives. In fact,
@@ -31,18 +31,18 @@ namespace antlr4 {
 
 			// Used in parser and lexer. In lexer, it indicates we hit a pred
 			// while computing a closure operation.  Don't make a DFA state from this.
-			bool hasSemanticContext;
-			bool dipsIntoOuterContext;
+			bool hasSemanticContext = false;
+			bool dipsIntoOuterContext = false;
 
 			/// Indicates that this configuration set is part of a full context
 			/// LL prediction. It will be used to determine how to merge $. With SLL
 			/// it's a wildcard whereas it is not for LL context merge.
 			const bool fullCtx;
 
-			ATNConfigSet(bool fullCtx = true);
+			ATNConfigSet(bool fullCtx = true) noexcept;
 			ATNConfigSet(const Ref<ATNConfigSet>& old);
 
-			virtual ~ATNConfigSet();
+			virtual ~ATNConfigSet() = default;
 
 			virtual bool add(const Ref<ATNConfig>& config);
 
@@ -71,19 +71,19 @@ namespace antlr4 {
 			antlrcpp::BitSet getAlts();
 			virtual std::vector<Ref<SemanticContext>> getPredicates();
 
-			virtual Ref<ATNConfig> get(size_t i) const;
+			Ref<ATNConfig> get(size_t i) const noexcept;
 
-			virtual void optimizeConfigs(ATNSimulator* interpreter);
+			void optimizeConfigs(not_null<ATNSimulator*> interpreter);
 
-			bool addAll(const Ref<ATNConfigSet>& other);
+			bool addAll(ATNConfigSet const& other);
 
 			bool operator == (const ATNConfigSet& other);
 			virtual size_t hashCode();
-			virtual size_t size();
-			virtual bool isEmpty();
-			virtual void clear();
-			virtual bool isReadonly();
-			virtual void setReadonly(bool readonly);
+			size_t size() const noexcept;
+			bool isEmpty() const noexcept;
+			void clear();
+			bool isReadonly() const noexcept;
+			void setReadonly(bool readonly) noexcept;
 			virtual std::string toString();
 
 		protected:
@@ -92,18 +92,16 @@ namespace antlr4 {
 			/// the sets and they must not change. This does not protect the other
 			/// fields; in particular, conflictingAlts is set after
 			/// we've made this readonly.
-			bool _readonly;
+			bool _readonly = false;
 
 			virtual size_t getHash(ATNConfig* c); // Hash differs depending on set type.
 
 		private:
-			size_t _cachedHashCode;
+			size_t _cachedHashCode = 0;
 
 			/// All configs but hashed by (s, i, _, pi) not including context. Wiped out
 			/// when we go readonly as this set becomes a DFA state.
 			std::unordered_map<size_t, ATNConfig*> _configLookup;
-
-			void InitializeInstanceFields();
 		};
 
 	} // namespace atn
