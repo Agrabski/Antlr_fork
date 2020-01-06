@@ -68,15 +68,9 @@ typedef i32string UTF32String;
 typedef std::u32string UTF32String;
 #endif
 
-#ifdef ANTLR4CPP_EXPORTS
-#define ANTLR4CPP_PUBLIC __declspec(dllexport)
-#else
-#ifdef ANTLR4CPP_STATIC
+
 #define ANTLR4CPP_PUBLIC
-#else
-#define ANTLR4CPP_PUBLIC __declspec(dllimport)
-#endif
-#endif
+
 
 #if defined(_MSC_VER) && !defined(__clang__)
 // clang-cl should escape this to prevent [ignored-attributes].

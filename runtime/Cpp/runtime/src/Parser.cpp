@@ -34,40 +34,21 @@ std::map<std::vector<uint16_t>, atn::ATN> Parser::bypassAltsAtnCache;
 Parser::TraceListener::TraceListener(Parser* outerInstance_) : outerInstance(outerInstance_) {
 }
 
-Parser::TraceListener::~TraceListener() {
-}
-
-void Parser::TraceListener::enterEveryRule(ParserRuleContext* ctx) {
+void Parser::TraceListener::enterEveryRule(not_null < ParserRuleContext*> ctx)
+{
 	std::cout << "enter   " << outerInstance->getRuleNames()[ctx->getRuleIndex()]
 		<< ", LT(1)=" << outerInstance->_input->LT(1)->getText() << std::endl;
 }
 
-void Parser::TraceListener::visitTerminal(tree::TerminalNode* node) {
-}
-
-void Parser::TraceListener::visitErrorNode(tree::ErrorNode* /*node*/) {
-}
-
-void Parser::TraceListener::exitEveryRule(ParserRuleContext* ctx) {
+void Parser::TraceListener::exitEveryRule(not_null < ParserRuleContext*> ctx)
+{
 	std::cout << "exit    " << outerInstance->getRuleNames()[ctx->getRuleIndex()]
 		<< ", LT(1)=" << outerInstance->_input->LT(1)->getText() << std::endl;
 }
 
 Parser::TrimToSizeListener Parser::TrimToSizeListener::INSTANCE;
 
-Parser::TrimToSizeListener::~TrimToSizeListener() {
-}
-
-void Parser::TrimToSizeListener::enterEveryRule(ParserRuleContext* /*ctx*/) {
-}
-
-void Parser::TrimToSizeListener::visitTerminal(tree::TerminalNode* /*node*/) {
-}
-
-void Parser::TrimToSizeListener::visitErrorNode(tree::ErrorNode* /*node*/) {
-}
-
-void Parser::TrimToSizeListener::exitEveryRule(ParserRuleContext* ctx) {
+void Parser::TrimToSizeListener::exitEveryRule(not_null < ParserRuleContext*> ctx) {
 	ctx->children.shrink_to_fit();
 }
 

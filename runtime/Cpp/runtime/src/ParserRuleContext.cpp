@@ -53,12 +53,6 @@ void ParserRuleContext::copyFrom(ParserRuleContext* ctx) {
 	}
 }
 
-void ParserRuleContext::enterRule(tree::ParseTreeListener* /*listener*/) {
-}
-
-void ParserRuleContext::exitRule(tree::ParseTreeListener* /*listener*/) {
-}
-
 tree::TerminalNode* ParserRuleContext::addChild(std::unique_ptr<tree::TerminalNode>&& t)
 {
 	t->setParent(this);

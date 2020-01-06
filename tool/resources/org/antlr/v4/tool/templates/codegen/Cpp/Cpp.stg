@@ -533,8 +533,10 @@ RuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs, namedAction
 {l | <altLabelCtxs.(l)>}; separator = "\n">
 <parser.name>::<currentRule.ctxType>* <parser.name>::<currentRule.name>( antlr4::ParserRuleContext *parent)
 {
+#ifdef PARSER_DEBUG
 	if(parent != nullptr)
 		std::cout\<\<parent->getText()\<\<std::endl;
+#endif
 	auto _localctx = std::make_unique\<<currentRule.ctxType>\>(parent, getState()<currentRule.args:{a | , <a.name>}>);//549
 	auto ctx = _localctx.get();//549
 	enterRule(std::move(_localctx), <currentRule.startState>, <parser.name>::Rule<currentRule.name; format = "cap">);
@@ -592,14 +594,19 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 
 <parser.name>::<currentRule.ctxType>* <parser.name>::<currentRule.name>(int precedence<currentRule.args:{a | , <a>}>, antlr4::ParserRuleContext *parent)
 {
+#ifdef PARSER_DEBUG
 	if(parent != nullptr)
 		std::cout\<\<parent->getText()\<\<std::endl;
+#endif
 	antlr4::ParserRuleContext *parentContext = parent;
 	size_t parentState = getState();
 	auto _localctx = std::make_unique\<<currentRule.ctxType>\>(parentContext, parentState<currentRule.args:
 {a | , <a.name>}>);//610
 	auto ctx = _localctx.get();//609
-	parentContext->addChild(std::move(_localctx));
+	if(parentContext != nullptr)
+		parentContext->addChild(std::move(_localctx));
+	else
+		_root = std::move(_localctx);
 	decltype(_localctx) previousContext;
 	(void)previousContext; // Silence compiler, in case the context is not used by generated code.
 	size_t startState = <currentRule.startState>;
@@ -1198,14 +1205,14 @@ CaptureNextTokenTypeHeader(d) ::= "<! Required but unused. !>"
 CaptureNextTokenType(d) ::= "<d.varName> = _input->LA(1);"
 
 ListenerDispatchMethodHeader(method) ::= <<
-void <if (method.isEnter)>enter<else>exit<endif>Rule(antlr4::tree::ParseTreeListener *listener) final;
+void <if (method.isEnter)>enter<else>exit<endif>Rule(not_null\<antlr4::tree::ParseTreeListener*> listener) final;
 >>
 ListenerDispatchMethod(method) ::= <<
-void <parser.name>::<struct.name>::<if (method.isEnter)>enter<else>exit<endif>Rule(tree::ParseTreeListener *listener)
+void <parser.name>::<struct.name>::<if (method.isEnter)>enter<else>exit<endif>Rule(not_null\<tree::ParseTreeListener*> listener)
 {
-	auto parserListener = dynamic_cast\<<parser.grammarName>Listener *>(listener);//1212
+	auto parserListener = dynamic_cast\<<parser.grammarName>Listener *>(listener.get());//1212
 	if (parserListener != nullptr)
-		parserListener-><if(method.isEnter)>enter<else>exit<endif><struct.derivedFromName; format="cap">(this);
+		parserListener-><if(method.isEnter)>enter<else>exit<endif>(this);
 }
 >>
 

@@ -76,8 +76,8 @@ namespace antlr4 {
 
 		// Double dispatch methods for listeners
 
-		virtual void enterRule(tree::ParseTreeListener* listener);
-		virtual void exitRule(tree::ParseTreeListener* listener);
+		virtual void enterRule(not_null<tree::ParseTreeListener*> listener) {}
+		virtual void exitRule(not_null<tree::ParseTreeListener*> listener) {}
 
 		/** Add a token leaf node child and force its parent to be this node. */
 		tree::TerminalNode* addChild(std::unique_ptr<tree::TerminalNode>&& t);

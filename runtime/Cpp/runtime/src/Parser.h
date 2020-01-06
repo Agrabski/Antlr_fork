@@ -22,12 +22,12 @@ namespace antlr4 {
 		class TraceListener : public tree::ParseTreeListener {
 		public:
 			TraceListener(Parser* outerInstance);
-			virtual ~TraceListener();
+			virtual ~TraceListener() = default;
 
-			void enterEveryRule(ParserRuleContext* ctx) override;
-			void visitTerminal(tree::TerminalNode* node) override;
-			void visitErrorNode(tree::ErrorNode* node) override;
-			void exitEveryRule(ParserRuleContext* ctx) override;
+			void enterEveryRule(not_null<antlr4::ParserRuleContext*> ctx) override;
+			void visitTerminal(not_null<tree::TerminalNode*>) override {}
+			void visitErrorNode(not_null<tree::ErrorNode*>) override {}
+			void exitEveryRule(not_null<antlr4::ParserRuleContext*> ctx) override;
 
 		private:
 			Parser* const outerInstance;
@@ -37,12 +37,12 @@ namespace antlr4 {
 		public:
 			static TrimToSizeListener INSTANCE;
 
-			virtual ~TrimToSizeListener();
+			virtual ~TrimToSizeListener() = default;
 
-			void enterEveryRule(ParserRuleContext* ctx) override;
-			void visitTerminal(tree::TerminalNode* node) override;
-			void visitErrorNode(tree::ErrorNode* node) override;
-			void exitEveryRule(ParserRuleContext* ctx) override;
+			void enterEveryRule(not_null<antlr4::ParserRuleContext*> ctx) override{}
+			void visitTerminal(not_null<tree::TerminalNode*>) override {}
+			void visitErrorNode(not_null<tree::ErrorNode*>) override {}
+			void exitEveryRule(not_null<antlr4::ParserRuleContext*> ctx) override;
 		};
 
 		Parser(TokenStream* input);

@@ -138,14 +138,14 @@ public:
 <namedActions.baselistenerdeclarations>
 
 <file.listenerNames: {lname |
-	void enter<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
-	void exit<lname; format="cap">(<file.parserName>::<lname; format = "cap">Context * /*ctx*/) override { \}
+	void enter(not_null\<<file.parserName>::<lname; format = "cap">Context*> ) override { \}
+	void exit(not_null\<<file.parserName>::<lname; format = "cap">Context*>) override { \}
 }; separator="\n">
 
-	void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
-	void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
-	void visitTerminal(antlr4::tree::TerminalNode * /*node*/) override { }
-	void visitErrorNode(antlr4::tree::ErrorNode * /*node*/) override { }
+	void enterEveryRule(not_null\<antlr4::ParserRuleContext *> ) override { }
+	void exitEveryRule(not_null\<antlr4::ParserRuleContext *> ) override { }
+	void visitTerminal(not_null\<antlr4::tree::TerminalNode *> ) override { }
+	void visitErrorNode(not_null\<antlr4::tree::ErrorNode *> ) override { }
 	
 <if (namedActions.baselistenermembers)>
 private:	
@@ -198,8 +198,8 @@ public:
 <namedActions.listenerdeclarations>
 
 <file.listenerNames: {lname |
-	virtual void enter<lname; format = "cap">(<file.parserName>::<lname; format ="cap">Context *ctx) = 0;
-	virtual void exit<lname; format = "cap">(<file.parserName>::<lname; format="cap">Context *ctx) = 0;
+	virtual void enter(not_null\<<file.parserName>::<lname; format ="cap">Context *>) = 0;
+	virtual void exit(not_null\<<file.parserName>::<lname; format="cap">Context *>) = 0;
 }; separator = "\n">
 
 <if (namedActions.listenermembers)>

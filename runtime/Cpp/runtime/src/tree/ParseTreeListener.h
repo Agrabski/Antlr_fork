@@ -6,6 +6,7 @@
 #pragma once
 
 #include "antlr4-common.h"
+#include "support/CPPUtils.h"
 
 namespace antlr4 {
 	namespace tree {
@@ -25,10 +26,10 @@ namespace antlr4 {
 		public:
 			virtual ~ParseTreeListener() = default;
 
-			virtual void visitTerminal(TerminalNode* node) = 0;
-			virtual void visitErrorNode(ErrorNode* node) = 0;
-			virtual void enterEveryRule(ParserRuleContext* ctx) = 0;
-			virtual void exitEveryRule(ParserRuleContext* ctx) = 0;
+			virtual void enterEveryRule(not_null<antlr4::ParserRuleContext*>) = 0;
+			virtual void exitEveryRule(not_null<antlr4::ParserRuleContext*>) = 0;
+			virtual void visitTerminal(not_null<antlr4::tree::TerminalNode*>) = 0;
+			virtual void visitErrorNode(not_null<antlr4::tree::ErrorNode*>) = 0;
 
 			bool operator == (const ParseTreeListener& other) const noexcept
 			{

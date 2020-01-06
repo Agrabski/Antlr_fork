@@ -5,6 +5,9 @@
 #include <sstream>
 #include "AergiaCpp14Parser.h"
 #include "AergiaCpp14Lexer.h"
+#include <gsl.h>
+
+
 
 class AntlrHelper
 {
@@ -17,7 +20,7 @@ public:
 	{
 	}
 
-	AergiaCpp14Parser* getParser() { return &parser; }
+	AergiaCpp14Parser* getParser() noexcept { return &parser; }
 };
 
 void x()
@@ -26,6 +29,7 @@ void x()
 	std::stringstream stream(s);
 	AntlrHelper helper(stream);
 	std::cout << helper.getParser()->translationunit()->getText();
+
 
 }
 
