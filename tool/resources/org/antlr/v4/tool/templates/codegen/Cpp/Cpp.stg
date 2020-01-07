@@ -1055,8 +1055,7 @@ ListLabelRef(t) ::= "<ctx(t)>-><ListLabelName(t.name)>"
 SetAttrHeader(t) ::= "<! Required but unused. !>"
 SetAttr(s,rhsChunks) ::= "<ctx(s)>-><s.name> = <rhsChunks>;"
 
-InputSymbolType() ::= "<file.InputSymbolType; null =
-{Token}> *"
+InputSymbolType() ::= "<file.InputSymbolType; null ={Token}> *"
 
 TokenPropertyRef_textHeader(t) ::= "<! Required but unused. !>"
 TokenPropertyRef_text(t) ::= <<(<ctx(t)>-><t.label> != nullptr ? <ctx(t)>-><t.label>->getText() : "")>>
@@ -1108,12 +1107,9 @@ SetNonLocalAttr(s, rhsChunks) ::=
 	"SetNonLocalAttr(s, rhsChunks) ((<s.ruleName; format=\"cap\">Context)getInvokingContext(<s.ruleIndex>)).<s.name> = <rhsChunks>;"
 
 AddToLabelListHeader(a) ::= "<! Required but unused. !>"
-AddToLabelList(a) ::= <<
-<ctx(a.label)>-><a.listName>.push_back(<labelref(a.label)>);
->>
+AddToLabelList(a) ::= <<<ctx(a.label)>-><a.listName>.push_back(<labelref(a.label)>);>>
 
-TokenLabelType() ::= "<file.TokenLabelType; null =
-{Token}> *"
+TokenLabelType() ::= "<file.TokenLabelType; null ={Token}> *"
 
 TokenDeclHeader(t) ::= "antlr4::<TokenLabelType()><t.name> = nullptr;"
 TokenDecl(t) ::= "<! Variable Declaration !>"
