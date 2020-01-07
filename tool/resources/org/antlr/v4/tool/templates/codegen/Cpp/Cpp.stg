@@ -618,8 +618,7 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 	auto onExit = finally([=,&previousContext,&_localctx]
 {
 	<if (finallyAction)><finallyAction><endif>
-		if(previousContext != nullptr)
-			unrollRecursionContexts(parentContext, std::move(previousContext));
+		unrollRecursionContexts(parentContext, std::move(previousContext));
 	});
 	try
 {

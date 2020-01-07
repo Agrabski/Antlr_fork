@@ -7,7 +7,7 @@
 
 #include "SLRParser.h"
 
-#define PARSER_DEBUG
+
 using namespace antlrcpp;
 using namespace antlr4;
 
@@ -189,8 +189,7 @@ SLRParser::ExpressionContext* SLRParser::expression(int precedence, antlr4::Pars
 
 	auto onExit = finally([=,&previousContext,&_localctx]
 {
-		if(previousContext != nullptr)
-			unrollRecursionContexts(parentContext, std::move(previousContext));
+		unrollRecursionContexts(parentContext, std::move(previousContext));
 	});
 	try
 {

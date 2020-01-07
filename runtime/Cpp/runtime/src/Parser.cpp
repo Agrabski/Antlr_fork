@@ -370,14 +370,16 @@ void Parser::pushNewRecursionContext(ParserRuleContext* localctx, std::unique_pt
 
 void Parser::unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx) {
 	_precedenceStack.pop_back();
-	currentctx->stop = _input->LT(-1);
+	if (currentctx != nullptr)
+	{
+		currentctx->stop = _input->LT(-1);
 
-	// hook into tree
-	currentctx->parent = parentctx;
+		// hook into tree
+		currentctx->parent = parentctx;
 
-	if (_buildParseTrees && parentctx != nullptr) {
-		// add return ctx into invoking rule's tree
-		parentctx->addChild(std::move(currentctx));
+		if (_buildParseTrees && parentctx != nullptr && currentctx != nullptr)
+			// add return ctx into invoking rule's tree
+			parentctx->addChild(std::move(currentctx));
 	}
 }
 
