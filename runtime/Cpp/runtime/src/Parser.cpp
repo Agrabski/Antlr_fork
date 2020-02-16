@@ -352,22 +352,6 @@ void Parser::enterRecursionRule(ParserRuleContext* localctx, size_t state, size_
 		triggerEnterRuleEvent(localctx); // simulates rule entry for left-recursive rules
 	}
 }
-
-void Parser::pushNewRecursionContext(ParserRuleContext* localctx, std::unique_ptr<ParserRuleContext>&& prevContext, size_t state, size_t /*ruleIndex*/) {
-	prevContext->parent = localctx;
-	prevContext->invokingState = state;
-	prevContext->stop = _input->LT(-1);
-
-	localctx->start = prevContext->start;
-	if (_buildParseTrees) {
-		localctx->addChild(std::move(prevContext));
-	}
-
-	if (_parseListeners.size() > 0) {
-		triggerEnterRuleEvent(localctx); // simulates rule entry for left-recursive rules
-	}
-}
-
 void Parser::unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx) {
 	_precedenceStack.pop_back();
 	if (currentctx != nullptr)
@@ -380,6 +364,8 @@ void Parser::unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_p
 		if (_buildParseTrees && parentctx != nullptr && currentctx != nullptr)
 			// add return ctx into invoking rule's tree
 			parentctx->addChild(std::move(currentctx));
+		if (parentctx == nullptr)
+			_root = std::move(currentctx);
 	}
 }
 

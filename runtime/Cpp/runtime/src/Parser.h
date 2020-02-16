@@ -273,7 +273,21 @@ namespace antlr4 {
 		/** Like {@link #enterRule} but for recursive rules.
 		 *  Make the current context the child of the incoming localctx.
 		 */
-		virtual void pushNewRecursionContext(ParserRuleContext* localctx, std::unique_ptr<ParserRuleContext>&& prevContext, size_t state, size_t ruleIndex);
+		void pushNewRecursionContext(std::unique_ptr<ParserRuleContext>&& localctx, ParserRuleContext* prevContext, size_t state, size_t ruleIndex)
+		{
+			localctx->parent = prevContext;
+			localctx->invokingState = state;
+			localctx->stop = _input->LT(-1);
+
+			localctx->start = prevContext->start;
+			if (_buildParseTrees) {
+				prevContext->addChild(std::move(localctx));
+			}
+
+			if (_parseListeners.size() > 0) {
+				triggerEnterRuleEvent(prevContext); // simulates rule entry for left-recursive rules
+			}
+		}
 		virtual void unrollRecursionContexts(ParserRuleContext* parentctx, std::unique_ptr<ParserRuleContext>&& currentctx);
 		virtual ParserRuleContext* getInvokingContext(ParserRuleContext* currentCtx, size_t ruleIndex);
 		bool precpred(RuleContext* localctx, int precedence) override;

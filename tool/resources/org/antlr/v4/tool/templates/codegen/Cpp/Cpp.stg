@@ -607,18 +607,16 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 		parentContext->addChild(std::move(_localctx));
 	else
 		_root = std::move(_localctx);
-	decltype(_localctx) previousContext;
-	(void)previousContext; // Silence compiler, in case the context is not used by generated code.
 	size_t startState = <currentRule.startState>;
 	enterRecursionRule(ctx, <currentRule.startState>, <parser.name>::Rule<currentRule.name; format = "cap">, precedence);
 
 		<namedActions.init>
 <! TODO: untested !>		<locals; separator = "\n">
 
-	auto onExit = finally([=,&previousContext,&_localctx]
+	auto onExit = finally([=,&_localctx]
 {
 	<if (finallyAction)><finallyAction><endif>
-		unrollRecursionContexts(parentContext, std::move(previousContext));
+		unrollRecursionContexts(parentContext, std::move(_localctx));
 	});
 	try
 {
@@ -633,6 +631,7 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 		_localctx->exception = std::current_exception();
 		_errHandler->recover(this, ctx->exception, ctx);
 	}
+	onExit();
 	return ctx;
 }
 >>
@@ -1239,39 +1238,6 @@ ctx(actionChunk) ::= "dynamic_cast\<<actionChunk.ctx.name> *>(_localctx)"//1240
 recRuleAltPredicate(ruleName,opPrec) ::= "precpred(nullptr, <opPrec>)"
 recRuleSetReturnAction(src,name) ::= "recRuleSetReturnAction(src,name) $<name>=$<src>.<name>;"
 recRuleSetStopToken() ::= "ctx->stop = _input->LT(-1);"
-
-recRuleAltStartAction(ruleName, ctxName, label) ::= <<
-<if (label)>_localctx-><label> = previousContext;<endif>
-pushNewRecursionContext(ctx, std::make_unique\<<ctxName>Context>(parentContext, parentState), startState, Rule<ruleName; format = "cap">);
->>
-
-// Separate context variable to avoid frequent pointer type casts.
-recRuleLabeledAltStartAction(ruleName, currentAltLabel, label, isListLabel) ::= <<
-auto newContext = std::make_unique\<<currentAltLabel; format = "cap">Context>(std::make_unique\<<ruleName; format="cap">Context>(parentContext, parentState));
-_localctx = newContext;
-<if(label)>
-<if(isListLabel)>
-newContext-><label>.push_back(previousContext);
-<else>
-newContext-><label> = previousContext;
-<endif>
-<endif>
-pushNewRecursionContext(newContext, startState, Rule<ruleName; format = "cap">);
->>
-
-recRuleReplaceContext(ctxName) ::= <<
-_localctx = std::make_unique\<<ctxName>Context>(_localctx);
-ctx = _localctx;
-if(_localctx != nullptr)
-	previousContext = std::move(_localctx);
->>
-
-recRuleSetPrevCtx() ::= <<
-if (!_parseListeners.empty())
-	triggerExitRuleEvent(ctx);
-if(_localctx != nullptr)
-	previousContext = std::move(_localctx);
->>
 
 /** Using a type to init value map, try to init a type; if not in table
  *	must be an object, default value is "null".

@@ -5,6 +5,8 @@
 #include "../SimpleLeftRecursion/SLRLexer.h"
 #include "../TestUtilities/ApplyTest.hpp"
 #include "../TestUtilities/All.hpp"
+#include "../TestUtilities/GetDepth.hpp"
+#include "../SimpleLeftRecursion/SLRBaseVisitor.h"
 
 
 bool testAST(std::pair<unsigned int, std::string>&);
@@ -25,7 +27,13 @@ int main()
 
 bool testAST(std::pair<unsigned int, std::string>& data)
 {
-	return false;
+	std::stringstream sstream(data.second);
+	antlr4::ANTLRInputStream stream(sstream);
+	SLRLexer lexer(&stream);
+	antlr4::BufferedTokenStream tokenStream(&lexer);
+	SLRParser parser(&tokenStream);
+	auto x = getDepth(parser.expression());
+	return x == data.first;
 }
 
 bool testASTAll()
@@ -33,14 +41,16 @@ bool testASTAll()
 	using p = std::pair<unsigned int, std::string>;
 	std::array testData =
 	{
-		p(1, "1+1"),
-		p(1, "1+1+1"),
-		p(1, "1+1+1+1"),
-		p(1, "2+2"),
-		p(1, "32+54+23"),
-		p(1, "33+43253452+322222")
+		p(2, "1+1"),
+		p(3, "1+1+1"),
+		p(4, "1+1+1+1"),
+		p(2, "2+2"),
+		p(3, "32+54+23"),
+		p(3, "33+43253452+322222")
 	};
-	return applyTest(testData, testAST);
+	if (applyTest(testData, testAST))
+		return true;
+	return false;
 
 }
 

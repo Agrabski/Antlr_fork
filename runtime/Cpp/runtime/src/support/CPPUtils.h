@@ -29,6 +29,7 @@ namespace antlrcpp {
 			other._enabled = false; // Don't trigger the lambda after ownership has moved.
 		}
 		~FinalAction() { if (_enabled) _cleanUp(); }
+		void operator()() { if (_enabled) _cleanUp(); _enabled = false; }
 
 		void disable() noexcept { _enabled = false; }
 	private:

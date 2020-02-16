@@ -15,10 +15,6 @@
 class  SLRBaseVisitor : public SLRVisitor {
 public:
 
-	antlrcpp::Any visitX(SLRParser::XContext *ctx) override {
-		return visitChildren(ctx);
-	}
-
 	antlrcpp::Any visitExpression(SLRParser::ExpressionContext *ctx) override {
 		return visitChildren(ctx);
 	}

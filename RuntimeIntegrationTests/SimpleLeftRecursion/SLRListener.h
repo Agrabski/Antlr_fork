@@ -1,5 +1,5 @@
 
-// Generated from D:\Programming\antlr4\RuntimeIntegrationTests\SimpleLeftRecursion\SLR.g4 by ANTLR 4.7.2
+// Generated from SLR.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -13,9 +13,6 @@
  */
 class  SLRListener : public antlr4::tree::ParseTreeListener {
 public:
-
-	virtual void enter(not_null<SLRParser::XContext *>) = 0;
-	virtual void exit(not_null<SLRParser::XContext *>) = 0;
 
 	virtual void enter(not_null<SLRParser::ExpressionContext *>) = 0;
 	virtual void exit(not_null<SLRParser::ExpressionContext *>) = 0;

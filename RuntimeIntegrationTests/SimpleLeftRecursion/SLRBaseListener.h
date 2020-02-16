@@ -1,5 +1,5 @@
 
-// Generated from D:\Programming\antlr4\RuntimeIntegrationTests\SimpleLeftRecursion\SLR.g4 by ANTLR 4.7.2
+// Generated from SLR.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -15,9 +15,6 @@
  */
 class  SLRBaseListener : public SLRListener {
 public:
-
-	void enter(not_null<SLRParser::XContext*> ) override { }
-	void exit(not_null<SLRParser::XContext*>) override { }
 
 	void enter(not_null<SLRParser::ExpressionContext*> ) override { }
 	void exit(not_null<SLRParser::ExpressionContext*>) override { }

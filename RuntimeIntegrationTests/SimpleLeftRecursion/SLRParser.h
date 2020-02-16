@@ -1,5 +1,5 @@
 
-// Generated from D:\Programming\antlr4\RuntimeIntegrationTests\SimpleLeftRecursion\SLR.g4 by ANTLR 4.7.2
+// Generated from SLR.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -19,7 +19,7 @@ public:
 
 	enum
 {
-		RuleX = 0, RuleExpression = 1
+		RuleExpression = 0
 	};
 
 	SLRParser(antlr4::TokenStream *input);
@@ -33,24 +33,7 @@ public:
 	antlr4::dfa::Vocabulary& getVocabulary() const final;
 
 
-	class XContext;
 	class ExpressionContext; 
-
-	class  XContext : public antlr4::ParserRuleContext
-	{
-	public:
-		XContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-		size_t getRuleIndex() const final;
-		ExpressionContext *expression();
-
-		void enterRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
-		void exitRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
-
-		antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) final;
-	 
-	};
-
-	XContext* x(antlr4::ParserRuleContext *parent = nullptr);
 
 	class  ExpressionContext : public antlr4::ParserRuleContext
 	{
@@ -64,8 +47,6 @@ public:
 
 		void enterRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
 		void exitRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
-
-		antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) final;
 	 
 	};
 

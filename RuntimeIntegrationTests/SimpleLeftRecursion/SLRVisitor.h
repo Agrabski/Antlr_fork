@@ -19,8 +19,6 @@ public:
 	/**
 	 * Visit parse trees produced by SLRParser.
 	 */
-		virtual antlrcpp::Any visitX(SLRParser::XContext *context) = 0;
-
 		virtual antlrcpp::Any visitExpression(SLRParser::ExpressionContext *context) = 0;
 
 
