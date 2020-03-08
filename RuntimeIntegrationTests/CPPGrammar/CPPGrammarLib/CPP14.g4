@@ -685,8 +685,7 @@ virtspecifier: Override | Final;
  */
 
 purespecifier:
-	Assign val = Octalliteral {if($val.text.compareTo("0")!=0) throw new InputMismatchException(this);
-		};
+	Assign val = Octalliteral;
 /*Derived classes*/
 
 baseclause: ':' basespecifierlist;

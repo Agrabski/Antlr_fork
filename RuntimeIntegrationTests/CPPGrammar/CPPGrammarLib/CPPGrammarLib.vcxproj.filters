@@ -21,9 +21,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SimpleLeftRecursion\antlr4-runtime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CPP14BaseListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CPP14Visitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr4-runtime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,5 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CPP14.g4" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
