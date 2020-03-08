@@ -148,10 +148,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SimpleLeftRecursion\antlr4-runtime.h" />
+    <ClInclude Include="CPP14BaseListener.h" />
+    <ClInclude Include="CPP14BaseVisitor.h" />
+    <ClInclude Include="CPP14Lexer.h" />
+    <ClInclude Include="CPP14Listener.h" />
+    <ClInclude Include="CPP14Parser.h" />
+    <ClInclude Include="CPP14Visitor.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CPP14BaseListener.cpp" />
+    <ClCompile Include="CPP14BaseVisitor.cpp" />
+    <ClCompile Include="CPP14Lexer.cpp" />
+    <ClCompile Include="CPP14Listener.cpp" />
+    <ClCompile Include="CPP14Parser.cpp" />
+    <ClCompile Include="CPP14Visitor.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

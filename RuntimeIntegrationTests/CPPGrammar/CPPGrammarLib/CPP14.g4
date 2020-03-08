@@ -1,1940 +1,1278 @@
 /*******************************************************************************
  * The MIT License (MIT)
- *
- * Copyright (c) 2015 Camilo Sanchez (Camiloasc1)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- ******************************************************************************/
+ 
+ Copyright (c) 2015 Camilo Sanchez (Camiloasc1)
+ 
+ Permission is hereby
+ * granted, free of charge, to any person obtaining a copy
+ of this software and associated
+ * documentation files (the "Software"), to deal
+ in the Software without restriction, including
+ * without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to
+ * do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission
+ * notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE
+ * IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT
+ * LIMITED
+ TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN
+ NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ * ****************************************************************************
+ */
 grammar CPP14;
 /*Basic concepts*/
 
-
-translationunit
-   : declarationseq? EOF
-   ;
+translationunit: declarationseq? EOF;
 /*Expressions*/
 
+primaryexpression:
+	literal
+	| This
+	| '(' expression ')'
+	| idexpression
+	| lambdaexpression;
 
-primaryexpression
-   : literal
-   | This
-   | '(' expression ')'
-   | idexpression
-   | lambdaexpression
-   ;
+idexpression: unqualifiedid | qualifiedid;
 
-idexpression
-   : unqualifiedid
-   | qualifiedid
-   ;
+unqualifiedid:
+	Identifier
+	| operatorfunctionid
+	| conversionfunctionid
+	| literaloperatorid
+	| '~' classname
+	| '~' decltypespecifier
+	| templateid;
 
-unqualifiedid
-   : Identifier
-   | operatorfunctionid
-   | conversionfunctionid
-   | literaloperatorid
-   | '~' classname
-   | '~' decltypespecifier
-   | templateid
-   ;
+qualifiedid: nestednamespecifier Template? unqualifiedid;
 
-qualifiedid
-   : nestednamespecifier Template? unqualifiedid
-   ;
+nestednamespecifier:
+	'::'
+	| thetypename '::'
+	| namespacename '::'
+	| decltypespecifier '::'
+	| nestednamespecifier Identifier '::'
+	| nestednamespecifier Template? simpletemplateid '::';
 
-nestednamespecifier
-   : '::'
-   | thetypename '::'
-   | namespacename '::'
-   | decltypespecifier '::'
-   | nestednamespecifier Identifier '::'
-   | nestednamespecifier Template? simpletemplateid '::'
-   ;
+lambdaexpression:
+	lambdaintroducer lambdadeclarator? compoundstatement;
 
-lambdaexpression
-   : lambdaintroducer lambdadeclarator? compoundstatement
-   ;
+lambdaintroducer: '[' lambdacapture? ']';
 
-lambdaintroducer
-   : '[' lambdacapture? ']'
-   ;
+lambdacapture:
+	capturedefault
+	| capturelist
+	| capturedefault ',' capturelist;
 
-lambdacapture
-   : capturedefault
-   | capturelist
-   | capturedefault ',' capturelist
-   ;
+capturedefault: '&' | '=';
 
-capturedefault
-   : '&'
-   | '='
-   ;
+capturelist: capture '...'? | capturelist ',' capture '...'?;
 
-capturelist
-   : capture '...'?
-   | capturelist ',' capture '...'?
-   ;
+capture: simplecapture | initcapture;
 
-capture
-   : simplecapture
-   | initcapture
-   ;
+simplecapture: Identifier | '&' Identifier | This;
 
-simplecapture
-   : Identifier
-   | '&' Identifier
-   | This
-   ;
+initcapture:
+	Identifier initializer
+	| '&' Identifier initializer;
 
-initcapture
-   : Identifier initializer
-   | '&' Identifier initializer
-   ;
+lambdadeclarator:
+	'(' parameterdeclarationclause ')' Mutable? exceptionspecification? attributespecifierseq?
+		trailingreturntype?;
 
-lambdadeclarator
-   : '(' parameterdeclarationclause ')' Mutable? exceptionspecification? attributespecifierseq? trailingreturntype?
-   ;
-
-postfixexpression
-   : primaryexpression
-   | postfixexpression '[' expression ']'
-   | postfixexpression '[' bracedinitlist ']'
-   | postfixexpression '(' expressionlist? ')'
-   | simpletypespecifier '(' expressionlist? ')'
-   | typenamespecifier '(' expressionlist? ')'
-   | simpletypespecifier bracedinitlist
-   | typenamespecifier bracedinitlist
-   | postfixexpression '.' Template? idexpression
-   | postfixexpression '->' Template? idexpression
-   | postfixexpression '.' pseudodestructorname
-   | postfixexpression '->' pseudodestructorname
-   | postfixexpression '++'
-   | postfixexpression '--'
-   | Dynamic_cast '<' thetypeid '>' '(' expression ')'
-   | Static_cast '<' thetypeid '>' '(' expression ')'
-   | Reinterpret_cast '<' thetypeid '>' '(' expression ')'
-   | Const_cast '<' thetypeid '>' '(' expression ')'
-   | typeidofthetypeid '(' expression ')'
-   | typeidofthetypeid '(' thetypeid ')'
-   ;
+postfixexpression:
+	primaryexpression
+	| postfixexpression '[' expression ']'
+	| postfixexpression '[' bracedinitlist ']'
+	| postfixexpression '(' expressionlist? ')'
+	| simpletypespecifier '(' expressionlist? ')'
+	| typenamespecifier '(' expressionlist? ')'
+	| simpletypespecifier bracedinitlist
+	| typenamespecifier bracedinitlist
+	| postfixexpression '.' Template? idexpression
+	| postfixexpression '->' Template? idexpression
+	| postfixexpression '.' pseudodestructorname
+	| postfixexpression '->' pseudodestructorname
+	| postfixexpression '++'
+	| postfixexpression '--'
+	| Dynamic_cast '<' thetypeid '>' '(' expression ')'
+	| Static_cast '<' thetypeid '>' '(' expression ')'
+	| Reinterpret_cast '<' thetypeid '>' '(' expression ')'
+	| Const_cast '<' thetypeid '>' '(' expression ')'
+	| typeidofthetypeid '(' expression ')'
+	| typeidofthetypeid '(' thetypeid ')';
 /*
-add a middle layer to eliminate duplicated function declarations
-*/
+ add a middle layer to eliminate duplicated function declarations
+ */
 
+typeidofexpr: Typeid_;
 
-typeidofexpr
-   : Typeid_
-   ;
+typeidofthetypeid: Typeid_;
 
-typeidofthetypeid
-   : Typeid_
-   ;
+expressionlist: initializerlist;
 
-expressionlist
-   : initializerlist
-   ;
+pseudodestructorname:
+	nestednamespecifier? thetypename '::' '~' thetypename
+	| nestednamespecifier Template simpletemplateid '::' '~' thetypename
+	| nestednamespecifier? '~' thetypename
+	| '~' decltypespecifier;
 
-pseudodestructorname
-   : nestednamespecifier? thetypename '::' '~' thetypename
-   | nestednamespecifier Template simpletemplateid '::' '~' thetypename
-   | nestednamespecifier? '~' thetypename
-   | '~' decltypespecifier
-   ;
+unaryexpression:
+	postfixexpression
+	| '++' castexpression
+	| '--' castexpression
+	| unaryoperator castexpression
+	| Sizeof unaryexpression
+	| Sizeof '(' thetypeid ')'
+	| Sizeof '...' '(' Identifier ')'
+	| Alignof '(' thetypeid ')'
+	| noexceptexpression
+	| newexpression
+	| deleteexpression;
 
-unaryexpression
-   : postfixexpression
-   | '++' castexpression
-   | '--' castexpression
-   | unaryoperator castexpression
-   | Sizeof unaryexpression
-   | Sizeof '(' thetypeid ')'
-   | Sizeof '...' '(' Identifier ')'
-   | Alignof '(' thetypeid ')'
-   | noexceptexpression
-   | newexpression
-   | deleteexpression
-   ;
+unaryoperator: '|' | '*' | '&' | '+' | '!' | '~' | '-' | 'not';
 
-unaryoperator
-   : '|'
-   | '*'
-   | '&'
-   | '+'
-   | '!'
-   | '~'
-   | '-'
-   | 'not'
-   ;
+newexpression:
+	'::'? New newplacement? newtypeid newinitializer?
+	| '::'? New newplacement? '(' thetypeid ')' newinitializer?;
 
-newexpression
-   : '::'? New newplacement? newtypeid newinitializer?
-   | '::'? New newplacement? '(' thetypeid ')' newinitializer?
-   ;
+newplacement: '(' expressionlist ')';
 
-newplacement
-   : '(' expressionlist ')'
-   ;
+newtypeid: typespecifierseq newdeclarator?;
 
-newtypeid
-   : typespecifierseq newdeclarator?
-   ;
+newdeclarator: ptroperator newdeclarator? | noptrnewdeclarator;
 
-newdeclarator
-   : ptroperator newdeclarator?
-   | noptrnewdeclarator
-   ;
+noptrnewdeclarator:
+	'[' expression ']' attributespecifierseq?
+	| noptrnewdeclarator '[' constantexpression ']' attributespecifierseq?;
 
-noptrnewdeclarator
-   : '[' expression ']' attributespecifierseq?
-   | noptrnewdeclarator '[' constantexpression ']' attributespecifierseq?
-   ;
+newinitializer: '(' expressionlist? ')' | bracedinitlist;
 
-newinitializer
-   : '(' expressionlist? ')'
-   | bracedinitlist
-   ;
+deleteexpression:
+	'::'? Delete castexpression
+	| '::'? Delete '[' ']' castexpression;
 
-deleteexpression
-   : '::'? Delete castexpression
-   | '::'? Delete '[' ']' castexpression
-   ;
+noexceptexpression: Noexcept '(' expression ')';
 
-noexceptexpression
-   : Noexcept '(' expression ')'
-   ;
+castexpression:
+	unaryexpression
+	| '(' thetypeid ')' castexpression;
 
-castexpression
-   : unaryexpression
-   | '(' thetypeid ')' castexpression
-   ;
+pmexpression:
+	castexpression
+	| pmexpression '.*' castexpression
+	| pmexpression '->*' castexpression;
 
-pmexpression
-   : castexpression
-   | pmexpression '.*' castexpression
-   | pmexpression '->*' castexpression
-   ;
+multiplicativeexpression:
+	pmexpression
+	| multiplicativeexpression '*' pmexpression
+	| multiplicativeexpression '/' pmexpression
+	| multiplicativeexpression '%' pmexpression;
 
-multiplicativeexpression
-   : pmexpression
-   | multiplicativeexpression '*' pmexpression
-   | multiplicativeexpression '/' pmexpression
-   | multiplicativeexpression '%' pmexpression
-   ;
+additiveexpression:
+	multiplicativeexpression
+	| additiveexpression '+' multiplicativeexpression
+	| additiveexpression '-' multiplicativeexpression;
 
-additiveexpression
-   : multiplicativeexpression
-   | additiveexpression '+' multiplicativeexpression
-   | additiveexpression '-' multiplicativeexpression
-   ;
+shiftexpression:
+	additiveexpression
+	| shiftexpression shiftoperator additiveexpression;
 
-shiftexpression
-   : additiveexpression
-   | shiftexpression shiftoperator additiveexpression
-   ;
+shiftoperator: RightShift | LeftShift;
 
-shiftoperator
-  : RightShift
-  | LeftShift
-  ;
+relationalexpression:
+	shiftexpression
+	| relationalexpression '<' shiftexpression
+	| relationalexpression '>' shiftexpression
+	| relationalexpression '<=' shiftexpression
+	| relationalexpression '>=' shiftexpression;
 
-relationalexpression
-   : shiftexpression
-   | relationalexpression '<' shiftexpression
-   | relationalexpression '>' shiftexpression
-   | relationalexpression '<=' shiftexpression
-   | relationalexpression '>=' shiftexpression
-   ;
+equalityexpression:
+	relationalexpression
+	| equalityexpression '==' relationalexpression
+	| equalityexpression '!=' relationalexpression;
 
-equalityexpression
-   : relationalexpression
-   | equalityexpression '==' relationalexpression
-   | equalityexpression '!=' relationalexpression
-   ;
+andexpression:
+	equalityexpression
+	| andexpression '&' equalityexpression;
 
-andexpression
-   : equalityexpression
-   | andexpression '&' equalityexpression
-   ;
+exclusiveorexpression:
+	andexpression
+	| exclusiveorexpression '^' andexpression;
 
-exclusiveorexpression
-   : andexpression
-   | exclusiveorexpression '^' andexpression
-   ;
+inclusiveorexpression:
+	exclusiveorexpression
+	| inclusiveorexpression '|' exclusiveorexpression;
 
-inclusiveorexpression
-   : exclusiveorexpression
-   | inclusiveorexpression '|' exclusiveorexpression
-   ;
+logicalandexpression:
+	inclusiveorexpression
+	| logicalandexpression '&&' inclusiveorexpression
+	| logicalandexpression 'and' inclusiveorexpression;
 
-logicalandexpression
-   : inclusiveorexpression
-   | logicalandexpression '&&' inclusiveorexpression
-   | logicalandexpression 'and' inclusiveorexpression
-   ;
+logicalorexpression:
+	logicalandexpression
+	| logicalorexpression '||' logicalandexpression
+	| logicalorexpression 'or' logicalandexpression;
 
-logicalorexpression
-   : logicalandexpression
-   | logicalorexpression '||' logicalandexpression
-   | logicalorexpression 'or' logicalandexpression
-   ;
+conditionalexpression:
+	logicalorexpression
+	| logicalorexpression '?' expression ':' assignmentexpression;
 
-conditionalexpression
-   : logicalorexpression
-   | logicalorexpression '?' expression ':' assignmentexpression
-   ;
+assignmentexpression:
+	conditionalexpression
+	| logicalorexpression assignmentoperator initializerclause
+	| throwexpression;
 
-assignmentexpression
-   : conditionalexpression
-   | logicalorexpression assignmentoperator initializerclause
-   | throwexpression
-   ;
+assignmentoperator:
+	'='
+	| '*='
+	| '/='
+	| '%='
+	| '+='
+	| '-='
+	| RightShiftAssign
+	| LeftShiftAssign
+	| '&='
+	| '^='
+	| '|=';
 
-assignmentoperator
-   : '='
-   | '*='
-   | '/='
-   | '%='
-   | '+='
-   | '-='
-   | RightShiftAssign
-   | LeftShiftAssign
-   | '&='
-   | '^='
-   | '|='
-   ;
+expression:
+	assignmentexpression
+	| expression ',' assignmentexpression;
 
-expression
-   : assignmentexpression
-   | expression ',' assignmentexpression
-   ;
-
-constantexpression
-   : conditionalexpression
-   ;
+constantexpression: conditionalexpression;
 /*Statements*/
 
+statement:
+	labeledstatement
+	| attributespecifierseq? expressionstatement
+	| attributespecifierseq? compoundstatement
+	| attributespecifierseq? selectionstatement
+	| attributespecifierseq? iterationstatement
+	| attributespecifierseq? jumpstatement
+	| declarationstatement
+	| attributespecifierseq? tryblock;
 
-statement
-   : labeledstatement
-   | attributespecifierseq? expressionstatement
-   | attributespecifierseq? compoundstatement
-   | attributespecifierseq? selectionstatement
-   | attributespecifierseq? iterationstatement
-   | attributespecifierseq? jumpstatement
-   | declarationstatement
-   | attributespecifierseq? tryblock
-   ;
+labeledstatement:
+	attributespecifierseq? Identifier ':' statement
+	| attributespecifierseq? Case constantexpression ':' statement
+	| attributespecifierseq? Default ':' statement;
 
-labeledstatement
-   : attributespecifierseq? Identifier ':' statement
-   | attributespecifierseq? Case constantexpression ':' statement
-   | attributespecifierseq? Default ':' statement
-   ;
+expressionstatement: expression? ';';
 
-expressionstatement
-   : expression? ';'
-   ;
+compoundstatement: '{' statementseq? '}';
 
-compoundstatement
-   : '{' statementseq? '}'
-   ;
+statementseq: statement | statementseq statement;
 
-statementseq
-   : statement
-   | statementseq statement
-   ;
+selectionstatement:
+	If '(' condition ')' statement
+	| If '(' condition ')' statement Else statement
+	| Switch '(' condition ')' statement;
 
-selectionstatement
-   : If '(' condition ')' statement
-   | If '(' condition ')' statement Else statement
-   | Switch '(' condition ')' statement
-   ;
+condition:
+	expression
+	| attributespecifierseq? declspecifierseq declarator '=' initializerclause
+	| attributespecifierseq? declspecifierseq declarator bracedinitlist;
 
-condition
-   : expression
-   | attributespecifierseq? declspecifierseq declarator '=' initializerclause
-   | attributespecifierseq? declspecifierseq declarator bracedinitlist
-   ;
+iterationstatement:
+	While '(' condition ')' statement
+	| Do statement While '(' expression ')' ';'
+	| For '(' forinitstatement condition? ';' expression? ')' statement
+	| For '(' forrangedeclaration ':' forrangeinitializer ')' statement;
 
-iterationstatement
-   : While '(' condition ')' statement
-   | Do statement While '(' expression ')' ';'
-   | For '(' forinitstatement condition? ';' expression? ')' statement
-   | For '(' forrangedeclaration ':' forrangeinitializer ')' statement
-   ;
+forinitstatement: expressionstatement | simpledeclaration;
 
-forinitstatement
-   : expressionstatement
-   | simpledeclaration
-   ;
+forrangedeclaration:
+	attributespecifierseq? declspecifierseq declarator;
 
-forrangedeclaration
-   : attributespecifierseq? declspecifierseq declarator
-   ;
+forrangeinitializer: expression | bracedinitlist;
 
-forrangeinitializer
-   : expression
-   | bracedinitlist
-   ;
+jumpstatement:
+	Break ';'
+	| Continue ';'
+	| Return expression? ';'
+	| Return bracedinitlist ';'
+	| Goto Identifier ';';
 
-jumpstatement
-   : Break ';'
-   | Continue ';'
-   | Return expression? ';'
-   | Return bracedinitlist ';'
-   | Goto Identifier ';'
-   ;
-
-declarationstatement
-   : blockdeclaration
-   ;
+declarationstatement: blockdeclaration;
 /*Declarations*/
 
+declarationseq: declaration | declarationseq declaration;
 
-declarationseq
-   : declaration
-   | declarationseq declaration
-   ;
+declaration:
+	blockdeclaration
+	| functiondefinition
+	| templatedeclaration
+	| explicitinstantiation
+	| explicitspecialization
+	| linkagespecification
+	| namespacedefinition
+	| emptydeclaration
+	| attributedeclaration;
 
-declaration
-   : blockdeclaration
-   | functiondefinition
-   | templatedeclaration
-   | explicitinstantiation
-   | explicitspecialization
-   | linkagespecification
-   | namespacedefinition
-   | emptydeclaration
-   | attributedeclaration
-   ;
+blockdeclaration:
+	simpledeclaration
+	| asmdefinition
+	| namespacealiasdefinition
+	| usingdeclaration
+	| usingdirective
+	| static_assertdeclaration
+	| aliasdeclaration
+	| opaqueenumdeclaration;
 
-blockdeclaration
-   : simpledeclaration
-   | asmdefinition
-   | namespacealiasdefinition
-   | usingdeclaration
-   | usingdirective
-   | static_assertdeclaration
-   | aliasdeclaration
-   | opaqueenumdeclaration
-   ;
+aliasdeclaration:
+	Using Identifier attributespecifierseq? '=' thetypeid ';';
 
-aliasdeclaration
-   : Using Identifier attributespecifierseq? '=' thetypeid ';'
-   ;
+simpledeclaration:
+	declspecifierseq? initdeclaratorlist? ';'
+	| attributespecifierseq declspecifierseq? initdeclaratorlist ';';
 
-simpledeclaration
-   : declspecifierseq? initdeclaratorlist? ';'
-   | attributespecifierseq declspecifierseq? initdeclaratorlist ';'
-   ;
+static_assertdeclaration:
+	Static_assert '(' constantexpression ',' Stringliteral ')' ';';
 
-static_assertdeclaration
-   : Static_assert '(' constantexpression ',' Stringliteral ')' ';'
-   ;
+emptydeclaration: ';';
 
-emptydeclaration
-   : ';'
-   ;
+attributedeclaration: attributespecifierseq ';';
 
-attributedeclaration
-   : attributespecifierseq ';'
-   ;
+declspecifier:
+	storageclassspecifier
+	| typespecifier
+	| functionspecifier
+	| Friend
+	| Typedef
+	| Constexpr;
 
-declspecifier
-   : storageclassspecifier
-   | typespecifier
-   | functionspecifier
-   | Friend
-   | Typedef
-   | Constexpr
-   ;
+declspecifierseq:
+	declspecifier attributespecifierseq?
+	| declspecifier declspecifierseq;
 
-declspecifierseq
-   : declspecifier attributespecifierseq?
-   | declspecifier declspecifierseq
-   ;
+storageclassspecifier:
+	Register
+	| Static
+	| Thread_local
+	| Extern
+	| Mutable;
 
-storageclassspecifier
-   : Register
-   | Static
-   | Thread_local
-   | Extern
-   | Mutable
-   ;
+functionspecifier: Inline | Virtual | Explicit;
 
-functionspecifier
-   : Inline
-   | Virtual
-   | Explicit
-   ;
+typedefname: Identifier;
 
-typedefname
-   : Identifier
-   ;
+typespecifier:
+	trailingtypespecifier
+	| classspecifier
+	| enumspecifier;
 
-typespecifier
-   : trailingtypespecifier
-   | classspecifier
-   | enumspecifier
-   ;
+trailingtypespecifier:
+	simpletypespecifier
+	| elaboratedtypespecifier
+	| typenamespecifier
+	| cvqualifier;
 
-trailingtypespecifier
-   : simpletypespecifier
-   | elaboratedtypespecifier
-   | typenamespecifier
-   | cvqualifier
-   ;
+typespecifierseq:
+	typespecifier attributespecifierseq?
+	| typespecifier typespecifierseq;
 
-typespecifierseq
-   : typespecifier attributespecifierseq?
-   | typespecifier typespecifierseq
-   ;
+trailingtypespecifierseq:
+	trailingtypespecifier attributespecifierseq?
+	| trailingtypespecifier trailingtypespecifierseq;
 
-trailingtypespecifierseq
-   : trailingtypespecifier attributespecifierseq?
-   | trailingtypespecifier trailingtypespecifierseq
-   ;
+simpletypespecifier:
+	nestednamespecifier? thetypename
+	| nestednamespecifier Template simpletemplateid
+	| Char
+	| Char16
+	| Char32
+	| Wchar
+	| Bool
+	| Short
+	| Int
+	| Long
+	| Signed
+	| Unsigned
+	| Float
+	| Double
+	| Void
+	| Auto
+	| decltypespecifier;
 
-simpletypespecifier
-   : nestednamespecifier? thetypename
-   | nestednamespecifier Template simpletemplateid
-   | Char
-   | Char16
-   | Char32
-   | Wchar
-   | Bool
-   | Short
-   | Int
-   | Long
-   | Signed
-   | Unsigned
-   | Float
-   | Double
-   | Void
-   | Auto
-   | decltypespecifier
-   ;
+thetypename:
+	classname
+	| enumname
+	| typedefname
+	| simpletemplateid;
 
-thetypename
-   : classname
-   | enumname
-   | typedefname
-   | simpletemplateid
-   ;
+decltypespecifier:
+	Decltype '(' expression ')'
+	| Decltype '(' Auto ')';
 
-decltypespecifier
-   : Decltype '(' expression ')'
-   | Decltype '(' Auto ')'
-   ;
+elaboratedtypespecifier:
+	classkey attributespecifierseq? nestednamespecifier? Identifier
+	| classkey simpletemplateid
+	| classkey nestednamespecifier Template? simpletemplateid
+	| Enum nestednamespecifier? Identifier;
 
-elaboratedtypespecifier
-   : classkey attributespecifierseq? nestednamespecifier? Identifier
-   | classkey simpletemplateid
-   | classkey nestednamespecifier Template? simpletemplateid
-   | Enum nestednamespecifier? Identifier
-   ;
+enumname: Identifier;
 
-enumname
-   : Identifier
-   ;
+enumspecifier:
+	enumhead '{' enumeratorlist? '}'
+	| enumhead '{' enumeratorlist ',' '}';
 
-enumspecifier
-   : enumhead '{' enumeratorlist? '}'
-   | enumhead '{' enumeratorlist ',' '}'
-   ;
+enumhead:
+	enumkey attributespecifierseq? Identifier? enumbase?
+	| enumkey attributespecifierseq? nestednamespecifier Identifier enumbase?;
 
-enumhead
-   : enumkey attributespecifierseq? Identifier? enumbase?
-   | enumkey attributespecifierseq? nestednamespecifier Identifier enumbase?
-   ;
+opaqueenumdeclaration:
+	enumkey attributespecifierseq? Identifier enumbase? ';';
 
-opaqueenumdeclaration
-   : enumkey attributespecifierseq? Identifier enumbase? ';'
-   ;
+enumkey: Enum | Enum Class | Enum Struct;
 
-enumkey
-   : Enum
-   | Enum Class
-   | Enum Struct
-   ;
+enumbase: ':' typespecifierseq;
 
-enumbase
-   : ':' typespecifierseq
-   ;
+enumeratorlist:
+	enumeratordefinition
+	| enumeratorlist ',' enumeratordefinition;
 
-enumeratorlist
-   : enumeratordefinition
-   | enumeratorlist ',' enumeratordefinition
-   ;
+enumeratordefinition:
+	enumerator
+	| enumerator '=' constantexpression;
 
-enumeratordefinition
-   : enumerator
-   | enumerator '=' constantexpression
-   ;
+enumerator: Identifier;
 
-enumerator
-   : Identifier
-   ;
+namespacename: originalnamespacename | namespacealias;
 
-namespacename
-   : originalnamespacename
-   | namespacealias
-   ;
+originalnamespacename: Identifier;
 
-originalnamespacename
-   : Identifier
-   ;
+namespacedefinition:
+	namednamespacedefinition
+	| unnamednamespacedefinition;
 
-namespacedefinition
-   : namednamespacedefinition
-   | unnamednamespacedefinition
-   ;
+namednamespacedefinition:
+	originalnamespacedefinition
+	| extensionnamespacedefinition;
 
-namednamespacedefinition
-   : originalnamespacedefinition
-   | extensionnamespacedefinition
-   ;
+originalnamespacedefinition:
+	Inline? Namespace Identifier '{' namespacebody '}';
 
-originalnamespacedefinition
-   : Inline? Namespace Identifier '{' namespacebody '}'
-   ;
+extensionnamespacedefinition:
+	Inline? Namespace originalnamespacename '{' namespacebody '}';
 
-extensionnamespacedefinition
-   : Inline? Namespace originalnamespacename '{' namespacebody '}'
-   ;
+unnamednamespacedefinition:
+	Inline? Namespace '{' namespacebody '}';
 
-unnamednamespacedefinition
-   : Inline? Namespace '{' namespacebody '}'
-   ;
+namespacebody: declarationseq?;
 
-namespacebody
-   : declarationseq?
-   ;
+namespacealias: Identifier;
 
-namespacealias
-   : Identifier
-   ;
+namespacealiasdefinition:
+	Namespace Identifier '=' qualifiednamespacespecifier ';';
 
-namespacealiasdefinition
-   : Namespace Identifier '=' qualifiednamespacespecifier ';'
-   ;
+qualifiednamespacespecifier: nestednamespecifier? namespacename;
 
-qualifiednamespacespecifier
-   : nestednamespecifier? namespacename
-   ;
+usingdeclaration:
+	Using Typename_? nestednamespecifier unqualifiedid ';'
+	| Using '::' unqualifiedid ';';
 
-usingdeclaration
-   : Using Typename_? nestednamespecifier unqualifiedid ';'
-   | Using '::' unqualifiedid ';'
-   ;
+usingdirective:
+	attributespecifierseq? Using Namespace nestednamespecifier? namespacename ';';
 
-usingdirective
-   : attributespecifierseq? Using Namespace nestednamespecifier? namespacename ';'
-   ;
+asmdefinition: Asm '(' Stringliteral ')' ';';
 
-asmdefinition
-   : Asm '(' Stringliteral ')' ';'
-   ;
+linkagespecification:
+	Extern Stringliteral '{' declarationseq? '}'
+	| Extern Stringliteral declaration;
 
-linkagespecification
-   : Extern Stringliteral '{' declarationseq? '}'
-   | Extern Stringliteral declaration
-   ;
+attributespecifierseq:
+	attributespecifier
+	| attributespecifierseq attributespecifier;
 
-attributespecifierseq
-   : attributespecifier
-   | attributespecifierseq attributespecifier
-   ;
+attributespecifier:
+	'[' '[' attributelist ']' ']'
+	| alignmentspecifier;
 
-attributespecifier
-   : '[' '[' attributelist ']' ']'
-   | alignmentspecifier
-   ;
+alignmentspecifier:
+	Alignas '(' thetypeid '...'? ')'
+	| Alignas '(' constantexpression '...'? ')';
 
-alignmentspecifier
-   : Alignas '(' thetypeid '...'? ')'
-   | Alignas '(' constantexpression '...'? ')'
-   ;
+attributelist:
+	attribute?
+	| attributelist ',' attribute?
+	| attribute '...'
+	| attributelist ',' attribute '...';
 
-attributelist
-   : attribute?
-   | attributelist ',' attribute?
-   | attribute '...'
-   | attributelist ',' attribute '...'
-   ;
+attribute: attributetoken attributeargumentclause?;
 
-attribute
-   : attributetoken attributeargumentclause?
-   ;
+attributetoken: Identifier | attributescopedtoken;
 
-attributetoken
-   : Identifier
-   | attributescopedtoken
-   ;
+attributescopedtoken: attributenamespace '::' Identifier;
 
-attributescopedtoken
-   : attributenamespace '::' Identifier
-   ;
+attributenamespace: Identifier;
 
-attributenamespace
-   : Identifier
-   ;
+attributeargumentclause: '(' balancedtokenseq ')';
 
-attributeargumentclause
-   : '(' balancedtokenseq ')'
-   ;
+balancedtokenseq:
+	balancedtoken?
+	| balancedtokenseq balancedtoken;
 
-balancedtokenseq
-   : balancedtoken?
-   | balancedtokenseq balancedtoken
-   ;
-
-balancedtoken
-   : '(' balancedtokenseq ')'
-   | '[' balancedtokenseq ']'
-   | '{' balancedtokenseq '}'
-   | ~('('|')'|'{'|'}'|'['|']')+
-   ;
+balancedtoken:
+	'(' balancedtokenseq ')'
+	| '[' balancedtokenseq ']'
+	| '{' balancedtokenseq '}'
+	| ~('(' | ')' | '{' | '}' | '[' | ']')+;
 /*Declarators*/
 
+initdeclaratorlist:
+	initdeclarator
+	| initdeclaratorlist ',' initdeclarator;
 
-initdeclaratorlist
-   : initdeclarator
-   | initdeclaratorlist ',' initdeclarator
-   ;
+initdeclarator: declarator initializer?;
 
-initdeclarator
-   : declarator initializer?
-   ;
+declarator:
+	ptrdeclarator
+	| noptrdeclarator parametersandqualifiers trailingreturntype;
 
-declarator
-   : ptrdeclarator
-   | noptrdeclarator parametersandqualifiers trailingreturntype
-   ;
+ptrdeclarator: noptrdeclarator | ptroperator ptrdeclarator;
 
-ptrdeclarator
-   : noptrdeclarator
-   | ptroperator ptrdeclarator
-   ;
+noptrdeclarator:
+	declaratorid attributespecifierseq?
+	| noptrdeclarator parametersandqualifiers
+	| noptrdeclarator '[' constantexpression? ']' attributespecifierseq?
+	| '(' ptrdeclarator ')';
 
-noptrdeclarator
-   : declaratorid attributespecifierseq?
-   | noptrdeclarator parametersandqualifiers
-   | noptrdeclarator '[' constantexpression? ']' attributespecifierseq?
-   | '(' ptrdeclarator ')'
-   ;
+parametersandqualifiers:
+	'(' parameterdeclarationclause ')' cvqualifierseq? refqualifier? exceptionspecification?
+		attributespecifierseq?;
 
-parametersandqualifiers
-   : '(' parameterdeclarationclause ')' cvqualifierseq? refqualifier? exceptionspecification? attributespecifierseq?
-   ;
+trailingreturntype:
+	'->' trailingtypespecifierseq abstractdeclarator?;
 
-trailingreturntype
-   : '->' trailingtypespecifierseq abstractdeclarator?
-   ;
+ptroperator:
+	'*' attributespecifierseq? cvqualifierseq?
+	| '&' attributespecifierseq?
+	| '&&' attributespecifierseq?
+	| nestednamespecifier '*' attributespecifierseq? cvqualifierseq?;
 
-ptroperator
-   : '*' attributespecifierseq? cvqualifierseq?
-   | '&' attributespecifierseq?
-   | '&&' attributespecifierseq?
-   | nestednamespecifier '*' attributespecifierseq? cvqualifierseq?
-   ;
+cvqualifierseq: cvqualifier cvqualifierseq?;
 
-cvqualifierseq
-   : cvqualifier cvqualifierseq?
-   ;
+cvqualifier: Const | Volatile;
 
-cvqualifier
-   : Const
-   | Volatile
-   ;
+refqualifier: '&' | '&&';
 
-refqualifier
-   : '&'
-   | '&&'
-   ;
+declaratorid: '...'? idexpression;
 
-declaratorid
-   : '...'? idexpression
-   ;
+thetypeid: typespecifierseq abstractdeclarator?;
 
-thetypeid
-   : typespecifierseq abstractdeclarator?
-   ;
+abstractdeclarator:
+	ptrabstractdeclarator
+	| noptrabstractdeclarator? parametersandqualifiers trailingreturntype
+	| abstractpackdeclarator;
 
-abstractdeclarator
-   : ptrabstractdeclarator
-   | noptrabstractdeclarator? parametersandqualifiers trailingreturntype
-   | abstractpackdeclarator
-   ;
+ptrabstractdeclarator:
+	noptrabstractdeclarator
+	| ptroperator ptrabstractdeclarator?;
 
-ptrabstractdeclarator
-   : noptrabstractdeclarator
-   | ptroperator ptrabstractdeclarator?
-   ;
+noptrabstractdeclarator:
+	noptrabstractdeclarator parametersandqualifiers
+	| parametersandqualifiers
+	| noptrabstractdeclarator '[' constantexpression? ']' attributespecifierseq?
+	| '[' constantexpression? ']' attributespecifierseq?
+	| '(' ptrabstractdeclarator ')';
 
-noptrabstractdeclarator
-   : noptrabstractdeclarator parametersandqualifiers
-   | parametersandqualifiers
-   | noptrabstractdeclarator '[' constantexpression? ']' attributespecifierseq?
-   | '[' constantexpression? ']' attributespecifierseq?
-   | '(' ptrabstractdeclarator ')'
-   ;
+abstractpackdeclarator:
+	noptrabstractpackdeclarator
+	| ptroperator abstractpackdeclarator;
 
-abstractpackdeclarator
-   : noptrabstractpackdeclarator
-   | ptroperator abstractpackdeclarator
-   ;
+noptrabstractpackdeclarator:
+	noptrabstractpackdeclarator parametersandqualifiers
+	| noptrabstractpackdeclarator '[' constantexpression? ']' attributespecifierseq?
+	| '...';
 
-noptrabstractpackdeclarator
-   : noptrabstractpackdeclarator parametersandqualifiers
-   | noptrabstractpackdeclarator '[' constantexpression? ']' attributespecifierseq?
-   | '...'
-   ;
+parameterdeclarationclause:
+	parameterdeclarationlist? '...'?
+	| parameterdeclarationlist ',' '...';
 
-parameterdeclarationclause
-   : parameterdeclarationlist? '...'?
-   | parameterdeclarationlist ',' '...'
-   ;
+parameterdeclarationlist:
+	parameterdeclaration
+	| parameterdeclarationlist ',' parameterdeclaration;
 
-parameterdeclarationlist
-   : parameterdeclaration
-   | parameterdeclarationlist ',' parameterdeclaration
-   ;
+parameterdeclaration:
+	attributespecifierseq? declspecifierseq declarator
+	| attributespecifierseq? declspecifierseq declarator '=' initializerclause
+	| attributespecifierseq? declspecifierseq abstractdeclarator?
+	| attributespecifierseq? declspecifierseq abstractdeclarator? '=' initializerclause;
 
-parameterdeclaration
-   : attributespecifierseq? declspecifierseq declarator
-   | attributespecifierseq? declspecifierseq declarator '=' initializerclause
-   | attributespecifierseq? declspecifierseq abstractdeclarator?
-   | attributespecifierseq? declspecifierseq abstractdeclarator? '=' initializerclause
-   ;
+functiondefinition:
+	attributespecifierseq? declspecifierseq? declarator virtspecifierseq? functionbody;
 
-functiondefinition
-   : attributespecifierseq? declspecifierseq? declarator virtspecifierseq? functionbody
-   ;
+functionbody:
+	ctorinitializer? compoundstatement
+	| functiontryblock
+	| '=' Default ';'
+	| '=' Delete ';';
 
-functionbody
-   : ctorinitializer? compoundstatement
-   | functiontryblock
-   | '=' Default ';'
-   | '=' Delete ';'
-   ;
+initializer: braceorequalinitializer | '(' expressionlist ')';
 
-initializer
-   : braceorequalinitializer
-   | '(' expressionlist ')'
-   ;
+braceorequalinitializer: '=' initializerclause | bracedinitlist;
 
-braceorequalinitializer
-   : '=' initializerclause
-   | bracedinitlist
-   ;
+initializerclause: assignmentexpression | bracedinitlist;
 
-initializerclause
-   : assignmentexpression
-   | bracedinitlist
-   ;
+initializerlist:
+	initializerclause '...'?
+	| initializerlist ',' initializerclause '...'?;
 
-initializerlist
-   : initializerclause '...'?
-   | initializerlist ',' initializerclause '...'?
-   ;
-
-bracedinitlist
-   : '{' initializerlist ','? '}'
-   | '{' '}'
-   ;
+bracedinitlist: '{' initializerlist ','? '}' | '{' '}';
 /*Classes*/
 
+classname: Identifier | simpletemplateid;
 
-classname
-   : Identifier
-   | simpletemplateid
-   ;
+classspecifier: classhead '{' memberspecification? '}';
 
-classspecifier
-   : classhead '{' memberspecification? '}'
-   ;
+classhead:
+	classkey attributespecifierseq? classheadname classvirtspecifier? baseclause?
+	| classkey attributespecifierseq? baseclause?;
 
-classhead
-   : classkey attributespecifierseq? classheadname classvirtspecifier? baseclause?
-   | classkey attributespecifierseq? baseclause?
-   ;
+classheadname: nestednamespecifier? classname;
 
-classheadname
-   : nestednamespecifier? classname
-   ;
+classvirtspecifier: Final;
 
-classvirtspecifier
-   : Final
-   ;
+classkey: Class | Struct | Union;
 
-classkey
-   : Class
-   | Struct
-   | Union
-   ;
+memberspecification:
+	memberdeclaration memberspecification?
+	| accessspecifier ':' memberspecification?;
 
-memberspecification
-   : memberdeclaration memberspecification?
-   | accessspecifier ':' memberspecification?
-   ;
+memberdeclaration:
+	attributespecifierseq? declspecifierseq? memberdeclaratorlist? ';'
+	| functiondefinition
+	| usingdeclaration
+	| static_assertdeclaration
+	| templatedeclaration
+	| aliasdeclaration
+	| emptydeclaration;
 
-memberdeclaration
-   : attributespecifierseq? declspecifierseq? memberdeclaratorlist? ';'
-   | functiondefinition
-   | usingdeclaration
-   | static_assertdeclaration
-   | templatedeclaration
-   | aliasdeclaration
-   | emptydeclaration
-   ;
+memberdeclaratorlist:
+	memberdeclarator
+	| memberdeclaratorlist ',' memberdeclarator;
 
-memberdeclaratorlist
-   : memberdeclarator
-   | memberdeclaratorlist ',' memberdeclarator
-   ;
+memberdeclarator:
+	declarator virtspecifierseq? purespecifier?
+	| declarator braceorequalinitializer?
+	| Identifier? attributespecifierseq? ':' constantexpression;
 
-memberdeclarator
-   : declarator virtspecifierseq? purespecifier?
-   | declarator braceorequalinitializer?
-   | Identifier? attributespecifierseq? ':' constantexpression
-   ;
+virtspecifierseq:
+	virtspecifier
+	| virtspecifierseq virtspecifier;
 
-virtspecifierseq
-   : virtspecifier
-   | virtspecifierseq virtspecifier
-   ;
-
-virtspecifier
-   : Override
-   | Final
-   ;
+virtspecifier: Override | Final;
 /*
-purespecifier:
-   '=' '0'//Conflicts with the lexer
+ purespecifier:
+ '=' '0'//Conflicts with the lexer
  ;
  */
 
-
-purespecifier
-   : Assign val = Octalliteral
-   {if($val.text.compareTo("0")!=0) throw new InputMismatchException(this);}
-   ;
+purespecifier:
+	Assign val = Octalliteral {if($val.text.compareTo("0")!=0) throw new InputMismatchException(this);
+		};
 /*Derived classes*/
 
+baseclause: ':' basespecifierlist;
 
-baseclause
-   : ':' basespecifierlist
-   ;
+basespecifierlist:
+	basespecifier '...'?
+	| basespecifierlist ',' basespecifier '...'?;
 
-basespecifierlist
-   : basespecifier '...'?
-   | basespecifierlist ',' basespecifier '...'?
-   ;
+basespecifier:
+	attributespecifierseq? basetypespecifier
+	| attributespecifierseq? Virtual accessspecifier? basetypespecifier
+	| attributespecifierseq? accessspecifier Virtual? basetypespecifier;
 
-basespecifier
-   : attributespecifierseq? basetypespecifier
-   | attributespecifierseq? Virtual accessspecifier? basetypespecifier
-   | attributespecifierseq? accessspecifier Virtual? basetypespecifier
-   ;
+classordecltype:
+	nestednamespecifier? classname
+	| decltypespecifier;
 
-classordecltype
-   : nestednamespecifier? classname
-   | decltypespecifier
-   ;
+basetypespecifier: classordecltype;
 
-basetypespecifier
-   : classordecltype
-   ;
-
-accessspecifier
-   : Private
-   | Protected
-   | Public
-   ;
+accessspecifier: Private | Protected | Public;
 /*Special member functions*/
 
+conversionfunctionid: Operator conversiontypeid;
 
-conversionfunctionid
-   : Operator conversiontypeid
-   ;
+conversiontypeid: typespecifierseq conversiondeclarator?;
 
-conversiontypeid
-   : typespecifierseq conversiondeclarator?
-   ;
+conversiondeclarator: ptroperator conversiondeclarator?;
 
-conversiondeclarator
-   : ptroperator conversiondeclarator?
-   ;
+ctorinitializer: ':' meminitializerlist;
 
-ctorinitializer
-   : ':' meminitializerlist
-   ;
+meminitializerlist:
+	meminitializer '...'?
+	| meminitializer '...'? ',' meminitializerlist;
 
-meminitializerlist
-   : meminitializer '...'?
-   | meminitializer '...'? ',' meminitializerlist
-   ;
+meminitializer:
+	meminitializerid '(' expressionlist? ')'
+	| meminitializerid bracedinitlist;
 
-meminitializer
-   : meminitializerid '(' expressionlist? ')'
-   | meminitializerid bracedinitlist
-   ;
-
-meminitializerid
-   : classordecltype
-   | Identifier
-   ;
+meminitializerid: classordecltype | Identifier;
 /*Overloading*/
 
+operatorfunctionid: Operator theoperator;
 
-operatorfunctionid
-   : Operator theoperator
-   ;
-
-literaloperatorid
-   : Operator Stringliteral Identifier
-   | Operator Userdefinedstringliteral
-   ;
+literaloperatorid:
+	Operator Stringliteral Identifier
+	| Operator Userdefinedstringliteral;
 /*Templates*/
 
+templatedeclaration:
+	Template '<' templateparameterlist '>' declaration;
 
-templatedeclaration
-   : Template '<' templateparameterlist '>' declaration
-   ;
+templateparameterlist:
+	templateparameter
+	| templateparameterlist ',' templateparameter;
 
-templateparameterlist
-   : templateparameter
-   | templateparameterlist ',' templateparameter
-   ;
+templateparameter: typeparameter | parameterdeclaration;
 
-templateparameter
-   : typeparameter
-   | parameterdeclaration
-   ;
+typeparameter:
+	Class '...'? Identifier?
+	| Class Identifier? '=' thetypeid
+	| Typename_ '...'? Identifier?
+	| Typename_ Identifier? '=' thetypeid
+	| Template '<' templateparameterlist '>' Class '...'? Identifier?
+	| Template '<' templateparameterlist '>' Class Identifier? '=' idexpression;
 
-typeparameter
-   : Class '...'? Identifier?
-   | Class Identifier? '=' thetypeid
-   | Typename_ '...'? Identifier?
-   | Typename_ Identifier? '=' thetypeid
-   | Template '<' templateparameterlist '>' Class '...'? Identifier?
-   | Template '<' templateparameterlist '>' Class Identifier? '=' idexpression
-   ;
+simpletemplateid: templatename '<' templateargumentlist? '>';
 
-simpletemplateid
-   : templatename '<' templateargumentlist? '>'
-   ;
+templateid:
+	simpletemplateid
+	| operatorfunctionid '<' templateargumentlist? '>'
+	| literaloperatorid '<' templateargumentlist? '>';
 
-templateid
-   : simpletemplateid
-   | operatorfunctionid '<' templateargumentlist? '>'
-   | literaloperatorid '<' templateargumentlist? '>'
-   ;
+templatename: Identifier;
 
-templatename
-   : Identifier
-   ;
+templateargumentlist:
+	templateargument '...'?
+	| templateargumentlist ',' templateargument '...'?;
 
-templateargumentlist
-   : templateargument '...'?
-   | templateargumentlist ',' templateargument '...'?
-   ;
+templateargument: thetypeid | constantexpression | idexpression;
 
-templateargument
-   : thetypeid
-   | constantexpression
-   | idexpression
-   ;
+typenamespecifier:
+	Typename_ nestednamespecifier Identifier
+	| Typename_ nestednamespecifier Template? simpletemplateid;
 
-typenamespecifier
-   : Typename_ nestednamespecifier Identifier
-   | Typename_ nestednamespecifier Template? simpletemplateid
-   ;
+explicitinstantiation: Extern? Template declaration;
 
-explicitinstantiation
-   : Extern? Template declaration
-   ;
-
-explicitspecialization
-   : Template '<' '>' declaration
-   ;
+explicitspecialization: Template '<' '>' declaration;
 /*Exception handling*/
 
+tryblock: Try compoundstatement handlerseq;
 
-tryblock
-   : Try compoundstatement handlerseq
-   ;
+functiontryblock:
+	Try ctorinitializer? compoundstatement handlerseq;
 
-functiontryblock
-   : Try ctorinitializer? compoundstatement handlerseq
-   ;
+handlerseq: handler handlerseq?;
 
-handlerseq
-   : handler handlerseq?
-   ;
+handler: Catch '(' exceptiondeclaration ')' compoundstatement;
 
-handler
-   : Catch '(' exceptiondeclaration ')' compoundstatement
-   ;
+exceptiondeclaration:
+	attributespecifierseq? typespecifierseq declarator
+	| attributespecifierseq? typespecifierseq abstractdeclarator?
+	| '...';
 
-exceptiondeclaration
-   : attributespecifierseq? typespecifierseq declarator
-   | attributespecifierseq? typespecifierseq abstractdeclarator?
-   | '...'
-   ;
+throwexpression: Throw assignmentexpression?;
 
-throwexpression
-   : Throw assignmentexpression?
-   ;
+exceptionspecification:
+	dynamicexceptionspecification
+	| noexceptspecification;
 
-exceptionspecification
-   : dynamicexceptionspecification
-   | noexceptspecification
-   ;
+dynamicexceptionspecification: Throw '(' typeidlist? ')';
 
-dynamicexceptionspecification
-   : Throw '(' typeidlist? ')'
-   ;
+typeidlist: thetypeid '...'? | typeidlist ',' thetypeid '...'?;
 
-typeidlist
-   : thetypeid '...'?
-   | typeidlist ',' thetypeid '...'?
-   ;
-
-noexceptspecification
-   : Noexcept '(' constantexpression ')'
-   | Noexcept
-   ;
+noexceptspecification:
+	Noexcept '(' constantexpression ')'
+	| Noexcept;
 /*Preprocessing directives*/
 
+MultiLineMacro:
+	'#' (~ [\n]*? '\\' '\r'? '\n')+ ~ [\n]+ -> channel (HIDDEN);
 
-MultiLineMacro
-   : '#' (~ [\n]*? '\\' '\r'? '\n')+ ~ [\n]+ -> channel (HIDDEN)
-   ;
-
-Directive
-   : '#' ~ [\n]* -> channel (HIDDEN)
-   ;
+Directive: '#' ~ [\n]* -> channel (HIDDEN);
 /*Lexer*/
 
 /*Keywords*/
 
+Alignas: 'alignas';
 
-Alignas
-   : 'alignas'
-   ;
+Alignof: 'alignof';
 
-Alignof
-   : 'alignof'
-   ;
+Asm: 'asm';
 
-Asm
-   : 'asm'
-   ;
+Auto: 'auto';
 
-Auto
-   : 'auto'
-   ;
+Bool: 'bool';
 
-Bool
-   : 'bool'
-   ;
+Break: 'break';
 
-Break
-   : 'break'
-   ;
+Case: 'case';
 
-Case
-   : 'case'
-   ;
+Catch: 'catch';
 
-Catch
-   : 'catch'
-   ;
+Char: 'char';
 
-Char
-   : 'char'
-   ;
+Char16: 'char16_t';
 
-Char16
-   : 'char16_t'
-   ;
+Char32: 'char32_t';
 
-Char32
-   : 'char32_t'
-   ;
+Class: 'class';
 
-Class
-   : 'class'
-   ;
+Const: 'const';
 
-Const
-   : 'const'
-   ;
+Constexpr: 'constexpr';
 
-Constexpr
-   : 'constexpr'
-   ;
+Const_cast: 'const_cast';
 
-Const_cast
-   : 'const_cast'
-   ;
+Continue: 'continue';
 
-Continue
-   : 'continue'
-   ;
+Decltype: 'decltype';
 
-Decltype
-   : 'decltype'
-   ;
+Default: 'default';
 
-Default
-   : 'default'
-   ;
+Delete: 'delete';
 
-Delete
-   : 'delete'
-   ;
+Do: 'do';
 
-Do
-   : 'do'
-   ;
+Double: 'double';
 
-Double
-   : 'double'
-   ;
+Dynamic_cast: 'dynamic_cast';
 
-Dynamic_cast
-   : 'dynamic_cast'
-   ;
+Else: 'else';
 
-Else
-   : 'else'
-   ;
+Enum: 'enum';
 
-Enum
-   : 'enum'
-   ;
+Explicit: 'explicit';
 
-Explicit
-   : 'explicit'
-   ;
+Export: 'export';
 
-Export
-   : 'export'
-   ;
+Extern: 'extern';
 
-Extern
-   : 'extern'
-   ;
+False: 'false';
 
-False
-   : 'false'
-   ;
+Final: 'final';
 
-Final
-   : 'final'
-   ;
+Float: 'float';
 
-Float
-   : 'float'
-   ;
+For: 'for';
 
-For
-   : 'for'
-   ;
+Friend: 'friend';
 
-Friend
-   : 'friend'
-   ;
+Goto: 'goto';
 
-Goto
-   : 'goto'
-   ;
+If: 'if';
 
-If
-   : 'if'
-   ;
+Inline: 'inline';
 
-Inline
-   : 'inline'
-   ;
+Int: 'int';
 
-Int
-   : 'int'
-   ;
+Long: 'long';
 
-Long
-   : 'long'
-   ;
+Mutable: 'mutable';
 
-Mutable
-   : 'mutable'
-   ;
+Namespace: 'namespace';
 
-Namespace
-   : 'namespace'
-   ;
+New: 'new';
 
-New
-   : 'new'
-   ;
+Noexcept: 'noexcept';
 
-Noexcept
-   : 'noexcept'
-   ;
+Nullptr: 'nullptr';
 
-Nullptr
-   : 'nullptr'
-   ;
+Operator: 'operator';
 
-Operator
-   : 'operator'
-   ;
+Override: 'override';
 
-Override
-   : 'override'
-   ;
+Private: 'private';
 
-Private
-   : 'private'
-   ;
+Protected: 'protected';
 
-Protected
-   : 'protected'
-   ;
+Public: 'public';
 
-Public
-   : 'public'
-   ;
+Register: 'register';
 
-Register
-   : 'register'
-   ;
+Reinterpret_cast: 'reinterpret_cast';
 
-Reinterpret_cast
-   : 'reinterpret_cast'
-   ;
+Return: 'return';
 
-Return
-   : 'return'
-   ;
+Short: 'short';
 
-Short
-   : 'short'
-   ;
+Signed: 'signed';
 
-Signed
-   : 'signed'
-   ;
+Sizeof: 'sizeof';
 
-Sizeof
-   : 'sizeof'
-   ;
+Static: 'static';
 
-Static
-   : 'static'
-   ;
+Static_assert: 'static_assert';
 
-Static_assert
-   : 'static_assert'
-   ;
+Static_cast: 'static_cast';
 
-Static_cast
-   : 'static_cast'
-   ;
+Struct: 'struct';
 
-Struct
-   : 'struct'
-   ;
+Switch: 'switch';
 
-Switch
-   : 'switch'
-   ;
+Template: 'template';
 
-Template
-   : 'template'
-   ;
+This: 'this';
 
-This
-   : 'this'
-   ;
+Thread_local: 'thread_local';
 
-Thread_local
-   : 'thread_local'
-   ;
+Throw: 'throw';
 
-Throw
-   : 'throw'
-   ;
+True: 'true';
 
-True
-   : 'true'
-   ;
+Try: 'try';
 
-Try
-   : 'try'
-   ;
+Typedef: 'typedef';
 
-Typedef
-   : 'typedef'
-   ;
+Typeid_: 'typeid';
 
-Typeid_
-   : 'typeid'
-   ;
+Typename_: 'typename';
 
-Typename_
-   : 'typename'
-   ;
+Union: 'union';
 
-Union
-   : 'union'
-   ;
+Unsigned: 'unsigned';
 
-Unsigned
-   : 'unsigned'
-   ;
+Using: 'using';
 
-Using
-   : 'using'
-   ;
+Virtual: 'virtual';
 
-Virtual
-   : 'virtual'
-   ;
+Void: 'void';
 
-Void
-   : 'void'
-   ;
+Volatile: 'volatile';
 
-Volatile
-   : 'volatile'
-   ;
+Wchar: 'wchar_t';
 
-Wchar
-   : 'wchar_t'
-   ;
-
-While
-   : 'while'
-   ;
+While: 'while';
 /*Operators*/
 
+LeftParen: '(';
 
-LeftParen
-   : '('
-   ;
+RightParen: ')';
 
-RightParen
-   : ')'
-   ;
+LeftBracket: '[';
 
-LeftBracket
-   : '['
-   ;
+RightBracket: ']';
 
-RightBracket
-   : ']'
-   ;
+LeftBrace: '{';
 
-LeftBrace
-   : '{'
-   ;
+RightBrace: '}';
 
-RightBrace
-   : '}'
-   ;
+Plus: '+';
 
-Plus
-   : '+'
-   ;
+Minus: '-';
 
-Minus
-   : '-'
-   ;
+Star: '*';
 
-Star
-   : '*'
-   ;
+Div: '/';
 
-Div
-   : '/'
-   ;
+Mod: '%';
 
-Mod
-   : '%'
-   ;
+Caret: '^';
 
-Caret
-   : '^'
-   ;
+And: '&';
 
-And
-   : '&'
-   ;
+Or: '|';
 
-Or
-   : '|'
-   ;
+Tilde: '~';
 
-Tilde
-   : '~'
-   ;
+Not: '!' | 'not';
 
-Not
-   : '!'
-   | 'not'
-   ;
+Assign: '=';
 
-Assign
-   : '='
-   ;
+Less: '<';
 
-Less
-   : '<'
-   ;
+Greater: '>';
 
-Greater
-   : '>'
-   ;
+PlusAssign: '+=';
 
-PlusAssign
-   : '+='
-   ;
+MinusAssign: '-=';
 
-MinusAssign
-   : '-='
-   ;
+StarAssign: '*=';
 
-StarAssign
-   : '*='
-   ;
+DivAssign: '/=';
 
-DivAssign
-   : '/='
-   ;
+ModAssign: '%=';
 
-ModAssign
-   : '%='
-   ;
+XorAssign: '^=';
 
-XorAssign
-   : '^='
-   ;
+AndAssign: '&=';
 
-AndAssign
-   : '&='
-   ;
+OrAssign: '|=';
 
-OrAssign
-   : '|='
-   ;
+LeftShift: '<<';
 
-LeftShift
-   : '<<'
-   ;
+RightShift: '>>';
 
-RightShift
-   :
-   '>>'
-   ;
+LeftShiftAssign: '<<=';
 
-LeftShiftAssign
-   : '<<='
-   ;
+RightShiftAssign: '>>=';
 
-RightShiftAssign
-   :
-   '>>='
-   ;
+Equal: '==';
 
-Equal
-   : '=='
-   ;
+NotEqual: '!=';
 
-NotEqual
-   : '!='
-   ;
+LessEqual: '<=';
 
-LessEqual
-   : '<='
-   ;
+GreaterEqual: '>=';
 
-GreaterEqual
-   : '>='
-   ;
+AndAnd: '&&' | 'and';
 
-AndAnd
-   : '&&'
-   | 'and'
-   ;
+OrOr: '||' | 'or';
 
-OrOr
-   : '||'
-   | 'or'
-   ;
+PlusPlus: '++';
 
-PlusPlus
-   : '++'
-   ;
+MinusMinus: '--';
 
-MinusMinus
-   : '--'
-   ;
+Comma: ',';
 
-Comma
-   : ','
-   ;
+ArrowStar: '->*';
 
-ArrowStar
-   : '->*'
-   ;
+Arrow: '->';
 
-Arrow
-   : '->'
-   ;
+Question: '?';
 
-Question
-   : '?'
-   ;
+Colon: ':';
 
-Colon
-   : ':'
-   ;
+Doublecolon: '::';
 
-Doublecolon
-   : '::'
-   ;
+Semi: ';';
 
-Semi
-   : ';'
-   ;
+Dot: '.';
 
-Dot
-   : '.'
-   ;
+DotStar: '.*';
 
-DotStar
-   : '.*'
-   ;
+Ellipsis: '...';
 
-Ellipsis
-   : '...'
-   ;
-
-theoperator
-   : New
-   | Delete
-   | New '[' ']'
-   | Delete '[' ']'
-   | '+'
-   | '-'
-   | '*'
-   | '/'
-   | '%'
-   | '^'
-   | '&'
-   | '|'
-   | '~'
-   | '!'
-   | 'not'
-   | '='
-   | '<'
-   | '>'
-   | '+='
-   | '-='
-   | '*='
-   | '/='
-   | '%='
-   | '^='
-   | '&='
-   | '|='
-   | LeftShift
-   | RightShift
-   | RightShiftAssign
-   | LeftShiftAssign
-   | '=='
-   | '!='
-   | '<='
-   | '>='
-   | '&&'
-   | 'and'
-   | '||'
-   | 'or'
-   | '++'
-   | '--'
-   | ','
-   | '->*'
-   | '->'
-   | '(' ')'
-   | '[' ']'
-   ;
+theoperator:
+	New
+	| Delete
+	| New '[' ']'
+	| Delete '[' ']'
+	| '+'
+	| '-'
+	| '*'
+	| '/'
+	| '%'
+	| '^'
+	| '&'
+	| '|'
+	| '~'
+	| '!'
+	| 'not'
+	| '='
+	| '<'
+	| '>'
+	| '+='
+	| '-='
+	| '*='
+	| '/='
+	| '%='
+	| '^='
+	| '&='
+	| '|='
+	| LeftShift
+	| RightShift
+	| RightShiftAssign
+	| LeftShiftAssign
+	| '=='
+	| '!='
+	| '<='
+	| '>='
+	| '&&'
+	| 'and'
+	| '||'
+	| 'or'
+	| '++'
+	| '--'
+	| ','
+	| '->*'
+	| '->'
+	| '(' ')'
+	| '[' ']';
 /*Lexer*/
 
+fragment Hexquad:
+	HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT;
 
-fragment Hexquad
-   : HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT HEXADECIMALDIGIT
-   ;
+fragment Universalcharactername:
+	'\\u' Hexquad
+	| '\\U' Hexquad Hexquad;
 
-fragment Universalcharactername
-   : '\\u' Hexquad
-   | '\\U' Hexquad Hexquad
-   ;
+Identifier:
+	/*
+	 Identifiernondigit
+ | Identifier Identifiernondigit
+ | Identifier DIGIT
+	 */
+	Identifiernondigit (Identifiernondigit | DIGIT)*;
 
-Identifier
-   :
-/*
-   Identifiernondigit
-   | Identifier Identifiernondigit
-   | Identifier DIGIT
-   */
-   Identifiernondigit (Identifiernondigit | DIGIT)*
-   ;
+fragment Identifiernondigit: NONDIGIT | Universalcharactername;
 
-fragment Identifiernondigit
-   : NONDIGIT
-   | Universalcharactername
-   ;
+fragment NONDIGIT: [a-zA-Z_];
 
-fragment NONDIGIT
-   : [a-zA-Z_]
-   ;
+fragment DIGIT: [0-9];
 
-fragment DIGIT
-   : [0-9]
-   ;
+literal:
+	Integerliteral
+	| Characterliteral
+	| Floatingliteral
+	| Stringliteral
+	| booleanliteral
+	| pointerliteral
+	| userdefinedliteral;
 
-literal
-   : Integerliteral
-   | Characterliteral
-   | Floatingliteral
-   | Stringliteral
-   | booleanliteral
-   | pointerliteral
-   | userdefinedliteral
-   ;
+Integerliteral:
+	Decimalliteral Integersuffix?
+	| Octalliteral Integersuffix?
+	| Hexadecimalliteral Integersuffix?
+	| Binaryliteral Integersuffix?;
 
-Integerliteral
-   : Decimalliteral Integersuffix?
-   | Octalliteral Integersuffix?
-   | Hexadecimalliteral Integersuffix?
-   | Binaryliteral Integersuffix?
-   ;
+Decimalliteral: NONZERODIGIT ('\''? DIGIT)*;
 
-Decimalliteral
-   : NONZERODIGIT ('\''? DIGIT)*
-   ;
+Octalliteral: '0' ('\''? OCTALDIGIT)*;
 
-Octalliteral
-   : '0' ('\''? OCTALDIGIT)*
-   ;
+Hexadecimalliteral: ('0x' | '0X') HEXADECIMALDIGIT (
+		'\''? HEXADECIMALDIGIT
+	)*;
 
-Hexadecimalliteral
-   : ('0x' | '0X') HEXADECIMALDIGIT ('\''? HEXADECIMALDIGIT)*
-   ;
+Binaryliteral: ('0b' | '0B') BINARYDIGIT ('\''? BINARYDIGIT)*;
 
-Binaryliteral
-   : ('0b' | '0B') BINARYDIGIT ('\''? BINARYDIGIT)*
-   ;
+fragment NONZERODIGIT: [1-9];
 
-fragment NONZERODIGIT
-   : [1-9]
-   ;
+fragment OCTALDIGIT: [0-7];
 
-fragment OCTALDIGIT
-   : [0-7]
-   ;
+fragment HEXADECIMALDIGIT: [0-9a-fA-F];
 
-fragment HEXADECIMALDIGIT
-   : [0-9a-fA-F]
-   ;
+fragment BINARYDIGIT: [01];
 
-fragment BINARYDIGIT
-   : [01]
-   ;
+Integersuffix:
+	Unsignedsuffix Longsuffix?
+	| Unsignedsuffix Longlongsuffix?
+	| Longsuffix Unsignedsuffix?
+	| Longlongsuffix Unsignedsuffix?;
 
-Integersuffix
-   : Unsignedsuffix Longsuffix?
-   | Unsignedsuffix Longlongsuffix?
-   | Longsuffix Unsignedsuffix?
-   | Longlongsuffix Unsignedsuffix?
-   ;
+fragment Unsignedsuffix: [uU];
 
-fragment Unsignedsuffix
-   : [uU]
-   ;
+fragment Longsuffix: [lL];
 
-fragment Longsuffix
-   : [lL]
-   ;
+fragment Longlongsuffix: 'll' | 'LL';
 
-fragment Longlongsuffix
-   : 'll'
-   | 'LL'
-   ;
+Characterliteral:
+	'\'' Cchar+ '\''
+	| 'u' '\'' Cchar+ '\''
+	| 'U' '\'' Cchar+ '\''
+	| 'L' '\'' Cchar+ '\'';
 
-Characterliteral
-   : '\'' Cchar+ '\''
-   | 'u' '\'' Cchar+ '\''
-   | 'U' '\'' Cchar+ '\''
-   | 'L' '\'' Cchar+ '\''
-   ;
+fragment Cchar:
+	~ ['\\\r\n]
+	| Escapesequence
+	| Universalcharactername;
 
-fragment Cchar
-   : ~ ['\\\r\n]
-   | Escapesequence
-   | Universalcharactername
-   ;
+fragment Escapesequence:
+	Simpleescapesequence
+	| Octalescapesequence
+	| Hexadecimalescapesequence;
 
-fragment Escapesequence
-   : Simpleescapesequence
-   | Octalescapesequence
-   | Hexadecimalescapesequence
-   ;
+fragment Simpleescapesequence:
+	'\\\''
+	| '\\"'
+	| '\\?'
+	| '\\\\'
+	| '\\a'
+	| '\\b'
+	| '\\f'
+	| '\\n'
+	| '\\r'
+	| '\\t'
+	| '\\v';
 
-fragment Simpleescapesequence
-   : '\\\''
-   | '\\"'
-   | '\\?'
-   | '\\\\'
-   | '\\a'
-   | '\\b'
-   | '\\f'
-   | '\\n'
-   | '\\r'
-   | '\\t'
-   | '\\v'
-   ;
+fragment Octalescapesequence:
+	'\\' OCTALDIGIT
+	| '\\' OCTALDIGIT OCTALDIGIT
+	| '\\' OCTALDIGIT OCTALDIGIT OCTALDIGIT;
 
-fragment Octalescapesequence
-   : '\\' OCTALDIGIT
-   | '\\' OCTALDIGIT OCTALDIGIT
-   | '\\' OCTALDIGIT OCTALDIGIT OCTALDIGIT
-   ;
+fragment Hexadecimalescapesequence: '\\x' HEXADECIMALDIGIT+;
 
-fragment Hexadecimalescapesequence
-   : '\\x' HEXADECIMALDIGIT+
-   ;
+Floatingliteral:
+	Fractionalconstant Exponentpart? Floatingsuffix?
+	| Digitsequence Exponentpart Floatingsuffix?;
 
-Floatingliteral
-   : Fractionalconstant Exponentpart? Floatingsuffix?
-   | Digitsequence Exponentpart Floatingsuffix?
-   ;
+fragment Fractionalconstant:
+	Digitsequence? '.' Digitsequence
+	| Digitsequence '.';
 
-fragment Fractionalconstant
-   : Digitsequence? '.' Digitsequence
-   | Digitsequence '.'
-   ;
+fragment Exponentpart:
+	'e' SIGN? Digitsequence
+	| 'E' SIGN? Digitsequence;
 
-fragment Exponentpart
-   : 'e' SIGN? Digitsequence
-   | 'E' SIGN? Digitsequence
-   ;
+fragment SIGN: [+-];
 
-fragment SIGN
-   : [+-]
-   ;
+fragment Digitsequence: DIGIT ('\''? DIGIT)*;
 
-fragment Digitsequence
-   : DIGIT ('\''? DIGIT)*
-   ;
+fragment Floatingsuffix: [flFL];
 
-fragment Floatingsuffix
-   : [flFL]
-   ;
+Stringliteral:
+	Encodingprefix? '"' Schar* '"'
+	| Encodingprefix? 'R' Rawstring;
 
-Stringliteral
-   : Encodingprefix? '"' Schar* '"'
-   | Encodingprefix? 'R' Rawstring
-   ;
+fragment Encodingprefix: 'u8' | 'u' | 'U' | 'L';
 
-fragment Encodingprefix
-   : 'u8'
-   | 'u'
-   | 'U'
-   | 'L'
-   ;
+fragment Schar:
+	~ ["\\\r\n]
+	| Escapesequence
+	| Universalcharactername;
 
-fragment Schar
-   : ~ ["\\\r\n]
-   | Escapesequence
-   | Universalcharactername
-   ;
+fragment Rawstring: '"' .*? '(' .*? ')' .*? '"';
 
-fragment Rawstring
-   : '"' .*? '(' .*? ')' .*? '"'
-   ;
+booleanliteral: False | True;
 
-booleanliteral
-   : False
-   | True
-   ;
+pointerliteral: Nullptr;
 
-pointerliteral
-   : Nullptr
-   ;
+userdefinedliteral:
+	Userdefinedintegerliteral
+	| Userdefinedfloatingliteral
+	| Userdefinedstringliteral
+	| Userdefinedcharacterliteral;
 
-userdefinedliteral
-   : Userdefinedintegerliteral
-   | Userdefinedfloatingliteral
-   | Userdefinedstringliteral
-   | Userdefinedcharacterliteral
-   ;
+Userdefinedintegerliteral:
+	Decimalliteral Udsuffix
+	| Octalliteral Udsuffix
+	| Hexadecimalliteral Udsuffix
+	| Binaryliteral Udsuffix;
 
-Userdefinedintegerliteral
-   : Decimalliteral Udsuffix
-   | Octalliteral Udsuffix
-   | Hexadecimalliteral Udsuffix
-   | Binaryliteral Udsuffix
-   ;
+Userdefinedfloatingliteral:
+	Fractionalconstant Exponentpart? Udsuffix
+	| Digitsequence Exponentpart Udsuffix;
 
-Userdefinedfloatingliteral
-   : Fractionalconstant Exponentpart? Udsuffix
-   | Digitsequence Exponentpart Udsuffix
-   ;
+Userdefinedstringliteral: Stringliteral Udsuffix;
 
-Userdefinedstringliteral
-   : Stringliteral Udsuffix
-   ;
+Userdefinedcharacterliteral: Characterliteral Udsuffix;
 
-Userdefinedcharacterliteral
-   : Characterliteral Udsuffix
-   ;
+fragment Udsuffix: Identifier;
 
-fragment Udsuffix
-   : Identifier
-   ;
+Whitespace: [ \t]+ -> skip;
 
-Whitespace
-   : [ \t]+ -> skip
-   ;
+Newline: ('\r' '\n'? | '\n') -> skip;
 
-Newline
-   : ('\r' '\n'? | '\n') -> skip
-   ;
+BlockComment: '/*' .*? '*/' -> skip;
 
-BlockComment
-   : '/*' .*? '*/' -> skip
-   ;
-
-LineComment
-   : '//' ~ [\r\n]* -> skip
-   ;s
+LineComment: '//' ~ [\r\n]* -> skip;
