@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleLeftRecursionTest", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestUtilities", "TestUtilities\TestUtilities.vcxproj", "{F43D7E68-B275-42A9-964D-18CF9A2A0146}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CPPGrammar", "CPPGrammar", "{D4FB83B1-DFCB-41FE-852B-21CBEB7E4A3B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPPGrammarLib", "CPPGrammar\CPPGrammarLib\CPPGrammarLib.vcxproj", "{CBE211CA-2781-40D5-8278-A86FB96E27BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -53,6 +57,14 @@ Global
 		{F43D7E68-B275-42A9-964D-18CF9A2A0146}.Release|x64.Build.0 = Release|x64
 		{F43D7E68-B275-42A9-964D-18CF9A2A0146}.Release|x86.ActiveCfg = Release|Win32
 		{F43D7E68-B275-42A9-964D-18CF9A2A0146}.Release|x86.Build.0 = Release|Win32
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Debug|x64.ActiveCfg = Debug|x64
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Debug|x64.Build.0 = Debug|x64
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Debug|x86.ActiveCfg = Debug|Win32
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Debug|x86.Build.0 = Debug|Win32
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Release|x64.ActiveCfg = Release|x64
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Release|x64.Build.0 = Release|x64
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Release|x86.ActiveCfg = Release|Win32
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +72,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7A1C373E-A2FA-47E4-88CB-C6F48EB50654} = {4878CBC9-A4E1-45CE-8776-51BEC061E154}
 		{068A7209-5134-4847-89EE-3001D8201AA9} = {4878CBC9-A4E1-45CE-8776-51BEC061E154}
+		{CBE211CA-2781-40D5-8278-A86FB96E27BE} = {D4FB83B1-DFCB-41FE-852B-21CBEB7E4A3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C26C104-CAA3-4A25-A3AD-AE0C4CE2AF11}
