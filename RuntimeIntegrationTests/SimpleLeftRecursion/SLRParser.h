@@ -1,5 +1,5 @@
 
-// Generated from SLR.g4 by ANTLR 4.7.2
+// Generated from D:\Programming\antlr4\RuntimeIntegrationTests\SimpleLeftRecursion\SLR.g4 by ANTLR 4.7.2
 
 #pragma once
 
@@ -47,6 +47,8 @@ public:
 
 		void enterRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
 		void exitRule(not_null<antlr4::tree::ParseTreeListener*> listener) final;
+
+		antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) final;
 	 
 	};
 

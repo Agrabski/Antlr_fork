@@ -603,10 +603,6 @@ LeftRecursiveRuleFunction(currentRule, args, code, locals, ruleCtx, altLabelCtxs
 	auto _localctx = std::make_unique\<<currentRule.ctxType>\>(parentContext, parentState<currentRule.args:
 {a | , <a.name>}>);//610
 	auto ctx = _localctx.get();//609
-	if(parentContext != nullptr)
-		parentContext->addChild(std::move(_localctx));
-	else
-		_root = std::move(_localctx);
 	size_t startState = <currentRule.startState>;
 	enterRecursionRule(ctx, <currentRule.startState>, <parser.name>::Rule<currentRule.name; format = "cap">, precedence);
 
@@ -1238,6 +1234,39 @@ ctx(actionChunk) ::= "dynamic_cast\<<actionChunk.ctx.name> *>(_localctx)"//1240
 recRuleAltPredicate(ruleName,opPrec) ::= "precpred(nullptr, <opPrec>)"
 recRuleSetReturnAction(src,name) ::= "recRuleSetReturnAction(src,name) $<name>=$<src>.<name>;"
 recRuleSetStopToken() ::= "ctx->stop = _input->LT(-1);"
+
+recRuleAltStartAction(ruleName, ctxName, label) ::= <<
+<if (label)>_localctx-><label> = previousContext;<endif>
+auto tmpContext = std::make_unique\<<ctxName>Context>(parentContext, parentState);
+pushNewRecursionContext(std::move(_localctx), tmpContext.get(), startState, Rule<ruleName; format = "cap">);//1240
+_localctx = std::move(tmpContext);
+ctx = _localctx.get();
+>>
+
+// Separate context variable to avoid frequent pointer type casts.
+recRuleLabeledAltStartAction(ruleName, currentAltLabel, label, isListLabel) ::= <<
+auto newContext = std::make_unique\<<currentAltLabel; format = "cap">Context>(std::make_unique\<<ruleName; format="cap">Context>(parentContext, parentState));//1245
+_localctx = newContext;
+<if(label)>
+<if(isListLabel)>
+newContext-><label>.push_back(previousContext);
+<else>
+newContext-><label> = previousContext;
+<endif>
+<endif>
+pushNewRecursionContext(newContext, startState, Rule<ruleName; format = "cap">); //1254
+>>
+
+recRuleReplaceContext(ctxName) ::= <<
+_localctx = std::make_unique\<<ctxName>Context>(_localctx);
+ctx = _localctx.get();
+>>
+
+recRuleSetPrevCtx() ::= <<
+if (!_parseListeners.empty())
+	triggerExitRuleEvent(ctx);
+
+>>
 
 /** Using a type to init value map, try to init a type; if not in table
  *	must be an object, default value is "null".
