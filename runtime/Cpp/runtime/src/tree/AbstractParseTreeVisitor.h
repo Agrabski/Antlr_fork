@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "tree/ParseTreeVisitor.h"
+#include "ParseTreeVisitor.h"
 
 namespace antlr4
 {
