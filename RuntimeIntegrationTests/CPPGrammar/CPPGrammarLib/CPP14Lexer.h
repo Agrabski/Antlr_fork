@@ -32,18 +32,18 @@ public:
 		Wchar = 82, While = 83, LeftParen = 84, RightParen = 85, LeftBracket = 86, 
 		RightBracket = 87, LeftBrace = 88, RightBrace = 89, Plus = 90, Minus = 91, 
 		Star = 92, Div = 93, Mod = 94, Caret = 95, And = 96, Or = 97, Tilde = 98, 
-		Not = 99, Assign = 100, Less = 101, Greater = 102, PlusAssign = 103, MinusAssign = 104, 
-		StarAssign = 105, DivAssign = 106, ModAssign = 107, XorAssign = 108, AndAssign = 109, 
-		OrAssign = 110, LeftShift = 111, RightShift = 112, LeftShiftAssign = 113, 
-		RightShiftAssign = 114, Equal = 115, NotEqual = 116, LessEqual = 117, 
-		GreaterEqual = 118, AndAnd = 119, OrOr = 120, PlusPlus = 121, MinusMinus = 122, 
-		Comma = 123, ArrowStar = 124, Arrow = 125, Question = 126, Colon = 127, 
-		Doublecolon = 128, Semi = 129, Dot = 130, DotStar = 131, Ellipsis = 132, 
-		Identifier = 133, Integerliteral = 134, Decimalliteral = 135, Octalliteral = 136, 
-		Hexadecimalliteral = 137, Binaryliteral = 138, Integersuffix = 139, Characterliteral = 140, 
-		Floatingliteral = 141, Stringliteral = 142, Userdefinedintegerliteral = 143, 
-		Userdefinedfloatingliteral = 144, Userdefinedstringliteral = 145, Userdefinedcharacterliteral = 146, 
-		Whitespace = 147, Newline = 148, BlockComment = 149, LineComment = 150
+		Not = 99, Assign = 100, Less = 101, PlusAssign = 102, MinusAssign = 103, 
+		StarAssign = 104, DivAssign = 105, ModAssign = 106, XorAssign = 107, AndAssign = 108, 
+		OrAssign = 109, LeftShift = 110, LeftShiftAssign = 111, Equal = 112, NotEqual = 113, 
+		LessEqual = 114, GreaterEqual = 115, AndAnd = 116, OrOr = 117, PlusPlus = 118, 
+		MinusMinus = 119, Comma = 120, ArrowStar = 121, Arrow = 122, Question = 123, 
+		Colon = 124, Doublecolon = 125, Semi = 126, Dot = 127, DotStar = 128, 
+		Ellipsis = 129, Identifier = 130, Integerliteral = 131, Decimalliteral = 132, 
+		Octalliteral = 133, Hexadecimalliteral = 134, Binaryliteral = 135, Integersuffix = 136, 
+		Characterliteral = 137, Floatingliteral = 138, Stringliteral = 139, Userdefinedintegerliteral = 140, 
+		Userdefinedfloatingliteral = 141, Userdefinedstringliteral = 142, Userdefinedcharacterliteral = 143, 
+		Whitespace = 144, Newline = 145, BlockComment = 146, LineComment = 147, 
+		GreaterThan = 148
 	};
 
 	CPP14Lexer(antlr4::CharStream *input);

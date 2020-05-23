@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+#include <filesystem>
 #include "../../TestUtilities/ApplyTest.hpp"
 #include "../../TestUtilities/All.hpp"
 #include "../../TestUtilities/GetDepth.hpp"
@@ -29,7 +30,13 @@ bool testGreedinessAll()
 		"int main() { if(getNumber() > 5) return getResult(); else throw std::exception();}",
 		"int main(){f([](auto a){return get(a);});}",
 		"void f(){string.erase(std::remove_if(string.begin(), string.end(), [](auto const a) {return a == ' '; }), string.end()); int n = 3;}",
-R"(bool testGreediness(std::string const& s)
+R"(
+#include <header>
+#ifndef DEBUG
+#define X
+#endif
+
+bool testGreediness(std::string const& s)
 {
 	std::stringstream sstream(s);
 	antlr4::ANTLRInputStream stream(sstream);
@@ -77,8 +84,19 @@ private:
 	return applyTest(testData, testGreediness);
 }
 
+bool isCppFile(std::string const extension)
+{
+	return
+		extension == ".cpp" ||
+		extension == ".hpp" ||
+		extension == ".h" ||
+		extension == ".c";
+}
+
 bool testGreediness(std::string const& s)
 {
+	if (s.empty())
+		return true;
 	using std::begin;
 	using std::end;
 	std::stringstream sstream(s);
@@ -95,6 +113,43 @@ bool testGreediness(std::string const& s)
 }
 
 
+bool testGreedinessFromFile()
+{
+	if (!std::filesystem::exists("test_data"))
+	{
+		std::filesystem::create_directory("test_data");
+		system("git clone https://github.com/grpc/grpc.git test_data\\grpc");
+		system("git clone https://github.com/msgpack/msgpack-c.git test_data\\msgpack");
+		system("git clone https://github.com/nlohmann/json.git test_data\\json");
+		system("git clone https://github.com/danmar/cppcheck.git test_data\\cppcheck");
+		system("git clone https://github.com/gabime/spdlog.git test_data\\spdlog");
+	}
+	for (auto file : std::filesystem::recursive_directory_iterator("test_data"))
+	{
+		if (!file.is_directory() && isCppFile(file.path().extension().string()))
+		{
+			auto filePath = file.path().parent_path() / std::filesystem::path("x.cpp");
+			auto command = (std::string("g++ -dD -P -E ") + file.path().string() + " -o " + filePath.string());
+			system(command.c_str());
+			std::ifstream t(filePath);
+			std::string str((std::istreambuf_iterator<char>(t)),
+				std::istreambuf_iterator<char>());
+			if (str.find("__attribute__") == std::string::npos)
+			{
+				std::cout << "tested:\t\t";
+				if (!testGreediness(str))
+					return false;
+			}
+			else
+			{
+				std::cout << "rejected:\t\t";
+			}
+			std::cout << file.path() <<"\r\n";
+		}
+	}
+	return true;
+}
+
 
 
 int main()
@@ -102,6 +157,7 @@ int main()
 	std::array testers =
 	{
 		&testGreedinessAll,
+		&testGreedinessFromFile
 	};
 	auto x = !all(testers);
 	return x;

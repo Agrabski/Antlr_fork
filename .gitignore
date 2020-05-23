@@ -99,3 +99,16 @@ javac-services.0.log
 javac-services.0.log.lck
 test/
 /RuntimeIntegrationTests/CPPGrammar/CPPGrammarLib/.antlr
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningParser.h
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningParser.cpp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningListener.h
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningListener.cpp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningLexer.tokens
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningLexer.interp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningLexer.h
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningLexer.cpp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningBaseListener.h
+/Example/SimpleCalculator/SimpleCalculatorParser/cloningBaseListener.cpp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloning.tokens
+/Example/SimpleCalculator/SimpleCalculatorParser/cloning.interp
+/Example/SimpleCalculator/SimpleCalculatorParser/cloning.g4

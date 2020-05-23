@@ -203,6 +203,9 @@ public:
 	virtual void enter(not_null<CPP14Parser::DeclarationContext *>) = 0;
 	virtual void exit(not_null<CPP14Parser::DeclarationContext *>) = 0;
 
+	virtual void enter(not_null<CPP14Parser::PreprocessorDirectiveContext *>) = 0;
+	virtual void exit(not_null<CPP14Parser::PreprocessorDirectiveContext *>) = 0;
+
 	virtual void enter(not_null<CPP14Parser::BlockdeclarationContext *>) = 0;
 	virtual void exit(not_null<CPP14Parser::BlockdeclarationContext *>) = 0;
 
@@ -598,6 +601,12 @@ public:
 
 	virtual void enter(not_null<CPP14Parser::NoexceptspecificationContext *>) = 0;
 	virtual void exit(not_null<CPP14Parser::NoexceptspecificationContext *>) = 0;
+
+	virtual void enter(not_null<CPP14Parser::RightShiftContext *>) = 0;
+	virtual void exit(not_null<CPP14Parser::RightShiftContext *>) = 0;
+
+	virtual void enter(not_null<CPP14Parser::RightShiftAssignContext *>) = 0;
+	virtual void exit(not_null<CPP14Parser::RightShiftAssignContext *>) = 0;
 
 	virtual void enter(not_null<CPP14Parser::TheoperatorContext *>) = 0;
 	virtual void exit(not_null<CPP14Parser::TheoperatorContext *>) = 0;

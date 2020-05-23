@@ -205,6 +205,9 @@ public:
 	void enter(not_null<CPP14Parser::DeclarationContext*> ) override { }
 	void exit(not_null<CPP14Parser::DeclarationContext*>) override { }
 
+	void enter(not_null<CPP14Parser::PreprocessorDirectiveContext*> ) override { }
+	void exit(not_null<CPP14Parser::PreprocessorDirectiveContext*>) override { }
+
 	void enter(not_null<CPP14Parser::BlockdeclarationContext*> ) override { }
 	void exit(not_null<CPP14Parser::BlockdeclarationContext*>) override { }
 
@@ -600,6 +603,12 @@ public:
 
 	void enter(not_null<CPP14Parser::NoexceptspecificationContext*> ) override { }
 	void exit(not_null<CPP14Parser::NoexceptspecificationContext*>) override { }
+
+	void enter(not_null<CPP14Parser::RightShiftContext*> ) override { }
+	void exit(not_null<CPP14Parser::RightShiftContext*>) override { }
+
+	void enter(not_null<CPP14Parser::RightShiftAssignContext*> ) override { }
+	void exit(not_null<CPP14Parser::RightShiftAssignContext*>) override { }
 
 	void enter(not_null<CPP14Parser::TheoperatorContext*> ) override { }
 	void exit(not_null<CPP14Parser::TheoperatorContext*>) override { }

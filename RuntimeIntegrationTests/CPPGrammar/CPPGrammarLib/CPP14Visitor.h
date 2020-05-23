@@ -145,6 +145,8 @@ public:
 
 		virtual antlrcpp::Any visitDeclaration(CPP14Parser::DeclarationContext *context) = 0;
 
+		virtual antlrcpp::Any visitPreprocessorDirective(CPP14Parser::PreprocessorDirectiveContext *context) = 0;
+
 		virtual antlrcpp::Any visitBlockdeclaration(CPP14Parser::BlockdeclarationContext *context) = 0;
 
 		virtual antlrcpp::Any visitAliasdeclaration(CPP14Parser::AliasdeclarationContext *context) = 0;
@@ -408,6 +410,10 @@ public:
 		virtual antlrcpp::Any visitTypeidlist(CPP14Parser::TypeidlistContext *context) = 0;
 
 		virtual antlrcpp::Any visitNoexceptspecification(CPP14Parser::NoexceptspecificationContext *context) = 0;
+
+		virtual antlrcpp::Any visitRightShift(CPP14Parser::RightShiftContext *context) = 0;
+
+		virtual antlrcpp::Any visitRightShiftAssign(CPP14Parser::RightShiftAssignContext *context) = 0;
 
 		virtual antlrcpp::Any visitTheoperator(CPP14Parser::TheoperatorContext *context) = 0;
 

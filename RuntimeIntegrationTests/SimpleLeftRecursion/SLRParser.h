@@ -38,7 +38,12 @@ public:
 	class  ExpressionContext : public antlr4::ParserRuleContext
 	{
 	public:
+		std::unique_ptr<ParseTree> clone(ParseTree* parent) const override;
 		ExpressionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+		ExpressionContext() = default;
+		void copyFrom(ExpressionContext *context);
+		using antlr4::ParserRuleContext::copyFrom;
+
 		size_t getRuleIndex() const final;
 		std::vector<antlr4::tree::TerminalNode *> DIGIT();
 		antlr4::tree::TerminalNode* DIGIT(size_t i);
@@ -54,6 +59,7 @@ public:
 
 	ExpressionContext* expression();
 	ExpressionContext* expression(int precedence, antlr4::ParserRuleContext *parent);
+	std::unique_ptr<ExpressionContext> parseexpression();
 
 	bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) final;
 	bool expressionSempred(ExpressionContext *_localctx, size_t predicateIndex);

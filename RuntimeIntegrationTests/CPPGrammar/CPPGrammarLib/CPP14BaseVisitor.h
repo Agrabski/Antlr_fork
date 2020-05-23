@@ -267,6 +267,10 @@ public:
 		return visitChildren(ctx);
 	}
 
+	antlrcpp::Any visitPreprocessorDirective(CPP14Parser::PreprocessorDirectiveContext *ctx) override {
+		return visitChildren(ctx);
+	}
+
 	antlrcpp::Any visitBlockdeclaration(CPP14Parser::BlockdeclarationContext *ctx) override {
 		return visitChildren(ctx);
 	}
@@ -792,6 +796,14 @@ public:
 	}
 
 	antlrcpp::Any visitNoexceptspecification(CPP14Parser::NoexceptspecificationContext *ctx) override {
+		return visitChildren(ctx);
+	}
+
+	antlrcpp::Any visitRightShift(CPP14Parser::RightShiftContext *ctx) override {
+		return visitChildren(ctx);
+	}
+
+	antlrcpp::Any visitRightShiftAssign(CPP14Parser::RightShiftAssignContext *ctx) override {
 		return visitChildren(ctx);
 	}
 

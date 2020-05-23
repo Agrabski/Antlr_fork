@@ -65,6 +65,18 @@ size_t SLRParser::ExpressionContext::getRuleIndex() const
 	return SLRParser::RuleExpression;//688
 }
 
+void SLRParser::ExpressionContext::copyFrom(ExpressionContext *ctx)
+{
+	antlr4::ParserRuleContext::copyFrom(ctx);
+}
+
+std::unique_ptr<antlr4::tree::ParseTree> SLRParser::ExpressionContext::clone(ParseTree* parent) const
+{
+	auto result = std::make_unique<ExpressionContext>();
+	result->copyFrom(this);
+	result->parent = parent;
+	return result;
+}
 void SLRParser::ExpressionContext::enterRule(not_null<tree::ParseTreeListener*> listener)
 {
 	auto parserListener = dynamic_cast<SLRListener *>(listener.get());//1212
@@ -167,6 +179,14 @@ SLRParser::ExpressionContext* SLRParser::expression(int precedence, antlr4::Pars
 	}
 	onExit();
 	return ctx;
+}
+
+std::unique_ptr< SLRParser::ExpressionContext> SLRParser::parseexpression()
+{
+	expression();
+	auto result = std::unique_ptr<ExpressionContext>(dynamic_cast<ExpressionContext*>(_root.release()));
+	assert(result != nullptr);
+	return result;
 }
 
 bool SLRParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex)

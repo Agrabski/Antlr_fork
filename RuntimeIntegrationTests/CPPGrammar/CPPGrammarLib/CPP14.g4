@@ -1,8 +1,8 @@
 /*******************************************************************************
  * The MIT License (MIT)
- 
+
  Copyright (c) 2015 Camilo Sanchez (Camiloasc1)
- 
+
  Permission is hereby
  * granted, free of charge, to any person obtaining a copy
  of this software and associated
@@ -14,11 +14,11 @@
  copies of the Software, and to permit persons to whom the Software is
  furnished to
  * do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission
  * notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  THE SOFTWARE
  * IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT
@@ -110,10 +110,10 @@ postfixexpression:
 	| postfixexpression '->' pseudodestructorname
 	| postfixexpression '++'
 	| postfixexpression '--'
-	| Dynamic_cast '<' thetypeid '>' '(' expression ')'
-	| Static_cast '<' thetypeid '>' '(' expression ')'
-	| Reinterpret_cast '<' thetypeid '>' '(' expression ')'
-	| Const_cast '<' thetypeid '>' '(' expression ')'
+	| Dynamic_cast '<' thetypeid GreaterThan '(' expression ')'
+	| Static_cast '<' thetypeid  GreaterThan '(' expression ')'
+	| Reinterpret_cast '<' thetypeid  GreaterThan '(' expression ')'
+	| Const_cast '<' thetypeid  GreaterThan '(' expression ')'
 	| typeidofthetypeid '(' expression ')'
 	| typeidofthetypeid '(' thetypeid ')';
 /*
@@ -155,7 +155,7 @@ newplacement: '(' expressionlist ')';
 
 newtypeid: typespecifierseq newdeclarator?;
 
-newdeclarator: ptroperator newdeclarator? | noptrnewdeclarator;
+newdeclarator: ptroperator newdeclarator? | noptrnewdeclarator | abstractdeclarator;
 
 noptrnewdeclarator:
 	'[' expression ']' attributespecifierseq?
@@ -193,12 +193,12 @@ shiftexpression:
 	additiveexpression
 	| shiftexpression shiftoperator additiveexpression;
 
-shiftoperator: RightShift | LeftShift;
+shiftoperator: rightShift | LeftShift;
 
 relationalexpression:
 	shiftexpression
 	| relationalexpression '<' shiftexpression
-	| relationalexpression '>' shiftexpression
+	| relationalexpression  GreaterThan shiftexpression
 	| relationalexpression '<=' shiftexpression
 	| relationalexpression '>=' shiftexpression;
 
@@ -245,7 +245,7 @@ assignmentoperator:
 	| '%='
 	| '+='
 	| '-='
-	| RightShiftAssign
+	| rightShiftAssign
 	| LeftShiftAssign
 	| '&='
 	| '^='
@@ -312,7 +312,7 @@ jumpstatement:
 declarationstatement: blockdeclaration;
 /*Declarations*/
 
-declarationseq: declaration | declarationseq declaration;
+declarationseq: declaration*;
 
 declaration:
 	blockdeclaration
@@ -323,8 +323,13 @@ declaration:
 	| linkagespecification
 	| namespacedefinition
 	| emptydeclaration
-	| attributedeclaration;
+	| attributedeclaration
+	| preprocessorDirective;
 
+preprocessorDirective
+   : MultiLineMacro
+   | Directive
+   ;
 blockdeclaration:
 	simpledeclaration
 	| asmdefinition
@@ -610,10 +615,10 @@ parameterdeclarationlist:
 	| parameterdeclarationlist ',' parameterdeclaration;
 
 parameterdeclaration:
-	attributespecifierseq? declspecifierseq declarator
-	| attributespecifierseq? declspecifierseq declarator '=' initializerclause
-	| attributespecifierseq? declspecifierseq abstractdeclarator?
-	| attributespecifierseq? declspecifierseq abstractdeclarator? '=' initializerclause;
+	attributespecifierseq? declspecifierseq declarator unqualifiedid?
+	| attributespecifierseq? declspecifierseq declarator unqualifiedid? '=' initializerclause
+	| attributespecifierseq? declspecifierseq abstractdeclarator? unqualifiedid?
+	| attributespecifierseq? declspecifierseq abstractdeclarator?  unqualifiedid? '=' initializerclause;
 
 functiondefinition:
 	attributespecifierseq? declspecifierseq? declarator virtspecifierseq? functionbody;
@@ -735,7 +740,7 @@ literaloperatorid:
 /*Templates*/
 
 templatedeclaration:
-	Template '<' templateparameterlist '>' declaration;
+	Template '<' templateparameterlist  GreaterThan declaration;
 
 templateparameterlist:
 	templateparameter
@@ -748,15 +753,15 @@ typeparameter:
 	| Class Identifier? '=' thetypeid
 	| Typename_ '...'? Identifier?
 	| Typename_ Identifier? '=' thetypeid
-	| Template '<' templateparameterlist '>' Class '...'? Identifier?
-	| Template '<' templateparameterlist '>' Class Identifier? '=' idexpression;
+	| Template '<' templateparameterlist GreaterThan Class '...'? Identifier?
+	| Template '<' templateparameterlist  GreaterThan Class Identifier? '=' idexpression;
 
-simpletemplateid: templatename '<' templateargumentlist? '>';
+simpletemplateid: templatename '<' templateargumentlist?  GreaterThan;
 
 templateid:
 	simpletemplateid
-	| operatorfunctionid '<' templateargumentlist? '>'
-	| literaloperatorid '<' templateargumentlist? '>';
+	| operatorfunctionid '<' templateargumentlist?  GreaterThan
+	| literaloperatorid '<' templateargumentlist?  GreaterThan;
 
 templatename: Identifier;
 
@@ -764,7 +769,7 @@ templateargumentlist:
 	templateargument '...'?
 	| templateargumentlist ',' templateargument '...'?;
 
-templateargument: thetypeid | constantexpression | idexpression;
+templateargument: simpletemplateid | thetypeid | constantexpression | idexpression;
 
 typenamespecifier:
 	Typename_ nestednamespecifier Identifier
@@ -772,7 +777,7 @@ typenamespecifier:
 
 explicitinstantiation: Extern? Template declaration;
 
-explicitspecialization: Template '<' '>' declaration;
+explicitspecialization: Template '<'  GreaterThan declaration;
 /*Exception handling*/
 
 tryblock: Try compoundstatement handlerseq;
@@ -999,8 +1004,6 @@ Assign: '=';
 
 Less: '<';
 
-Greater: '>';
-
 PlusAssign: '+=';
 
 MinusAssign: '-=';
@@ -1019,11 +1022,11 @@ OrAssign: '|=';
 
 LeftShift: '<<';
 
-RightShift: '>>';
+rightShift:  GreaterThan  GreaterThan;
 
 LeftShiftAssign: '<<=';
 
-RightShiftAssign: '>>=';
+rightShiftAssign:  GreaterThan GreaterThan '=';
 
 Equal: '==';
 
@@ -1079,7 +1082,7 @@ theoperator:
 	| 'not'
 	| '='
 	| '<'
-	| '>'
+	|  GreaterThan
 	| '+='
 	| '-='
 	| '*='
@@ -1089,8 +1092,8 @@ theoperator:
 	| '&='
 	| '|='
 	| LeftShift
-	| RightShift
-	| RightShiftAssign
+	| rightShift
+	| rightShiftAssign
 	| LeftShiftAssign
 	| '=='
 	| '!='
@@ -1275,3 +1278,5 @@ Newline: ('\r' '\n'? | '\n') -> skip;
 BlockComment: '/*' .*? '*/' -> skip;
 
 LineComment: '//' ~ [\r\n]* -> skip;
+
+GreaterThan: '>';
