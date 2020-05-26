@@ -21,7 +21,7 @@ if os.system("mvn install -DskipTests"):
 	print("Antlr build failed, aborting")
 	exit()
 antlrPath = "RuntimeIntegrationTests/antlr.jar"
-shutil.move("tool/target/antlr4-4.7.3-SNAPSHOT-complete.jar", antlrPath)
+shutil.move("tool/target/antlr4-4.7.2-complete.jar", antlrPath)
 
 files = Path("RuntimeIntegrationTests").rglob("*.g4")
 
